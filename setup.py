@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     # GETTING-STARTED: set your app name:
-    name='YourAppName',
+    name='django_rss',
     # GETTING-STARTED: set your app version:
     version='1.0',
     # GETTING-STARTED: set your app description:
