@@ -12,8 +12,9 @@ import os
 from django.core.wsgi import get_wsgi_application
 
 
+print("*")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_rss.settings")
-
+print("**")
 application = get_wsgi_application()
 
 import djcelery
