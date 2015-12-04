@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-
+from pip.req import parse_requirements
 from setuptools import setup
+
+install_reqs = parse_requirements('./wsgi/requierments.txt')
+reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     # GETTING-STARTED: set your app name:
@@ -16,9 +19,7 @@ setup(
     # GETTING-STARTED: set author url (your url):
     url='http://www.python.org/sigs/distutils-sig/',
     # GETTING-STARTED: define required django version:
-    install_requires=[
-        'Django==1.8.4'
-    ],
+    install_requires=reqs,
     dependency_links=[
         'https://pypi.python.org/simple/django/'
     ],
