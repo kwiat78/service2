@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 from pip.req import parse_requirements
 from setuptools import setup
+import pip
 
-install_reqs = parse_requirements('./wsgi/requierments.txt')
+install_reqs = parse_requirements('./wsgi/requierments.txt', session=pip.download.PipSession())
 reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
