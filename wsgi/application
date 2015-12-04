@@ -3,6 +3,12 @@
 import os
 import sys
 
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass
+
 ## GETTING-STARTED: make sure the next line points to your settings.py:
 os.environ['DJANGO_SETTINGS_MODULE'] = 'django_rss.settings'
 ## GETTING-STARTED: make sure the next line points to your django project dir:
