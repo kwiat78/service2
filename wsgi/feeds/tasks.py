@@ -80,7 +80,7 @@ from celery.task import periodic_task
 
 
 
-@periodic_task(run_every=timedelta(seconds=30))
+@periodic_task(run_every=timedelta(minutes=5))
 def get_posts():
     #print("*")
     #feeds = Feed.objects.all()
