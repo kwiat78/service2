@@ -31,14 +31,16 @@ class FeedView(ModelViewSet):
 
     def retrieve(self, request, pk, **kwargs):
         print(pk)
-        feed = Feed.objects.get(user__username="szymon", name=pk)
+        user = request.META['HTTP_USER']
+        feed = Feed.objects.get(user__username=user, name=pk)
         serializer=FeedSerializer(feed)
         print(serializer.data)
         return Response(serializer.data)
 
 
     def update(self, request, pk, *args, **kwargs):
-        feed = Feed.objects.get(user__username="szymon", name=pk)
+        user = request.META['HTTP_USER']
+        feed = Feed.objects.get(user__username=user, name=pk)
         feed.name = request.data['name']
         feed.postLimit = request.data['postLimit']
         feed.favIcon = request.data['favIcon']
@@ -46,23 +48,33 @@ class FeedView(ModelViewSet):
         return Response(status=200)
 
     def create(self, request, *args, **kwargs):
+        user = request.META['HTTP_USER']
         name = request.data['name']
         regexp = request.data['regexp']
         url = request.data['url']
         favIcon = request.data.get('favIcon',"undefined")
 
-        position = len(Feed.objects.filter(user__username="szymon"))
-        user = User.objects.get(username="szymon")
+        position = len(Feed.objects.filter(user__username=user))
+        user = User.objects.get(username=user)
         feed= Feed.objects.create(name=name,user=user, position=position, postLimit=10, favIcon=favIcon)
         link,_ = Link.objects.get_or_create(url=url)
         FeedLink.objects.create(feed=feed, link=link, reg_exp=regexp)
         return Response(status=200)
 
     def destroy(self, request, pk,*args, **kwargs):
-        feed = Feed.objects.get(user__username="szymon", name=pk)
+        user = request.META['HTTP_USER']
+        feed = Feed.objects.get(user__username=user, name=pk)
         #import ipdb;ipdb.set_trace()
         feed.delete()
         return Response(status=200)
+
+    def list(self, request, *args, **kwargs):
+
+        user = request.META['HTTP_USER']
+        print(user)
+        feed = Feed.objects.filter(user__username=user)
+        print(feed)
+        return Response(FeedSerializer(feed, many=True).data)
 
 
 
@@ -77,29 +89,33 @@ class LinkView(ModelViewSet):
 
     def list(self, request, feed):
         #import ipdb;ipdb.set_trace()
-        return Response(self.serializer_class(self.queryset.filter(feed__name=feed).order_by("position"),
+        user = request.META['HTTP_USER']
+        return Response(self.serializer_class(self.queryset.filter(feed__name=feed, feed__user__username=user).order_by("position"),
                                               many=True).data)
 
 
     def retrieve(self, request, feed, pk,*args, **kwargs):
-        return Response(self.serializer_class(self.queryset.get(feed__name=feed, position=pk)).data)
+        user = request.META['HTTP_USER']
+        return Response(self.serializer_class(self.queryset.get(feed__name=feed, position=pk, feed__user__username=user)).data)
 
     def create(self, request, feed,*args, **kwargs):
         #import ipdb;ipdb.set_trace()
+        user = request.META['HTTP_USER']
         url = request.data["link"]
         link,_ = Link.objects.get_or_create(url=url)
-        feed_obj = Feed.objects.get(name=feed)
+        feed_obj = Feed.objects.get(name=feed, user__username=user)
         reg_exp = request.data["reg_exp"]
         position = len(self.queryset.filter(feed__name=feed))
         FeedLink.objects.create(feed=feed_obj, link=link, reg_exp=reg_exp, position=position)
         return Response(status=200)
 
     def update(self, request, feed, pk, *args, **kwargs):
+        user = request.META['HTTP_USER']
         url = request.data["link"]
         link,_ = Link.objects.get_or_create(url=url)
         reg_exp = request.data["reg_exp"]
 
-        feedlink=self.queryset.get(feed__name=feed, position=pk)
+        feedlink=self.queryset.get(feed__name=feed, position=pk, feed__user__username=user)
         #feedlink.feed=feed_obj
         feedlink.link=link
         feedlink.reg_exp = reg_exp
@@ -108,7 +124,8 @@ class LinkView(ModelViewSet):
         return Response(status=200)
 
     def destroy(self, request, feed,pk, *args, **kwargs):
-        feedlink=self.queryset.get(feed__name=feed, position=pk)
+        user = request.META['HTTP_USER']
+        feedlink=self.queryset.get(feed__name=feed, position=pk, feed__user__username=user)
         feedlink.delete()
         for fl in FeedLink.objects.filter(position__gt=pk):
             fl.position -=1
@@ -130,6 +147,7 @@ class PostView(ModelViewSet):
     #     print(request)
 
     def  update(self, request, pk,*args, **kwargs):
+        user = request.META['HTTP_USER']
         print("update")
         print(request)
         view = request.data
@@ -139,7 +157,7 @@ class PostView(ModelViewSet):
         url = unquote(a2b_base64(pk).decode())
         print(url)
         print(view)
-        x = Post.objects.filter(feed__user__username="szymon", url=url)
+        x = Post.objects.filter(feed__user__username=user, url=url)
         for xx in x:
             xx.view = view
             xx.save()
@@ -149,6 +167,7 @@ class PostView(ModelViewSet):
 
 
     def list(self, request):
+        user = request.META['HTTP_USER']
         acceptable = {"name":"feed__name","new":"feed__view"}
         criteria = {}
         count = False
@@ -175,7 +194,7 @@ class PostView(ModelViewSet):
         print(criteria)
 
 
-        queryset = Post.objects.filter(feed__user__username="szymon", **criteria ).order_by("-post_date")
+        queryset = Post.objects.filter(feed__user__username=user, **criteria ).order_by("-post_date")
         if count:
             return Response([{"count":queryset.count()}])
         return Response(PostSerializer(queryset, many=True).data)
@@ -185,7 +204,7 @@ class PostView(ModelViewSet):
 class ReorderView(APIView):
 
     def put(self, request):
-
+        user = request.META['HTTP_USER']
         old_pos = int(request.data["oldPosition"])
         new_pos = int(request.data["newPosition"])
 
@@ -196,9 +215,9 @@ class ReorderView(APIView):
             criteria ={"position__gte":old_pos+1, "position__lte":new_pos}
             change = -1
         if old_pos!=new_pos:
-            obj = Feed.objects.get(user__username="szymon", position=old_pos)
+            obj = Feed.objects.get(user__username=user, position=old_pos)
 
-            for f in Feed.objects.filter(user__username="szymon", **criteria):
+            for f in Feed.objects.filter(user__username=user, **criteria):
                 f.position = f.position + change
                 f.save()
             obj.position = new_pos
@@ -231,7 +250,6 @@ class DiscoverView(ViewSet):
 
             soup = BeautifulSoup(site, "html")
             links = soup.head.find_all("link",{"type":"application/rss+xml"})
-            # import ipdb;ipdb.set_trace()
             print([ x.get('href') for x in links])
         return Response([ x.get('href') for x in links],status=200)
 
