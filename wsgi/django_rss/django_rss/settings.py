@@ -116,7 +116,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT =BASE_DIR+'/static'
+STATIC_ROOT = os.path.dirname(os.path.dirname(BASE_DIR))+'/media'
 
 from datetime import timedelta
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
