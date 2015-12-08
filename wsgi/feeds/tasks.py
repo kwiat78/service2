@@ -129,6 +129,14 @@ def get_posts():
                                 p.title = post.title
                                 p.save()
 
+    for feed in Feed.objects.all():
+        limit = feed.postLimit
+        posts = Post.objects.filter(feed=feed).order_by("-post_date")[2*limit:]
+        i = len(posts)-1
+        while i>0 and posts[i].view:
+            posts[i].delete()
+            i-=1
+
 
 
 

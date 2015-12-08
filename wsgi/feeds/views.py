@@ -31,7 +31,7 @@ class FeedView(ModelViewSet):
 
     def retrieve(self, request, pk, **kwargs):
         print(pk)
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         feed = Feed.objects.get(user__username=user, name=pk)
         serializer=FeedSerializer(feed)
         print(serializer.data)
@@ -39,7 +39,7 @@ class FeedView(ModelViewSet):
 
 
     def update(self, request, pk, *args, **kwargs):
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         feed = Feed.objects.get(user__username=user, name=pk)
         feed.name = request.data['name']
         feed.postLimit = request.data['postLimit']
@@ -48,7 +48,7 @@ class FeedView(ModelViewSet):
         return Response(status=200)
 
     def create(self, request, *args, **kwargs):
-        user = request.META['HTTP_USER']
+        user = request.META.get('HTTP_USER',"")
         name = request.data['name']
         regexp = request.data['regexp']
         url = request.data['url']
@@ -62,7 +62,7 @@ class FeedView(ModelViewSet):
         return Response(status=200)
 
     def destroy(self, request, pk,*args, **kwargs):
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         feed = Feed.objects.get(user__username=user, name=pk)
         #import ipdb;ipdb.set_trace()
         feed.delete()
@@ -70,7 +70,7 @@ class FeedView(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
 
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         print(user)
         feed = Feed.objects.filter(user__username=user)
         print(feed)
@@ -89,18 +89,18 @@ class LinkView(ModelViewSet):
 
     def list(self, request, feed):
         #import ipdb;ipdb.set_trace()
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         return Response(self.serializer_class(self.queryset.filter(feed__name=feed, feed__user__username=user).order_by("position"),
                                               many=True).data)
 
 
     def retrieve(self, request, feed, pk,*args, **kwargs):
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         return Response(self.serializer_class(self.queryset.get(feed__name=feed, position=pk, feed__user__username=user)).data)
 
     def create(self, request, feed,*args, **kwargs):
         #import ipdb;ipdb.set_trace()
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         url = request.data["link"]
         link,_ = Link.objects.get_or_create(url=url)
         feed_obj = Feed.objects.get(name=feed, user__username=user)
@@ -110,7 +110,7 @@ class LinkView(ModelViewSet):
         return Response(status=200)
 
     def update(self, request, feed, pk, *args, **kwargs):
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         url = request.data["link"]
         link,_ = Link.objects.get_or_create(url=url)
         reg_exp = request.data["reg_exp"]
@@ -124,7 +124,7 @@ class LinkView(ModelViewSet):
         return Response(status=200)
 
     def destroy(self, request, feed,pk, *args, **kwargs):
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         feedlink=self.queryset.get(feed__name=feed, position=pk, feed__user__username=user)
         feedlink.delete()
         for fl in FeedLink.objects.filter(position__gt=pk):
@@ -147,7 +147,7 @@ class PostView(ModelViewSet):
     #     print(request)
 
     def  update(self, request, pk,*args, **kwargs):
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         print("update")
         print(request)
         view = request.data
@@ -167,7 +167,7 @@ class PostView(ModelViewSet):
 
 
     def list(self, request):
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         acceptable = {"name":"feed__name","new":"feed__view"}
         criteria = {}
         count = False
@@ -204,7 +204,7 @@ class PostView(ModelViewSet):
 class ReorderView(APIView):
 
     def put(self, request):
-        user = request.META['HTTP_USER']
+        user = request.META.get("HTTP_USER","")
         old_pos = int(request.data["oldPosition"])
         new_pos = int(request.data["newPosition"])
 
