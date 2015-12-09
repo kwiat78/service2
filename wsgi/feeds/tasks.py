@@ -82,6 +82,8 @@ from celery.task import periodic_task
 def get_oldest_post_date(feed):
     pre = Post.objects.filter(feed=feed).order_by("-add_date")[:2*feed.postLimit]
     post = Post.objects.filter(feed=feed).order_by("-add_date")[2*feed.postLimit:]
+    if len(pre)==0:
+        return datetime(0)
     if len(post)==0:
         return pre.last().add_date
     else:
