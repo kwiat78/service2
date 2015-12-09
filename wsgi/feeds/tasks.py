@@ -79,10 +79,28 @@ from datetime import timedelta
 from celery.task import periodic_task
 
 
+def get_oldest_post_date(feed):
+    pre = Post.objects.filter(feed=feed).order_by("-add_date")[:2*feed.postLimit]
+    post = Post.objects.filter(feed=feed).order_by("-add_date")[2*feed.postLimit:]
+    if len(post)==0:
+        return pre.last().add_date
+    else:
+        oldest = pre.last().add_date
+        for p in post:
+            if p.view==True:
+                oldest = p.add_date
+        return oldest
+
+
+
+
+
+
 
 @periodic_task(run_every=timedelta(minutes=5))
 def get_posts():
-    #print("*")
+
+
     #feeds = Feed.objects.all()
     links = Link.objects.all()
     for link in links:
@@ -98,7 +116,7 @@ def get_posts():
                     posts = Post.objects.filter(url=post.url, feed=feedLink.feed)
                     # print(len(posts))
                     #print(posts)
-                    if len(posts)==0:
+                    if len(posts)==0 and post.post_date>=get_oldest_post_date(feedLink.feed):
                         print(post.title,post.url,post.post_date)
                         new_post = deepcopy(post)
                         new_post.feed=feedLink.feed
@@ -141,4 +159,4 @@ def get_posts():
 
 
 
-    return PostSerializer(newest_posts, many=True).data
+    #return PostSerializer(newest_posts, many=True).data
