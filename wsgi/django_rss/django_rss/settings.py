@@ -18,8 +18,8 @@ BROKER_URL = 'django://'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-import djcelery
-djcelery.setup_loader()
+# import djcelery
+# djcelery.setup_loader()
 
 
 # Quick-start development settings - unsuitable for production
@@ -96,7 +96,7 @@ DATABASES = {
 	'PORT':     os.environ['OPENSHIFT_MYSQL_DB_PORT'],
     }
 }
-
+#
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -127,12 +127,12 @@ STATIC_ROOT = os.path.dirname(BASE_DIR)+'/static'
 
 from datetime import timedelta
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
-# CELERYBEAT_SCHEDULE = {
-#     'add-every-30-seconds': {
-#         'task': 'feeds.worker.get_posts',
-#         'schedule': timedelta(minutes=1),
-#     },
-# }
+CELERYBEAT_SCHEDULE = {
+    'update_feeds': {
+        'task': 'feeds.celery.get_posts',
+        'schedule': timedelta(minutes=5),
+    },
+}
 
 CELERY_TIMEZONE = 'UTC'
 

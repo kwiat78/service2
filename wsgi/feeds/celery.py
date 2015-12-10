@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_rss.django_rss.settings')
+
 from feeds.models import Feed,Link,Post
 
 from bs4 import BeautifulSoup
@@ -77,6 +81,8 @@ class FeedDownloader():
 from datetime import timedelta
 
 from celery.task import periodic_task
+from celery import Celery
+app = Celery('proj')
 
 
 def get_oldest_post_date(feed):
@@ -99,7 +105,8 @@ def get_oldest_post_date(feed):
 
 
 
-@periodic_task(run_every=timedelta(minutes=5))
+#@periodic_task(run_every=timedelta(minutes=5))
+@app.task()
 def get_posts():
 
 
@@ -162,3 +169,22 @@ def get_posts():
 
 
     #return PostSerializer(newest_posts, many=True).data
+
+
+
+
+import os
+
+from celery import Celery
+
+# set the default Django settings module for the 'celery' program.
+
+
+from django.conf import settings  # noqa
+
+app = Celery('feeds', broker="django://")
+
+# Using a string here means the worker will not have to
+# pickle the object when using Windows.
+app.config_from_object('django.conf:settings')
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
