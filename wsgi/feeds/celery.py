@@ -1,4 +1,11 @@
 from __future__ import absolute_import
+
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass
+
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_rss.django_rss.settings')
 
