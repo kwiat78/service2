@@ -3,7 +3,7 @@ from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.views import APIView
 from feeds.serializers import FeedSerializer, PostSerializer, FeedLinkSerializer
 from rest_framework.decorators import detail_route, list_route
-from feeds.tasks import get_posts
+from feeds.celery import get_posts
 from rest_framework.response import Response
 from binascii import a2b_base64
 from urllib.parse import unquote
