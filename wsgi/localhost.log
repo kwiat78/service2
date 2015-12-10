@@ -2394,3 +2394,1687 @@ Traceback (most recent call last):
 ValueError: unknown url type: 'fsdfdf'
 [2015-12-10 20:43:25,238: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
 [2015-12-10 20:43:25,426: INFO/Beat] Writing entries...
+[2015-12-10 20:43:26,629: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:43:27,816: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:43:29,342: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'b1ac0d74-f5d4-4381-92ff-3db18f5a270c', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:43:29,476: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '836b268e-cc49-4357-bbb7-49db769b2d32', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:43:29,610: INFO/MainProcess] Received task: feeds.celery.get_posts[ad15b6e1-9637-4496-9628-ddceb0203f6d]
+[2015-12-10 20:43:35,899: ERROR/MainProcess] Task feeds.celery.get_posts[f3ff30dd-624d-4f0f-a03e-ed47f6ed7e75] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:43:36,630: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:43:37,817: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:43:39,773: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '97896532-cc34-4612-9c11-fd536a543463', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:43:39,885: INFO/MainProcess] Received task: feeds.celery.get_posts[68812639-0cb0-4350-a3ab-c89da5220e6a]
+[2015-12-10 20:43:44,589: ERROR/MainProcess] Task feeds.celery.get_posts[ad15b6e1-9637-4496-9628-ddceb0203f6d] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:43:46,632: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:43:47,818: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:43:50,024: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '35f16245-5cc2-4236-8ab7-1b60d0d9f3d7', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:43:50,138: INFO/MainProcess] Received task: feeds.celery.get_posts[195694f4-cdf8-4ded-8d66-43a64fb5aa80]
+[2015-12-10 20:43:53,681: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (feeds.worker.get_posts)
+[2015-12-10 20:43:55,272: ERROR/MainProcess] Received unregistered task of type 'feeds.worker.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.worker.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '42546e7c-849d-4e07-a0bf-90c98c654250', 'timelimit': (None, None)} (265b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.worker.get_posts'
+[2015-12-10 20:43:55,375: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:43:55,861: ERROR/MainProcess] Task feeds.celery.get_posts[68812639-0cb0-4350-a3ab-c89da5220e6a] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:43:56,633: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:43:57,819: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:44:00,384: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'cb6c460d-1239-45db-a1a0-fe208dea52c3', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:44:00,518: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'b030cfd3-17fd-4fda-91ff-0574940a9cf0', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:44:00,651: INFO/MainProcess] Received task: feeds.celery.get_posts[0ed3a692-6bff-4940-9883-fb137fb60f1b]
+[2015-12-10 20:44:05,326: ERROR/MainProcess] Task feeds.celery.get_posts[195694f4-cdf8-4ded-8d66-43a64fb5aa80] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:44:06,636: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:44:07,819: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:44:10,794: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '6bdc99a6-1f78-407f-9072-4ee262360785', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:44:11,115: INFO/MainProcess] Received task: feeds.celery.get_posts[138b1367-5f87-4d77-910a-b42fda68b7ca]
+[2015-12-10 20:44:16,637: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:44:16,818: ERROR/MainProcess] Task feeds.celery.get_posts[0ed3a692-6bff-4940-9883-fb137fb60f1b] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:44:17,820: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:44:21,361: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'd2645544-fb2d-4d78-ad58-2943bba858f8', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:44:21,495: INFO/MainProcess] Received task: feeds.celery.get_posts[e7c615de-cb58-4ba1-9edb-698e4425890c]
+[2015-12-10 20:44:25,376: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:44:26,414: ERROR/MainProcess] Task feeds.celery.get_posts[138b1367-5f87-4d77-910a-b42fda68b7ca] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:44:26,659: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '34613f03-f93d-4c49-b046-e7649eb21246', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:44:26,664: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:44:27,821: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:44:31,838: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '6b8c8289-a3c2-468a-aaa5-1aa7b45afb17', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:44:31,971: INFO/MainProcess] Received task: feeds.celery.get_posts[f8ac0c0b-1740-4140-a98c-818b98f0c216]
+[2015-12-10 20:44:36,664: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:44:36,796: ERROR/MainProcess] Task feeds.celery.get_posts[e7c615de-cb58-4ba1-9edb-698e4425890c] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:44:37,224: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '28516c3c-ad9f-498d-8459-2075bdb64c31', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:44:37,821: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:44:42,531: INFO/MainProcess] Received task: feeds.celery.get_posts[5f2111f5-eebf-46b2-9bd9-6e306f4129a2]
+[2015-12-10 20:44:46,646: ERROR/MainProcess] Task feeds.celery.get_posts[f8ac0c0b-1740-4140-a98c-818b98f0c216] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:44:46,667: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:44:47,702: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'db383564-7976-4e33-a147-c46110ec9aa5', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:44:47,821: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:44:52,842: INFO/MainProcess] Received task: feeds.celery.get_posts[d19d73a3-9848-4e36-91c6-5f622dacc831]
+[2015-12-10 20:44:53,682: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (feeds.worker.get_posts)
+[2015-12-10 20:44:55,503: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:44:56,668: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:44:57,822: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:44:58,135: ERROR/MainProcess] Received unregistered task of type 'feeds.worker.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.worker.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '32626192-e502-4c32-aa6b-2ae973094b2a', 'timelimit': (None, None)} (265b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.worker.get_posts'
+[2015-12-10 20:44:58,258: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '36034713-f162-43a4-b57b-7de9e785639a', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:44:58,380: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'bf318273-4f8d-4ef4-a2cc-2f59f26a2234', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:44:58,494: INFO/MainProcess] Received task: feeds.celery.get_posts[3c0e2992-aa49-44ec-8b90-77974e2392fa]
+[2015-12-10 20:44:58,624: ERROR/MainProcess] Task feeds.celery.get_posts[5f2111f5-eebf-46b2-9bd9-6e306f4129a2] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:45:06,671: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:45:07,814: ERROR/MainProcess] Task feeds.celery.get_posts[d19d73a3-9848-4e36-91c6-5f622dacc831] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:45:07,824: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:45:08,662: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'd304a7b5-ad5b-4974-9e40-f15780812f24', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:45:08,807: INFO/MainProcess] Received task: feeds.celery.get_posts[f5d60293-08b3-4b88-9d60-d906b364342e]
+[2015-12-10 20:45:14,370: ERROR/MainProcess] Task feeds.celery.get_posts[3c0e2992-aa49-44ec-8b90-77974e2392fa] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:45:16,672: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:45:17,824: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:45:18,959: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'ca47a4de-d3b8-4aa2-80a8-bdf19aa20f7d', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:45:19,070: INFO/MainProcess] Received task: feeds.celery.get_posts[3ad6dc01-8b67-4ac4-8cb8-c38b5aeb31e4]
+[2015-12-10 20:45:23,953: ERROR/MainProcess] Task feeds.celery.get_posts[f5d60293-08b3-4b88-9d60-d906b364342e] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:45:25,504: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:45:26,673: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:45:27,825: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:45:29,280: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'd8e1d5e9-1468-4f91-8d44-bfd94f4363fc', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:45:29,447: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '403076b0-c346-4639-9a5b-4e62522d55fe', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:45:29,581: INFO/MainProcess] Received task: feeds.celery.get_posts[ece90316-4c5b-4743-93d6-64e6ae164c14]
+[2015-12-10 20:45:34,577: ERROR/MainProcess] Task feeds.celery.get_posts[3ad6dc01-8b67-4ac4-8cb8-c38b5aeb31e4] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:45:36,675: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:45:37,825: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:45:39,746: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '832c1eaf-3eeb-42bc-860f-2c49efd1ee51', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:45:39,879: INFO/MainProcess] Received task: feeds.celery.get_posts[759e9195-30e7-44e6-bb2a-5331fcf8282e]
+[2015-12-10 20:45:44,771: ERROR/MainProcess] Task feeds.celery.get_posts[ece90316-4c5b-4743-93d6-64e6ae164c14] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:45:46,676: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:45:47,825: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:45:50,023: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'db8480b3-6eb4-459a-a4a7-464da7d6358f', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:45:50,171: INFO/MainProcess] Received task: feeds.celery.get_posts[58cd340c-3347-4325-9947-59e3d91a2e59]
+[2015-12-10 20:45:53,683: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (feeds.worker.get_posts)
+[2015-12-10 20:45:55,324: ERROR/MainProcess] Received unregistered task of type 'feeds.worker.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.worker.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '17837a89-99e5-46d9-88d6-e1526d140a04', 'timelimit': (None, None)} (265b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.worker.get_posts'
+[2015-12-10 20:45:55,623: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:45:56,536: ERROR/MainProcess] Task feeds.celery.get_posts[759e9195-30e7-44e6-bb2a-5331fcf8282e] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:45:56,678: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:45:57,826: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:46:00,456: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '81d6f134-258f-4dd1-a367-7120e66c1713', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:46:00,568: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'cef0e604-7d78-4115-807d-59c67c7567a7', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:46:00,690: INFO/MainProcess] Received task: feeds.celery.get_posts[22cf2f2e-7c96-4573-9c88-78928c88d4d5]
+[2015-12-10 20:46:05,344: ERROR/MainProcess] Task feeds.celery.get_posts[58cd340c-3347-4325-9947-59e3d91a2e59] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:46:06,679: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:46:07,828: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:46:10,844: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'da3be577-37df-48ae-968f-8e3b6f746aa1', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:46:10,989: INFO/MainProcess] Received task: feeds.celery.get_posts[8e299256-9265-49b0-b5fd-bbca066519a9]
+[2015-12-10 20:46:16,681: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:46:17,828: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:46:21,157: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'ace9f1eb-1f74-4f64-9346-9a569afcf10e', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:46:21,270: INFO/MainProcess] Received task: feeds.celery.get_posts[44fd6e1d-a38b-4bce-b5ee-5737c7620bac]
+[2015-12-10 20:46:21,429: ERROR/MainProcess] Task feeds.celery.get_posts[22cf2f2e-7c96-4573-9c88-78928c88d4d5] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:46:25,626: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:46:26,399: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'd507254f-6526-4636-825d-1473648dded5', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:46:26,682: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:46:26,831: INFO/Beat] Writing entries...
+[2015-12-10 20:46:27,407: ERROR/MainProcess] Task feeds.celery.get_posts[8e299256-9265-49b0-b5fd-bbca066519a9] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:46:27,828: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:46:31,534: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '34c44e5f-3746-4288-9512-4f0a4b57513e', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:46:31,656: INFO/MainProcess] Received task: feeds.celery.get_posts[e3e87c18-7f53-42ab-9f6a-8906ed679b98]
+[2015-12-10 20:46:36,683: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:46:37,560: ERROR/MainProcess] Task feeds.celery.get_posts[44fd6e1d-a38b-4bce-b5ee-5737c7620bac] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:46:37,829: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:46:41,810: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '215223df-f26c-481d-b740-a8dbcf635047', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:46:41,933: INFO/MainProcess] Received task: feeds.celery.get_posts[4c12f10d-8008-4755-a403-c5f019ee8160]
+[2015-12-10 20:46:45,826: ERROR/MainProcess] Task feeds.celery.get_posts[e3e87c18-7f53-42ab-9f6a-8906ed679b98] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:46:46,684: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:46:47,238: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'e248d76d-e3a7-4e7d-ab51-2a4685b30648', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:46:47,831: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:46:52,374: INFO/MainProcess] Received task: feeds.celery.get_posts[8d0021ac-8343-4764-8fbc-b926c6e5428a]
+[2015-12-10 20:46:53,684: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (feeds.worker.get_posts)
+[2015-12-10 20:46:55,749: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:46:56,685: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:46:57,513: ERROR/MainProcess] Received unregistered task of type 'feeds.worker.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.worker.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'c969b4ae-7719-4deb-9c1b-4421e0110710', 'timelimit': (None, None)} (265b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.worker.get_posts'
+[2015-12-10 20:46:57,647: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '3dfec9dc-ab8a-4395-bb90-9b6cbb6e0cd9', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:46:57,759: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '9c52b387-b5b2-4581-9b03-13488e33ecba', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:46:57,775: ERROR/MainProcess] Task feeds.celery.get_posts[4c12f10d-8008-4755-a403-c5f019ee8160] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:46:57,831: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:47:02,877: INFO/MainProcess] Received task: feeds.celery.get_posts[15381897-9411-4e32-85ea-ecdb587ef482]
+[2015-12-10 20:47:06,686: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:47:07,058: ERROR/MainProcess] Task feeds.celery.get_posts[8d0021ac-8343-4764-8fbc-b926c6e5428a] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:47:07,832: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:47:08,070: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'c7f54bcd-7adb-4f44-adee-4b774147832a', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:47:08,181: INFO/MainProcess] Received task: feeds.celery.get_posts[32a19d18-d165-4e01-9d95-364da5d7c25a]
+[2015-12-10 20:47:16,687: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:47:17,834: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:47:18,310: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'ee13b349-bf67-4e58-89fd-fd93d806b6cb', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:47:18,432: INFO/MainProcess] Received task: feeds.celery.get_posts[193fc06b-c3ea-4e16-8887-934a5a530a44]
+[2015-12-10 20:47:18,444: ERROR/MainProcess] Task feeds.celery.get_posts[15381897-9411-4e32-85ea-ecdb587ef482] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:47:23,347: ERROR/MainProcess] Task feeds.celery.get_posts[32a19d18-d165-4e01-9d95-364da5d7c25a] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:47:25,751: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:47:26,688: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:47:27,835: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:47:28,563: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'efc2d966-054c-474c-96a6-1b4674beff33', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:47:28,674: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '4de3de72-6a49-4411-b493-798aadef17b3', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:47:28,797: INFO/MainProcess] Received task: feeds.celery.get_posts[79f6da6d-3fe8-4174-9475-eec0c68cfb5f]
+[2015-12-10 20:47:35,412: ERROR/MainProcess] Task feeds.celery.get_posts[193fc06b-c3ea-4e16-8887-934a5a530a44] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:47:36,689: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:47:37,836: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:47:38,954: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '84c73d75-0582-4c90-aaef-4d7930551d90', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:47:39,065: INFO/MainProcess] Received task: feeds.celery.get_posts[78325993-2a25-4939-812f-295ecfa76360]
+[2015-12-10 20:47:43,307: ERROR/MainProcess] Task feeds.celery.get_posts[79f6da6d-3fe8-4174-9475-eec0c68cfb5f] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:47:46,690: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:47:47,836: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:47:49,241: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '4f95c4ed-2c5f-4db6-891e-42c13681a7d2', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:47:49,452: INFO/MainProcess] Received task: feeds.celery.get_posts[3aa2f348-a71a-4a79-8fb3-99bf7b4a36d6]
+[2015-12-10 20:47:53,685: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (feeds.worker.get_posts)
+[2015-12-10 20:47:54,619: ERROR/MainProcess] Received unregistered task of type 'feeds.worker.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.worker.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'cfd12204-bc67-4e1a-a3a0-240d96b9587d', 'timelimit': (None, None)} (265b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.worker.get_posts'
+[2015-12-10 20:47:55,032: ERROR/MainProcess] Task feeds.celery.get_posts[78325993-2a25-4939-812f-295ecfa76360] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:47:55,870: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:47:56,691: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:47:57,837: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:47:59,796: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '02e7859b-0eed-4216-a27b-7af38cd99312', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:47:59,941: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '9601357d-da15-4b50-8b2d-bd49845b7332', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:48:00,052: INFO/MainProcess] Received task: feeds.celery.get_posts[c909cbe8-5f30-46ee-8649-3eabfbc83259]
+[2015-12-10 20:48:04,746: ERROR/MainProcess] Task feeds.celery.get_posts[3aa2f348-a71a-4a79-8fb3-99bf7b4a36d6] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:48:06,692: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:48:07,838: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:48:10,193: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'cefdce49-5389-482e-b915-6454878af218', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:48:10,327: INFO/MainProcess] Received task: feeds.celery.get_posts[289a98cf-e3a3-4c45-bebf-678b9c24fbec]
+[2015-12-10 20:48:16,283: ERROR/MainProcess] Task feeds.celery.get_posts[c909cbe8-5f30-46ee-8649-3eabfbc83259] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:48:16,694: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:48:17,839: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:48:20,481: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'fa1b79d0-ab43-4fdd-902b-aa9019cabbff', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:48:20,581: INFO/MainProcess] Received task: feeds.celery.get_posts[82f8f04e-30cd-4fb1-87f4-9597a23f1c72]
+[2015-12-10 20:48:25,871: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:48:26,514: ERROR/MainProcess] Task feeds.celery.get_posts[289a98cf-e3a3-4c45-bebf-678b9c24fbec] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:48:26,695: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:48:27,840: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:48:30,726: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '20533a42-9d6e-4e10-874b-da1cead5f438', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:48:30,860: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '7819a95c-81ae-40a8-b6e1-324f802392ad', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:48:30,996: INFO/MainProcess] Received task: feeds.celery.get_posts[4f38613d-6f6e-417a-a511-42b4edeaf3fc]
+[2015-12-10 20:48:36,697: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:48:37,728: ERROR/MainProcess] Task feeds.celery.get_posts[82f8f04e-30cd-4fb1-87f4-9597a23f1c72] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:48:37,841: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:48:41,135: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '41ac3c32-059c-4895-b497-4b058a2705d8', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:48:41,269: INFO/MainProcess] Received task: feeds.celery.get_posts[ba0f8ac6-0581-4d4a-a21b-78fbe7aa19a8]
+[2015-12-10 20:48:46,698: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:48:47,307: ERROR/MainProcess] Task feeds.celery.get_posts[4f38613d-6f6e-417a-a511-42b4edeaf3fc] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:48:47,843: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:48:51,412: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '29617133-f248-4784-9584-430436ae81c7', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:48:51,545: INFO/MainProcess] Received task: feeds.celery.get_posts[6f405bae-a139-45d8-9955-45219be0c19b]
+[2015-12-10 20:48:53,687: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (feeds.worker.get_posts)
+[2015-12-10 20:48:56,018: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:48:56,671: ERROR/MainProcess] Received unregistered task of type 'feeds.worker.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.worker.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '5bcf3e7b-1ae5-4a5d-a436-1d5e38b0c61f', 'timelimit': (None, None)} (265b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.worker.get_posts'
+[2015-12-10 20:48:56,782: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '48c65f41-a843-4898-ae06-24bfd4745d5d', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:48:56,794: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:48:57,844: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:48:58,071: ERROR/MainProcess] Task feeds.celery.get_posts[ba0f8ac6-0581-4d4a-a21b-78fbe7aa19a8] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:49:01,936: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'b4428c3b-428b-4707-83f2-47be38a90058', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:49:02,092: INFO/MainProcess] Received task: feeds.celery.get_posts[c7daf1c2-0c86-4fe3-bfcb-cc47a728202d]
+[2015-12-10 20:49:06,795: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:49:07,089: ERROR/MainProcess] Task feeds.celery.get_posts[6f405bae-a139-45d8-9955-45219be0c19b] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:49:07,248: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '769da9e9-a97a-46f0-861a-5406945e9542', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:49:07,845: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:49:12,400: INFO/MainProcess] Received task: feeds.celery.get_posts[60899081-d1d1-44ad-b18a-d17ec342cc48]
+[2015-12-10 20:49:16,796: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:49:17,535: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'e26034d5-5bae-4d4f-bd7f-ae838ac2277e', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:49:17,847: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:49:18,641: ERROR/MainProcess] Task feeds.celery.get_posts[c7daf1c2-0c86-4fe3-bfcb-cc47a728202d] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:49:22,655: INFO/MainProcess] Received task: feeds.celery.get_posts[ffe744a0-b76c-4785-8ecd-c8e620fb3722]
+[2015-12-10 20:49:26,018: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:49:26,797: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:49:27,091: ERROR/MainProcess] Task feeds.celery.get_posts[60899081-d1d1-44ad-b18a-d17ec342cc48] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:49:27,803: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '19292e04-8a51-481f-af03-f9ff80b1aeaa', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:49:27,914: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '094202fc-7776-4e11-97b0-29097b6546af', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:49:27,920: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:49:28,058: INFO/Beat] Writing entries...
+[2015-12-10 20:49:33,068: INFO/MainProcess] Received task: feeds.celery.get_posts[fdc2342b-f919-4fab-8dcc-219547f0155a]
+[2015-12-10 20:49:36,797: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:49:37,921: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:49:38,194: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'fd10b29e-b82a-4b48-aa5d-8fe231798d7d', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:49:38,308: INFO/MainProcess] Received task: feeds.celery.get_posts[f78dad6a-972d-4565-8f5a-116deece8eed]
+[2015-12-10 20:49:39,263: ERROR/MainProcess] Task feeds.celery.get_posts[ffe744a0-b76c-4785-8ecd-c8e620fb3722] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:49:46,799: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:49:47,922: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:49:48,318: ERROR/MainProcess] Task feeds.celery.get_posts[fdc2342b-f919-4fab-8dcc-219547f0155a] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:49:48,425: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '03fcde34-e5b6-417b-b925-5c7f1007c036', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:49:48,570: INFO/MainProcess] Received task: feeds.celery.get_posts[da4c6950-f3ec-44f1-8f40-3b613f8f73fb]
+[2015-12-10 20:49:53,688: INFO/Beat] Scheduler: Sending due task add-every-30-seconds (feeds.worker.get_posts)
+[2015-12-10 20:49:54,690: ERROR/MainProcess] Task feeds.celery.get_posts[f78dad6a-972d-4565-8f5a-116deece8eed] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:49:56,146: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:49:56,799: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:49:57,923: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:49:58,743: ERROR/MainProcess] Received unregistered task of type 'feeds.worker.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.worker.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '29bc9e20-dcc9-4636-b259-1a4806a35a59', 'timelimit': (None, None)} (265b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.worker.get_posts'
+[2015-12-10 20:49:58,899: ERROR/MainProcess] Received unregistered task of type 'feeds.tasks.get_posts'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.tasks.get_posts', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'ed177825-7099-49d1-a62b-1e3b1946a68a', 'timelimit': (None, None)} (264b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.tasks.get_posts'
+[2015-12-10 20:49:59,032: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': '9d9c9b28-c48d-49dd-8455-8776d4037a56', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:49:59,243: INFO/MainProcess] Received task: feeds.celery.get_posts[5c2df550-a80e-4837-a727-107587022b74]
+[2015-12-10 20:50:03,777: ERROR/MainProcess] Task feeds.celery.get_posts[da4c6950-f3ec-44f1-8f40-3b613f8f73fb] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:50:06,801: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:50:07,924: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:50:09,384: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'c07faa69-2de0-4d09-92de-9b62afd27ba7', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:50:09,518: INFO/MainProcess] Received task: feeds.celery.get_posts[233dc61f-fe12-4840-8203-48957f83b673]
+[2015-12-10 20:50:15,576: ERROR/MainProcess] Task feeds.celery.get_posts[5c2df550-a80e-4837-a727-107587022b74] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:50:16,802: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:50:17,925: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
+[2015-12-10 20:50:19,675: ERROR/MainProcess] Received unregistered task of type 'feeds.celery.debug_task'.
+The message has been ignored and discarded.
+
+Did you remember to import the module containing this task?
+Or maybe you are using relative imports?
+Please see http://bit.ly/gLye1c for more information.
+
+The full contents of the message body was:
+{'utc': True, 'callbacks': None, 'taskset': None, 'expires': None, 'eta': None, 'task': 'feeds.celery.debug_task', 'args': [], 'retries': 0, 'errbacks': None, 'kwargs': {}, 'chord': None, 'id': 'c7e2fb58-1eb0-4778-ab44-ab0128f1df3f', 'timelimit': (None, None)} (266b)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/worker/consumer.py", line 455, in on_task_received
+    strategies[name](message, body,
+KeyError: 'feeds.celery.debug_task'
+[2015-12-10 20:50:19,863: INFO/MainProcess] Received task: feeds.celery.get_posts[b415807d-8e3d-4714-980b-d6db5e8bba69]
+[2015-12-10 20:50:24,226: ERROR/MainProcess] Task feeds.celery.get_posts[233dc61f-fe12-4840-8203-48957f83b673] raised unexpected: ValueError("unknown url type: 'fsdfdf'",)
+Traceback (most recent call last):
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 240, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/app/trace.py", line 438, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 117, in get_posts
+    newest_posts = downloader.get_posts()
+  File "/home/szymon/rhGit/service2/wsgi/feeds/celery.py", line 34, in get_posts
+    'User-Agent': 'feed-reader'
+  File "/usr/lib/python3.4/urllib/request.py", line 266, in __init__
+    self.full_url = url
+  File "/usr/lib/python3.4/urllib/request.py", line 292, in full_url
+    self._parse()
+  File "/usr/lib/python3.4/urllib/request.py", line 321, in _parse
+    raise ValueError("unknown url type: %r" % self.full_url)
+ValueError: unknown url type: 'fsdfdf'
+[2015-12-10 20:50:26,148: INFO/Beat] Scheduler: Sending due task feeds.tasks.get_posts (feeds.tasks.get_posts)
+[2015-12-10 20:50:26,802: INFO/Beat] Scheduler: Sending due task debug_task (feeds.celery.debug_task)
+[2015-12-10 20:50:27,926: INFO/Beat] Scheduler: Sending due task update_feeds (feeds.celery.get_posts)
