@@ -1,289 +1,141 @@
-[2015-12-10 21:25:29,082: WARNING/MainProcess] /home/szymon/django_rss/.venv/local/lib/python3.4/site-packages/celery/apps/worker.py:161: CDeprecationWarning: 
-Starting from version 3.2 Celery will refuse to accept pickle by default.
+[2015-12-10 22:53:36,270: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
 
-The pickle serializer is a security concern as it may give attackers
-the ability to execute any command.  It's important to secure
-your broker from unauthorized access when using pickle, so we think
-that enabling pickle should require a deliberate action and not be
-the default choice.
+[2015-12-10 22:54:08,319: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
 
-If you depend on pickle then you should set a setting to disable this
-warning and to be sure that everything will continue working
-when you upgrade to Celery 3.2::
+[2015-12-10 22:54:40,369: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
 
-    CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+[2015-12-10 22:55:12,416: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
 
-You must only enable the serializers that you will actually use.
+[2015-12-10 22:55:44,465: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
 
+[2015-12-10 22:56:16,509: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
 
-  warnings.warn(CDeprecationWarning(W_PICKLE_DEPRECATED))
-[2015-12-10 21:25:29,110: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 22:56:48,559: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 22:57:20,601: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 22:57:52,642: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 22:58:24,688: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 22:58:56,738: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 22:59:28,784: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 23:00:00,832: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 23:00:32,883: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 23:01:04,933: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 23:01:36,980: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 23:02:09,028: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 23:02:41,078: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 23:03:13,120: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 23:03:45,170: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+Trying again in 32.00 seconds...
+
+[2015-12-10 23:04:17,220: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 2.00 seconds...
 
-[2015-12-10 21:25:31,120: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:04:19,238: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 4.00 seconds...
 
-[2015-12-10 21:25:35,138: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:04:23,259: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 6.00 seconds...
 
-[2015-12-10 21:25:41,155: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:04:29,282: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 8.00 seconds...
 
-[2015-12-10 21:25:49,178: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:04:37,303: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 10.00 seconds...
 
-[2015-12-10 21:25:59,202: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:04:47,322: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 12.00 seconds...
 
-[2015-12-10 21:26:11,226: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:04:59,345: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 14.00 seconds...
 
-[2015-12-10 21:26:25,254: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:05:13,377: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 16.00 seconds...
 
-[2015-12-10 21:26:41,281: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:05:29,403: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 18.00 seconds...
 
-[2015-12-10 21:26:59,309: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:05:47,439: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 20.00 seconds...
 
-[2015-12-10 21:27:19,341: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:06:07,474: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 22.00 seconds...
 
-[2015-12-10 21:27:41,379: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:06:29,515: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 24.00 seconds...
 
-[2015-12-10 21:28:05,408: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:06:53,558: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 26.00 seconds...
 
-[2015-12-10 21:28:31,445: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:07:19,600: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 28.00 seconds...
 
-[2015-12-10 21:28:59,479: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:07:47,644: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 30.00 seconds...
 
-[2015-12-10 21:29:29,512: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:08:17,691: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:30:01,559: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:08:49,732: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:30:33,601: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:09:21,774: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:31:05,649: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:09:53,826: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:31:37,690: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:10:25,878: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:32:09,726: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:10:57,927: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:32:41,765: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:11:29,971: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:33:13,807: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:12:02,015: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:33:45,853: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:12:34,067: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:34:17,902: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:13:06,121: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:34:49,939: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:13:38,174: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 
-[2015-12-10 21:35:21,981: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:35:54,023: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:36:26,065: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:36:58,103: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:37:30,139: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:38:02,177: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:38:34,223: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:39:06,268: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:39:38,313: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:40:10,354: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:40:42,394: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:41:14,434: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:41:46,479: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:42:18,517: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:42:50,557: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:43:22,606: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:43:54,645: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:44:26,685: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:44:58,727: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:45:30,761: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:46:02,802: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:46:34,848: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:47:06,891: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:47:38,931: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:48:10,969: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:48:43,012: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:49:15,056: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:49:47,101: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:50:19,144: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:50:51,191: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:51:23,235: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:51:55,270: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:52:27,314: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:52:59,361: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:53:31,406: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:54:03,448: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:54:35,490: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:55:07,532: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:55:39,578: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:56:11,624: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:56:43,671: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:57:15,714: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:57:47,752: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:58:19,794: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:58:51,834: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:59:23,869: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 21:59:55,907: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:00:27,949: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:00:59,993: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:01:32,036: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:02:04,076: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:02:36,115: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:03:08,154: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:03:40,198: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:04:12,243: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:04:44,284: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:05:16,333: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:05:48,372: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:06:20,409: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:06:52,447: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:07:24,495: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:07:56,534: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:08:28,579: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
-Trying again in 32.00 seconds...
-
-[2015-12-10 22:09:00,625: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
+[2015-12-10 23:14:10,222: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@127.0.0.1:5672//: [Errno 111] Connection refused.
 Trying again in 32.00 seconds...
 

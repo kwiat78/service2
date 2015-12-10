@@ -148,8 +148,14 @@ def get_posts():
                                 #print(p.title,post.title)
                                 # print(p.title,post.title)
                                 print("#")
+
                                 p.post_date = post.post_date
-                                p.add_date = now()
+                                if post.post_date>now():
+                                    print("##")
+                                    p.add_date = post.post_date
+                                else:
+                                    print("#*")
+                                    p.add_date = now()
                                 p.title = post.title
                                 p.url = post.url
                                 p.save()
