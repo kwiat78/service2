@@ -184,6 +184,7 @@ class PostView(ModelViewSet):
         if "curent" in request.GET:
             curent = datetime.fromtimestamp(float(request.GET["curent"]))
             criteria["add_date__gte"]=curent
+            criteria["add_date__lte"]=now()
 
 
         if "count" in request.GET:
