@@ -2,5 +2,4 @@
 # This is a simple post deploy hook executed after your application 
 # is deployed and started.  This script gets executed directly, so 
 # it could be python, php, ruby, etc.
-echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/django_rss/manage.py celeryd --beat'"
-python "$OPENSHIFT_REPO_DIR"wsgi/django_rss/manage.py celeryd --beat -l info -D  -f ${OPENSHIFT_LOG_DIR}celery 
+

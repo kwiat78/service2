@@ -1,0 +1,7 @@
+#date >> ${OPENSHIFT_LOG_DIR}feed-reader.log
+minute=$(date +%M)
+if [ "$((10#$minute % 5))" -eq "0" ]; then
+    . ~/python/virtenv/venv/bin/activate
+    cd "$OPENSHIFT_REPO_DIR"
+    python feed_updater.py >> ${OPENSHIFT_LOG_DIR}feed-reader.log
+fi
