@@ -115,6 +115,10 @@ def get_oldest_post_date(feed):
 #@periodic_task(run_every=timedelta(minutes=5))
 @app.task()
 def get_posts():
+    updated = 0
+    deleted = 0
+    added = 0
+    new_ = False
 
 
     #feeds = Feed.objects.all()
@@ -123,6 +127,7 @@ def get_posts():
         downloader=FeedDownloader(link.url)
         newest_posts = downloader.get_posts()
         for post in newest_posts:
+            new_=True
             for feedLink in link.feedlink_set.all():
                 #print(feedLink.feed, feedLink.link)
 
@@ -137,6 +142,10 @@ def get_posts():
                         new_post = deepcopy(post)
                         new_post.feed=feedLink.feed
                         new_post.save()
+                        if new_:
+                            new_=False
+                            added += 1
+
 
                     else:
                         if len(posts)==1:
@@ -158,7 +167,11 @@ def get_posts():
                                     p.add_date = now()
                                 p.title = post.title
                                 p.url = post.url
+
                                 p.save()
+                                if new_:
+                                    new_=False
+                                    updated += 1
                             # print("*")
                             if p.title!=post.title and post.post_date>p.add_date:
                                 # print(p.title,post.title)
@@ -168,6 +181,9 @@ def get_posts():
                                 p.post_date = post.post_date
                                 p.title = post.title
                                 p.save()
+                                if new_:
+                                    new_=False
+                                    updated += 1
 
     for feed in Feed.objects.all():
         limit = feed.postLimit
@@ -175,13 +191,14 @@ def get_posts():
         i = len(posts)-1
         while i>0 and posts[i].view:
             posts[i].delete()
+            deleted+=1
             i-=1
 
 
 
 
 
-    #return PostSerializer(newest_posts, many=True).data
+    return {"added":added, "updated":updated, "deleted":deleted}
 
 
 

@@ -1,46 +1,49 @@
-from django.shortcuts import render
-from rest_framework.viewsets import ViewSet, ModelViewSet
-from rest_framework.views import APIView
-from feeds.serializers import FeedSerializer, PostSerializer, FeedLinkSerializer
-from rest_framework.decorators import detail_route, list_route
-from feeds.celery import get_posts
-from rest_framework.response import Response
 from binascii import a2b_base64
-from urllib.parse import unquote
-from django.views.decorators.csrf import ensure_csrf_cookie
-import math
-from django.contrib.auth.models import User
 
-from feeds.models import Feed, Post, FeedLink, Link
-from django.utils.timezone import datetime, now
 from bs4 import BeautifulSoup
 
-import urllib
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.timezone import datetime, now
 
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet, ModelViewSet
+
+import urllib
+from urllib.parse import unquote
+
+
+from feeds.celery import get_posts
+from feeds.models import Feed, Post, FeedLink, Link
+from feeds.serializers import FeedSerializer, PostSerializer, FeedLinkSerializer
 
 
 class FeedView(ModelViewSet):
     queryset = Feed.objects.all().order_by("position")
     serializer_class = FeedSerializer
 
-
-
     @list_route()
     def loop(self, request, **kwargs):
         return Response(get_posts())
 
     def retrieve(self, request, pk, **kwargs):
-        print(pk)
         user = request.META.get("HTTP_USER","")
         feed = Feed.objects.get(user__username=user, name=pk)
         serializer=FeedSerializer(feed)
-        print(serializer.data)
         return Response(serializer.data)
-
 
     def update(self, request, pk, *args, **kwargs):
         user = request.META.get("HTTP_USER","")
-        feed = Feed.objects.get(user__username=user, name=pk)
+        try:
+            feed = Feed.objects.get(user__username=user, name=pk)
+        except ObjectDoesNotExist:
+            return Response({"detail":"Feed does not exist."}, status=404)
+        required = ["name","postLimit","favIcon"]
+        for param in required:
+            if param not in request.data:
+                return Response(status=400)
         feed.name = request.data['name']
         feed.postLimit = request.data['postLimit']
         feed.favIcon = request.data['favIcon']
@@ -52,35 +55,27 @@ class FeedView(ModelViewSet):
         name = request.data['name']
         regexp = request.data['regexp']
         url = request.data['url']
-        favIcon = request.data.get('favIcon',"undefined")
-
+        favIcon = request.data.get('favIcon', "undefined")
         position = len(Feed.objects.filter(user__username=user))
         user = User.objects.get(username=user)
-        feed= Feed.objects.create(name=name,user=user, position=position, postLimit=10, favIcon=favIcon)
+        feed = Feed.objects.create(name=name,user=user, position=position, postLimit=10, favIcon=favIcon)
         link,_ = Link.objects.get_or_create(url=url)
         FeedLink.objects.create(feed=feed, link=link, reg_exp=regexp)
-        return Response(status=200)
+        return Response(status=201)
 
     def destroy(self, request, pk,*args, **kwargs):
         user = request.META.get("HTTP_USER","")
-        feed = Feed.objects.get(user__username=user, name=pk)
-        #import ipdb;ipdb.set_trace()
+        try:
+            feed = Feed.objects.get(user__username=user, name=pk)
+        except ObjectDoesNotExist:
+            return Response({"detail":"Feed does not exist."}, status=404)
         feed.delete()
         return Response(status=200)
 
     def list(self, request, *args, **kwargs):
-
         user = request.META.get("HTTP_USER","")
-        print(user)
         feed = Feed.objects.filter(user__username=user)
-        print(feed)
         return Response(FeedSerializer(feed, many=True).data)
-
-
-
-
-
-
 
 
 class LinkView(ModelViewSet):
