@@ -104,7 +104,7 @@ class LinkView(ModelViewSet):
             feed_obj = Feed.objects.get(name=feed, user__username=user)
         except ObjectDoesNotExist:
             return Response({"detail": "Feed does not exist."}, status=404)
-        reg_exp = request.get("reg_exp", "")
+        reg_exp = request.data.get("reg_exp", "")
         position = len(self.queryset.filter(feed__name=feed))
         FeedLink.objects.create(feed=feed_obj, link=link, reg_exp=reg_exp, position=position)
         return Response(status=201)
