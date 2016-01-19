@@ -143,7 +143,7 @@ class PostView(ModelViewSet):
     serializer_class = PostSerializer
     http_method_names = ("get", "put",)
 
-    def  update(self, request, *args, **kwargs):
+    def update(self, request,pk, *args, **kwargs):
         user = request.META.get("HTTP_USER", "")
         url  = request.data.get("url", "")
         view  = request.data.get("view", "")
