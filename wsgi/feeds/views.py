@@ -146,6 +146,9 @@ class PostView(ModelViewSet):
     def  update(self, request, pk, *args, **kwargs):
         user = request.META.get("HTTP_USER", "")
         view = request.data
+        print(pk)
+        print(a2b_base64(pk).decode())
+        print(unquote(a2b_base64(pk).decode()))
         url = unquote(a2b_base64(pk).decode())
 
         x = Post.objects.filter(feed__user__username=user, url=url)
