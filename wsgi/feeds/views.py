@@ -143,13 +143,13 @@ class PostView(ModelViewSet):
     serializer_class = PostSerializer
     http_method_names = ("get", "put",)
 
-    def  update(self, request, pk, *args, **kwargs):
+    def  update(self, request, *args, **kwargs):
         user = request.META.get("HTTP_USER", "")
-        view = request.data
-        print(pk)
-        print(a2b_base64(pk).decode())
-        print(unquote(a2b_base64(pk).decode()))
-        url = unquote(a2b_base64(pk).decode())
+        url  = request.data.get("url", "")
+        view  = request.data.get("view", "")
+
+
+        url = unquote(a2b_base64(url).decode())
 
         x = Post.objects.filter(feed__user__username=user, url=url)
         for xx in x:
