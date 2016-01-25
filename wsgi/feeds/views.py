@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import datetime, now
 
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet, ModelViewSet
@@ -145,7 +145,7 @@ class PostView(ModelViewSet):
 
     def update(self, request,pk, *args, **kwargs):
         user = request.META.get("HTTP_USER", "")
-        view  = request.data
+        view = request.data
         url = unquote(a2b_base64(pk).decode())
 
         x = Post.objects.filter(feed__user__username=user, url=url)
@@ -156,7 +156,6 @@ class PostView(ModelViewSet):
 
     def list(self, request):
         user = request.META.get("HTTP_USER", "")
-        acceptable = {"name": "feed__name", "new": "feed__view"}
         criteria = {}
         count = False
 
@@ -261,6 +260,8 @@ class FindView(ViewSet):
             channel = soup.find("channel")
             if not channel:
                 channel = soup.find("feed")
+            if not channel:
+                return Response({"detail": "Wrong URL."}, status=404)
             title = channel.find("title").text
             if title == "":
                 title = url

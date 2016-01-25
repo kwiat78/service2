@@ -36,6 +36,7 @@ class Post(models.Model):
     post_date = models.DateTimeField()
     add_date = models.DateTimeField()
     view = models.BooleanField()
+    seen = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.feed)+" "+self.title

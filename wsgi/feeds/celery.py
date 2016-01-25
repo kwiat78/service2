@@ -120,24 +120,20 @@ def get_posts():
     added = 0
     new_ = False
 
-
-    #feeds = Feed.objects.all()
+    seen = []
     links = Link.objects.all()
     for link in links:
         downloader=FeedDownloader(link.url)
         newest_posts = downloader.get_posts()
         for post in newest_posts:
+            seen += [post.url]
             new_=True
             for feedLink in link.feedlink_set.all():
-                #print(feedLink.feed, feedLink.link)
-
-            #import ipdb; ipdb.set_trace()
-
+                # check if post matches regexp
                 if re.match(feedLink.reg_exp, post.title):
                     posts = Post.objects.filter(url=post.url, feed=feedLink.feed)
-                    # print(len(posts))
-                    #print(posts)
-                    if len(posts)==0 and post.post_date>=get_oldest_post_date(feedLink.feed):
+                    # post is new
+                    if len(posts) == 0 and post.post_date >= get_oldest_post_date(feedLink.feed):
                         print(post.title,post.url,post.post_date)
                         new_post = deepcopy(post)
                         new_post.feed=feedLink.feed
@@ -146,24 +142,16 @@ def get_posts():
                             new_=False
                             added += 1
 
-
                     else:
                         if len(posts)==1:
                             p = posts[0]
-
-                            #import ipdb;ipdb.set_trace()
-                            from django.utils.timezone import is_aware
+                            # unwatched old post was updated
                             if p.add_date<post.post_date and p.view==False:
-                                #print(p.title,post.title)
-                                # print(p.title,post.title)
-                                print("#")
 
                                 p.post_date = post.post_date
                                 if post.post_date>now():
-                                    print("##")
                                     p.add_date = post.post_date
                                 else:
-                                    print("#*")
                                     p.add_date = now()
                                 p.title = post.title
                                 p.url = post.url
@@ -172,11 +160,8 @@ def get_posts():
                                 if new_:
                                     new_=False
                                     updated += 1
-                            # print("*")
+                            # old post updated with a new title
                             if p.title!=post.title and post.post_date>p.add_date:
-                                # print(p.title,post.title)
-                                print("&")
-                                #print(p.title, post.title)
                                 p.add_date = now()
                                 p.post_date = post.post_date
                                 p.title = post.title
@@ -187,12 +172,25 @@ def get_posts():
 
     for feed in Feed.objects.all():
         limit = feed.postLimit
+
+        posts = Post.objects.filter(feed=feed)
+        for post in posts:
+            if post.url not in seen:
+                post.seen = False
+                post.save()
+
         posts = Post.objects.filter(feed=feed).order_by("-post_date")[2*limit:]
         i = len(posts)-1
-        while i>0 and posts[i].view:
+        while i>0 and posts[i].view and not posts[i].seen:
             posts[i].delete()
             deleted+=1
             i-=1
+
+        for post in posts:
+            if not post.seen and post.view:
+                post.delete()
+                deleted+=1
+
 
 
 
