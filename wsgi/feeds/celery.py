@@ -9,7 +9,7 @@ except ImportError:
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_rss.django_rss.settings')
 
-from feeds.models import Feed,Link,Post
+from feeds.models import Feed,Link,Post, FeedLink
 
 from bs4 import BeautifulSoup
 
@@ -17,21 +17,17 @@ import urllib
 import iso8601
 
 
-#from datetime import datetime
-
-from feeds.serializers import PostSerializer
-
 from django.utils.timezone import datetime, now, make_aware, is_naive
 import re
 from copy import deepcopy
-from django.conf import  Settings
+
 
 
 
 class FeedDownloader():
     def __init__(self, url):
         self.url = url
-        self.max_posts = 20
+        self.max_posts = get_gratest_limit(url)
 
     def get_posts(self):
         req = urllib.request.Request(
@@ -49,7 +45,7 @@ class FeedDownloader():
         if len(items) == 0:
             items = soup.findAll("entry")
         posts = []
-        for item in items[:10]:
+        for item in items[:self.max_posts]:
             title = item.find("title").text
 
             link = item.find("link")
@@ -106,13 +102,18 @@ def get_oldest_post_date(feed):
                 oldest = p.add_date
         return oldest
 
+def get_gratest_limit(url):
+    links = FeedLink.objects.filter(link__url=url)
+    if len(links) > 0:
+        return max([x.feed.postLimit for x in links])
+    return 10
 
 
 
 
 
 
-#@periodic_task(run_every=timedelta(minutes=5))
+
 @app.task()
 def get_posts():
     updated = 0
@@ -123,14 +124,14 @@ def get_posts():
     seen = []
     links = Link.objects.all()
     for link in links:
-        downloader=FeedDownloader(link.url)
+        downloader = FeedDownloader(link.url)
         newest_posts = downloader.get_posts()
-        for post in newest_posts:
+        for id, post in enumerate(newest_posts):
             seen += [post.url]
             new_=True
             for feedLink in link.feedlink_set.all():
-                # check if post matches regexp
-                if re.match(feedLink.reg_exp, post.title):
+                # check if post matches regexp and it's id is lower than the post limit
+                if re.match(feedLink.reg_exp, post.title) and id < feedLink.feed.postLimit:
                     posts = Post.objects.filter(url=post.url, feed=feedLink.feed)
                     # post is new
                     if len(posts) == 0 and post.post_date >= get_oldest_post_date(feedLink.feed):
@@ -178,16 +179,19 @@ def get_posts():
             if post.url not in seen:
                 post.seen = False
                 post.save()
+        count = len(posts)
 
-        posts = Post.objects.filter(feed=feed).order_by("-post_date")[2*limit:]
-        i = len(posts)-1
-        while i>0 and posts[i].view and not posts[i].seen:
-            posts[i].delete()
-            deleted+=1
-            i-=1
 
+        # posts = Post.objects.filter(feed=feed).order_by("-post_date")[2*limit:]
+        # i = len(posts)-1
+        # while i>0 and posts[i].view and not posts[i].seen:
+        #     posts[i].delete()
+        #     deleted+=1
+        #     i-=1
+        posts = Post.objects.filter(feed=feed).order_by("post_date")
         for post in posts:
-            if not post.seen and post.view:
+            if not post.seen and post.view and count>limit:
+                count-=1
                 post.delete()
                 deleted+=1
 
