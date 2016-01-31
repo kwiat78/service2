@@ -10,7 +10,6 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_rss.django_rss.settings')
 
 from bs4 import BeautifulSoup
-from celery import Celery
 from copy import deepcopy
 from django.utils.timezone import datetime, now, make_aware, is_naive
 import iso8601
@@ -72,8 +71,6 @@ class FeedDownloader():
             posts+=[post]
         return posts
 
-app = Celery('proj')
-
 
 def get_oldest_post_date(feed):
     pre = Post.objects.filter(feed=feed).order_by("-add_date")[:2*feed.postLimit]
@@ -97,7 +94,6 @@ def get_gratest_limit(url):
     return 10
 
 
-@app.task()
 def get_posts():
     updated = 0
     deleted = 0
@@ -171,16 +167,3 @@ def get_posts():
 
     return {"added":added, "updated":updated, "deleted":deleted}
 
-
-
-
-
-
-from celery import Celery
-
-# set the default Django settings module for the 'celery' program.
-
-from django.conf import settings  # noqa
-app = Celery('feeds', broker="django://")
-app.config_from_object('django.conf:settings')
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

@@ -14,8 +14,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 
-BROKER_URL = 'django://'
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # import djcelery
@@ -46,8 +44,6 @@ INSTALLED_APPS = (
     'feeds',
     'rest_framework',
     'django_extensions',
-    'djcelery',
-    'kombu.transport.django',
 
 )
 
@@ -124,16 +120,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.dirname(BASE_DIR)+'/static'
-
-from datetime import timedelta
-CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
-CELERYBEAT_SCHEDULE = {
-    'update_feeds': {
-        'task': 'feeds.celery.get_posts',
-        'schedule': timedelta(minutes=5),
-    },
-}
-
-CELERY_TIMEZONE = 'UTC'
 
 
