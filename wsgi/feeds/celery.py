@@ -9,19 +9,15 @@ except ImportError:
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_rss.django_rss.settings')
 
-from feeds.models import Feed,Link,Post, FeedLink
-
 from bs4 import BeautifulSoup
-
-import urllib
-import iso8601
-
-
-from django.utils.timezone import datetime, now, make_aware, is_naive
-import re
+from celery import Celery
 from copy import deepcopy
+from django.utils.timezone import datetime, now, make_aware, is_naive
+import iso8601
+import re
+import urllib
 
-
+from feeds.models import Feed,Link,Post, FeedLink
 
 
 class FeedDownloader():
@@ -38,9 +34,7 @@ class FeedDownloader():
             })
 
         site = urllib.request.urlopen(req).read()
-
         soup = BeautifulSoup(site, "xml")
-        #print(soup)
         items = soup.findAll("item")
         if len(items) == 0:
             items = soup.findAll("entry")
@@ -74,17 +68,10 @@ class FeedDownloader():
             if is_naive(post_date):
                 post_date = make_aware(post_date)
 
-            #print(title,link,post_date)
-
             post = Post(title=title, url=link,post_date=post_date, add_date=now(), view=False)
             posts+=[post]
         return posts
 
-
-from datetime import timedelta
-
-from celery.task import periodic_task
-from celery import Celery
 app = Celery('proj')
 
 
@@ -102,6 +89,7 @@ def get_oldest_post_date(feed):
                 oldest = p.add_date
         return oldest
 
+
 def get_gratest_limit(url):
     links = FeedLink.objects.filter(link__url=url)
     if len(links) > 0:
@@ -109,17 +97,11 @@ def get_gratest_limit(url):
     return 10
 
 
-
-
-
-
-
 @app.task()
 def get_posts():
     updated = 0
     deleted = 0
     added = 0
-    new_ = False
 
     seen = []
     links = Link.objects.all()
@@ -142,7 +124,6 @@ def get_posts():
                         if new_:
                             new_=False
                             added += 1
-
                     else:
                         if len(posts)==1:
                             p = posts[0]
@@ -181,13 +162,6 @@ def get_posts():
                 post.save()
         count = len(posts)
 
-
-        # posts = Post.objects.filter(feed=feed).order_by("-post_date")[2*limit:]
-        # i = len(posts)-1
-        # while i>0 and posts[i].view and not posts[i].seen:
-        #     posts[i].delete()
-        #     deleted+=1
-        #     i-=1
         posts = Post.objects.filter(feed=feed).order_by("post_date")
         for post in posts:
             if not post.seen and post.view and count>limit:
@@ -195,28 +169,18 @@ def get_posts():
                 post.delete()
                 deleted+=1
 
-
-
-
-
-
     return {"added":added, "updated":updated, "deleted":deleted}
 
 
 
 
-import os
+
 
 from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
 
-
 from django.conf import settings  # noqa
-
 app = Celery('feeds', broker="django://")
-
-# Using a string here means the worker will not have to
-# pickle the object when using Windows.
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

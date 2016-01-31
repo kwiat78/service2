@@ -3,15 +3,13 @@ from rest_framework.serializers import ModelSerializer, StringRelatedField, Seri
 from feeds.models import Feed, Post, Link, FeedLink
 
 
-
 class FeedLinkSerializer(ModelSerializer):
 
     link = StringRelatedField()
 
-
     class Meta:
         model = FeedLink
-        exclude = ("id","feed",)
+        exclude = ("id", "feed",)
 
 
 class LinkSerializer(ModelSerializer):
@@ -21,7 +19,7 @@ class LinkSerializer(ModelSerializer):
 
 class FeedSerializer(ModelSerializer):
 
-    links = FeedLinkSerializer(many=True)#StringRelatedField(many=True, read_only=True)
+    links = FeedLinkSerializer(many=True)
     count = SerializerMethodField()
 
     class Meta:
@@ -29,14 +27,10 @@ class FeedSerializer(ModelSerializer):
         exclude = ("id",)
 
     def get_count(self, obj):
-        return len(Post.objects.filter(feed=obj,view=False));
+        return len(Post.objects.filter(feed=obj, view=False));
 
 class PostSerializer(ModelSerializer):
 
     class Meta:
         model = Post
         exclude = ("id",)
-
-
-
-

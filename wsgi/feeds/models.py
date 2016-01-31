@@ -19,6 +19,7 @@ class Link(models.Model):
     def __str__(self):
         return self.url
 
+
 class FeedLink(models.Model):
     link = models.ForeignKey(Link)
     feed = models.ForeignKey(Feed, related_name="links")
@@ -39,4 +40,4 @@ class Post(models.Model):
     seen = models.BooleanField(default=True)
 
     def __str__(self):
-        return str(self.feed)+" "+self.title
+        return str(self.feed) + " " + self.title

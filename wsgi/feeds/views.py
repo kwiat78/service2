@@ -266,5 +266,4 @@ class FindView(ViewSet):
             if title == "":
                 title = url
 
-
         return Response({"name": title, "url": url}, status=200)
