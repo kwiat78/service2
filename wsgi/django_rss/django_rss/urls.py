@@ -4,13 +4,16 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 
 from feeds.views import FeedView, PostView, ReorderView, FeedLink, LinkView, TimeView, DiscoverView, FindView
+from locations.views import LocationView
 
 router = DefaultRouter()
+router.register(r"locations", LocationView)
 router.register(r"feeds", FeedView)
 router.register(r"posts", PostView)
 router.register(r"time", TimeView, base_name="times")
 router.register(r"discover", DiscoverView, base_name="discover")
 router.register(r"find", FindView, base_name="discover")
+
 
 posts_router = DefaultRouter()
 posts_router.register(r"links", LinkView)
