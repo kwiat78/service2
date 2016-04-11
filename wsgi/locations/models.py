@@ -7,7 +7,7 @@ class Location(models.Model):
     latitude = models.FloatField(default=0)
     longitude = models.FloatField(default=0)
     date = models.DateTimeField()
-    label = models.CharField(max_length=100)
+    label = models.CharField(max_length=256)
 
     def __str__(self):
         return "{}-{}-({},{})".format(self.user.username, self.label,
