@@ -45,11 +45,13 @@ INSTALLED_APPS = (
     'locations',
     'rest_framework',
     'django_extensions',
+    'corsheaders',
 
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -93,7 +95,7 @@ DATABASES = {
 	'PORT':     os.environ['OPENSHIFT_MYSQL_DB_PORT'],
     }
 }
-#
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -123,3 +125,4 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.dirname(BASE_DIR)+'/static'
 
 
+CORS_ORIGIN_ALLOW_ALL = True
