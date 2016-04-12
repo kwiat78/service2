@@ -21,4 +21,4 @@ class TrackApiView(APIView):
     def get(self,request,label=None):
         if label:
             return Response(map(lambda x:{'longitude':x.longitude, 'latitude':x.latitude}, Location.objects.filter(label=label)))
-        return Response(map(lambda x:x.label, Location.objects.all()))
+        return Response(map(lambda x:x["label"], Location.objects.values("label").distinct()))
