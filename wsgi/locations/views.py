@@ -42,12 +42,15 @@ class SnapApiView(APIView):
         url = 'https://roads.googleapis.com/v1/snapToRoads'
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         interpolate= True
-        path = "|".join(list(map(lambda x:str(x.longitude)+","+str(x.latitude), Location.objects.filter(label=label))))
+        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Location.objects.filter(label=label))))
         print(label)
         print(path)
 
         response = requests.get(url=url,params={"key":key, "interpolate":interpolate,"path":path})
-        return Response(response.json())
+        #res = map(lambda x:x.location, response.json()['snappedPoints'])
+        res = map(lambda x:x['location'], response.json()['snappedPoints'])
+        #import ipdb;ipdb.set_trace()
+        return Response(res)
 
 
 
