@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 
 from feeds.views import FeedView, PostView, ReorderView, FeedLink, LinkView, TimeView, DiscoverView, FindView
 from locations.views import LocationView, TrackApiView, SnapApiView
-from webclient.views import index
+#from webclient.views import index
 
 router = DefaultRouter()
 router.register(r"locations", LocationView)
