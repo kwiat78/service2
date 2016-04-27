@@ -4,7 +4,7 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 
 from feeds.views import FeedView, PostView, ReorderView, FeedLink, LinkView, TimeView, DiscoverView, FindView
-from locations.views import LocationView, TrackApiView, SnapApiView
+from locations.views import LocationView, TrackApiView, SnapApiView, StreetApiView
 #from webclient.views import index
 
 router = DefaultRouter()
@@ -28,8 +28,9 @@ urlpatterns = [
     url(r'^api/feeds/(?P<feed>[^/.]+)/', include(posts_router.urls)),
 
     url(r'^api/tracks/(?P<label>[^/.]+)/snap_to_road', SnapApiView.as_view()),
+    url(r'^api/tracks/(?P<label>[^/.]+)/streets', StreetApiView.as_view()),
     url(r'^api/tracks/(?P<label>[^/.]+)', TrackApiView.as_view()),
     url(r'^api/tracks', TrackApiView.as_view()),
-#    url(r'^webclient/index', index),
+    # url(r'^webclient/index', index),
 
 ]

@@ -52,6 +52,27 @@ class SnapApiView(APIView):
         #import ipdb;ipdb.set_trace()
         return Response(res)
 
+class StreetApiView(APIView):
+    def get(self,request,label):
+        key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
+        url = "https://maps.googleapis.com/maps/api/geocode/json"
+        locations = Location.objects.filter(label=label)
+        streets =[]
+        for location in locations:
+            latlng = str(location.latitude)+","+str(location.longitude)
+            response = requests.get(url=url,params={"key":key, "latlng":latlng, "result_type":"route"})
+            #import ipdb;ipdb.set_trace()
+            routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
+            streets +=[routes[0]['long_name']]
+        return Response(streets)
+
+
+
+
+
+
+
+
 
 
 
