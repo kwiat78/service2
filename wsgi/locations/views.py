@@ -80,7 +80,7 @@ class IntersectionApiView(APIView):
             routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
             streets +=[routes[0]['long_name']]
 
-        points = [{"latitide":locations[0].latitude, "longitude":locations[0].longitude}]
+        points = [{"latitude":locations[0].latitude, "longitude":locations[0].longitude}]
         url2="https://maps.googleapis.com/maps/api/geocode/json?address={} and {}, Toruń &key=AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
 
         for i in range(1,len(locations)):
@@ -88,8 +88,8 @@ class IntersectionApiView(APIView):
                 r = requests.get(url2.format(streets[i-1],streets[i])).json()
                 if r['results'][0]['types'][0]=='intersection':
                     intersection = (r['results'][0]['geometry']['location'])
-                    points+=[{"latitide":intersection['lat'], "longitude":intersection["lng"]}]
-            points+=[{"latitide":locations[i].latitude, "longitude":locations[i].longitude}]
+                    points+=[{"latitude":intersection['lat'], "longitude":intersection["lng"]}]
+            points+=[{"latitude":locations[i].latitude, "longitude":locations[i].longitude}]
 
         return Response(points)
 
