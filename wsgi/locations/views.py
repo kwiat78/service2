@@ -35,6 +35,12 @@ class TrackApiView(APIView):
         Location.objects.filter(label=label).update(label=new_label)
         return Response(status=200)
 
+    def delete(self,request,label=None):
+        if label:
+            Location.objects.filter(label=label).delete()
+        return Response(status=204)
+
+
 
 class SnapApiView(APIView):
     def get(self,request,label):
