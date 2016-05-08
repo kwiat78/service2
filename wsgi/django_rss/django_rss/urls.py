@@ -15,7 +15,6 @@ router.register(r"time", TimeView, base_name="times")
 router.register(r"discover", DiscoverView, base_name="discover")
 router.register(r"find", FindView, base_name="discover")
 
-
 posts_router = DefaultRouter()
 posts_router.register(r"links", LinkView)
 
@@ -34,5 +33,4 @@ urlpatterns = [
 
     url(r'^api/tracks', TrackApiView.as_view()),
     url(r'^webclient/index', index),
-
 ]

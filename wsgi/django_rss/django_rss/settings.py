@@ -16,9 +16,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = os.path.dirname(BASE_DIR)
-
-# import djcelery
-# djcelery.setup_loader()
+WEBCLIENT_DIR = os.path.join(PROJECT_DIR, "webclient/track-tracker")
 
 
 # Quick-start development settings - unsuitable for production
@@ -47,7 +45,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'django_extensions',
     'corsheaders',
-
 )
 
 MIDDLEWARE_CLASSES = (
@@ -67,7 +64,7 @@ ROOT_URLCONF = 'django_rss.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_DIR,"webclient/track-tracker")],
+        'DIRS': [WEBCLIENT_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,22 +87,15 @@ DATABASES = {
     'default': {
 	'ENGINE':   'django.db.backends.mysql',
 	'NAME':     'service2',
-	'USER':     os.environ['OPENSHIFT_MYSQL_DB_USERNAME'],
-	'PASSWORD': os.environ['OPENSHIFT_MYSQL_DB_PASSWORD'],
-	'HOST':     os.environ['OPENSHIFT_MYSQL_DB_HOST'],
-	'PORT':     os.environ['OPENSHIFT_MYSQL_DB_PORT'],
+	'USER':     os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME', ""),
+	'PASSWORD': os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD', ""),
+	'HOST':     os.environ.get('OPENSHIFT_MYSQL_DB_HOST', ""),
+	'PORT':     os.environ.get('OPENSHIFT_MYSQL_DB_PORT', ""),
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 STATICFILES_DIRS = [
-    os.path.join(os.path.dirname(BASE_DIR), "webclient/track-tracker/static")
+    os.path.join(WEBCLIENT_DIR, "static")
 ]
 
 
@@ -127,7 +117,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.dirname(BASE_DIR)+'/static'
-
+STATIC_ROOT = os.path.join(PROJECT_DIR, '/static')
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+try:
+    from .local_settings import *
+except:
+    pass
