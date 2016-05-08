@@ -95,7 +95,7 @@ DATABASES = {
 	'HOST':     os.environ['OPENSHIFT_MYSQL_DB_HOST'],
 	'PORT':     os.environ['OPENSHIFT_MYSQL_DB_PORT'],
     }
-}join
+}
 
 # DATABASES = {
 #     'default': {
