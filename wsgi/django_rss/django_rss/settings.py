@@ -15,6 +15,7 @@ import os
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.dirname(BASE_DIR)
 
 # import djcelery
 # djcelery.setup_loader()
@@ -66,7 +67,7 @@ ROOT_URLCONF = 'django_rss.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["webclient/track-tracker"],
+        'DIRS': [os.path.join(PROJECT_DIR,"webclient/track-tracker")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,9 +95,14 @@ DATABASES = {
 	'HOST':     os.environ['OPENSHIFT_MYSQL_DB_HOST'],
 	'PORT':     os.environ['OPENSHIFT_MYSQL_DB_PORT'],
     }
-}
+}join
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 STATICFILES_DIRS = [
     os.path.join(os.path.dirname(BASE_DIR), "webclient/track-tracker/static")
