@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 
 from feeds.views import FeedView, PostView, ReorderView, FeedLink, LinkView, TimeView, DiscoverView, FindView
 from locations.views import LocationView, TrackApiView, SnapApiView, StreetApiView, IntersectionApiView
-# from webclient.views import index
+from webclient.views import index
 
 router = DefaultRouter()
 router.register(r"locations", LocationView)
@@ -33,6 +33,6 @@ urlpatterns = [
     url(r'^api/tracks/(?P<label>[^/.]+)', TrackApiView.as_view()),
 
     url(r'^api/tracks', TrackApiView.as_view()),
-    # url(r'^webclient/index', index),
+    url(r'^webclient/index', index),
 
 ]

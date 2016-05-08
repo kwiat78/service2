@@ -1,0 +1,24 @@
+<div class="well well-sm">
+	<div id="feeds" class="list-group">
+		<select  class="" ng-model="selected" ng-options="track for track in tracks" ng-change="getTrack()"></select>
+		<h1>{{selected}}</h1>
+		<a class="btn btn-info" ng-click="changeName()" ng-if="selected"><i class="fa fa-file-text"></i></a>
+		<a class="btn btn-danger" ng-click="deleteTrack()" ng-if="selected"><i class="fa fa-times"></i></a>
+
+		<div class="row">
+			<div class="col-lg-10 col-md-10 col-xs-10 map-div" >
+				<div class="map-div">
+					<p id="map"></p>
+				</div>
+			</div>
+			<div class="col-lg-2 col-md-2 col-xs-2" >
+				<p ng-bind="sum" ng-if="sum"></p>
+				<p ng-bind="length" ng-if="length"></p>
+				<p ng-repeat="street in streets track by $index"ng-bind="street" ></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

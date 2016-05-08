@@ -1,0 +1,27 @@
+
+
+<div class="well well-sm">
+    <div id='content'>
+	<div id="feeds" class="list-group">
+	    <div id='tracks'>
+	    </div>
+		<div id='tracks2' ng-repeat="track in tracks2">
+			<div class='track'>
+				<select class='selectTrack' ng-model="track.selected" ng-options="track2 for track2 in tracksX" ng-change="setMap(track,track2)"></select>
+				<button>del2</button>
+			</div>
+		</div>
+	    <button id='addTrack' ng-click="addTrack()"> add track to map</button>
+
+
+	   <!-- <select id='selectTrack'></select>-->
+		<div class="map-div">
+			<p id='map'></p>
+		</div>
+	</div>
+	
+	
+
+
+	</div>
+</div>

@@ -1,0 +1,59 @@
+body {
+    min-width: 400px;
+    width: 400px;
+    min-height: 380px;
+    font: bold 120% Arial, Helvetica;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #000;
+}
+
+.well, .panel, .form-group, .alert, .list-group {
+    margin-bottom:0px !important;
+}
+
+.alert {
+    padding-bottom:0px !important;
+    padding-top:0px !important;
+}
+
+.form {
+    margin-bottom:10px !important;
+}
+
+.badge-warning {
+    background-color: #f89406;
+    margin: 5px;
+}
+
+.badge-success {
+    background-color: #62c462 !important;
+}
+
+.list-group-item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-top:2px !important;
+    padding-bottom:2px !important;
+}
+
+.panel-heading {
+    padding-top:2px !important;
+    padding-bottom:2px !important;
+}
+
+.dropdown-menu>li>a {
+    padding-left: 0px;
+}
+
+i.fa-rotate-right {
+    font-size:300px;
+}
+
+div.loading {
+    text-align: center;
+}
+
+.app-title {
+    font-size:11px;
+}

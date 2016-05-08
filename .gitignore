@@ -1,3 +1,4 @@
+/wsgi/static
 *.py[co]
 *.sw[po]
 *.bak

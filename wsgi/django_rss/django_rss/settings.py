@@ -66,7 +66,7 @@ ROOT_URLCONF = 'django_rss.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["webclient/track-tracker"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,12 +96,11 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+
+
+STATICFILES_DIRS = [
+    os.path.join(os.path.dirname(BASE_DIR), "webclient/track-tracker/static")
+]
 
 
 # Internationalization
