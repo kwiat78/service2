@@ -22,7 +22,7 @@ class TrackApiView(APIView):
 
     def get(self,request,label=None):
         if label:
-            return Response(map(lambda x:{'longitude':x.longitude, 'latitude':x.latitude}, Location.objects.filter(label=label)))
+            return Response(map(lambda x:{'longitude':x.longitude, 'latitude':x.latitude}, Location.objects.filter(label=label).order_by("date")))
 
 
         return Response(map(lambda x:x["label"], Location.objects.values("label").distinct()))
@@ -39,6 +39,18 @@ class TrackApiView(APIView):
         if label:
             Location.objects.filter(label=label).delete()
         return Response(status=204)
+
+class JoinTrackApiView(APIView):
+
+    def post(self, request, label):
+        second_label = request.data.get("second_label", None)
+        if not second_label:
+            return Response("Needed second_label", status=403)
+        if label == second_label:
+            return Response("Labels should be diferent", status=403)
+        Location.objects.filter(label=second_label).update(label=label)
+        return Response(status=200)
+
 
 
 

@@ -6,6 +6,7 @@ app.controller('TrackListController', function($scope, $location, FeedReader, Co
             zoom: 12
         };
         $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
     }
 
     $scope.initialize()
@@ -30,6 +31,112 @@ app.controller('TrackListController', function($scope, $location, FeedReader, Co
             })
             })
     }
+
+    $scope.joinTrack = function() {
+        $scope.adding = true;
+    }
+
+    $scope.cancelAdd = function() {
+        $scope.adding = false;
+
+         if($scope.poly){
+                $scope.poly.setMap(null);
+                }
+
+          if($scope.otherCircles){
+
+                for(var i = 0; i < $scope.otherCircles.length; i++) {
+                    $scope.otherCircles[i].setMap(null);
+                }
+                $scope.otherCircles = []
+            } else {
+                $scope.otherCircles = []
+            }
+
+             $scope.poly = new google.maps.Polyline({
+                path: $scope.track.points,
+                geodesic: true,
+                strokeColor: $scope.poly.strokeColor,
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+            });
+
+            $scope.poly.setMap($scope.map);
+
+
+
+    }
+
+    $scope.joinTracks = function(){
+        FeedReader.joinTracks($scope.selected, $scope.other).then(function(d){
+            console.log("x")
+             FeedReader.getTracks().then(function(f) {
+             console.log("y")
+             console.log(f)
+                    $scope.tracks = f
+                    $scope.cancelAdd()
+                    $scope.getTrack()
+                }, function() {
+                $scope.error = true
+                })
+            })
+
+    }
+
+
+    $scope.addTrack = function(){
+        console.log($scope)
+        FeedReader.getTrack($scope.other).then(function(data){
+         $scope.otherTrack = {"center":[data[0].latitude, data[0].longitude]}
+         $scope.otherTrack.points = []
+        for(var i=0;i<data.length;i++) {
+            $scope.otherTrack.points.push(new google.maps.LatLng(data[i].latitude, data[i].longitude));
+        }
+
+        if($scope.poly){
+                $scope.poly.setMap(null);
+                }
+
+          if($scope.otherCircles){
+
+                for(var i = 0; i < $scope.otherCircles.length; i++) {
+                    $scope.otherCircles[i].setMap(null);
+                }
+                $scope.otherCircles = []
+            } else {
+                $scope.otherCircles = []
+            }
+
+
+
+
+         for(var i=0; i < $scope.otherTrack.points.length; i++) {
+                var point = new google.maps.Circle({
+                    map: $scope.map,
+                    center: $scope.otherTrack.points[i],
+                    radius: 5,
+                    strokeColor: "rgb(1,0,0)",
+                });
+                $scope.otherCircles.push(point);
+            }
+
+
+
+            $scope.poly = new google.maps.Polyline({
+                path: $scope.track.points.concat($scope.otherTrack.points),
+                geodesic: true,
+                strokeColor: $scope.poly.strokeColor,
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+            });
+
+            $scope.poly.setMap($scope.map);
+        })
+
+
+
+    }
+
 
     $scope.changeName = function() {
         var modalInstance = $uibModal.open({

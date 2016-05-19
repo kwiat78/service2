@@ -1,9 +1,14 @@
 <div class="well well-sm">
 	<div id="feeds" class="list-group">
-		<select  class="" ng-model="selected" ng-options="track for track in tracks" ng-change="getTrack()"></select>
+		<select  class="" ng-model="selected" ng-options="track for track in tracks" ng-change="getTrack()" ng-disabled="adding"></select>
 		<h1>{{selected}}</h1>
 		<a class="btn btn-info" ng-click="changeName()" ng-if="selected"><i class="fa fa-file-text"></i></a>
 		<a class="btn btn-danger" ng-click="deleteTrack()" ng-if="selected"><i class="fa fa-times"></i></a>
+		<a class="btn btn-success" ng-click="joinTrack()" ng-if="selected"><i class="fa fa-plus"></i></a>
+		<br>
+		<select  class="form-control-sm" ng-model="other" ng-options="track for track in tracks" ng-change="addTrack()" ng-show="adding"></select>
+		<a class="btn btn-success btn-sm" ng-click="joinTracks()" ng-if="adding"><i class="fa fa-check" ></i></a>
+		<a class="btn btn-danger btn-sm" ng-click="cancelAdd()" ng-if="adding"><i class="fa fa-ban" ></i></a>
 
 		<div class="row">
 			<div class="col-lg-10 col-md-10 col-xs-10 map-div" >
