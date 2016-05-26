@@ -1,3 +1,4 @@
+/tmp
 /wsgi/django_rss/db.sqlite3
 /wsgi/django_rss/django_rss/local_settings.py
 /wsgi/static

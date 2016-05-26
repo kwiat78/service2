@@ -1,11 +1,11 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.views import APIView
 from rest_framework.decorators import detail_route
 from rest_framework.renderers import JSONRenderer
 import requests
 
 from locations.models import Location
-from locations.serializers import LocationSerializer
+from locations.serializers import LocationSerializer, LocationSerializer2
 
 from rest_framework.response import Response
 
@@ -112,3 +112,29 @@ class IntersectionApiView(APIView):
         return Response(points)
 
 
+class TrackViewSet(ViewSet):
+
+    def list(self, request):
+        return Response(map(lambda x:x["label"], Location.objects.values("label").distinct()))
+
+    def retrieve(self, request, pk=None):
+        queryset = Location.objects.filter(label=pk)
+
+        serializer = LocationSerializer2(queryset, many=True)
+        return Response(serializer.data)
+
+    @detail_route()
+    def snap(self,request,pk=None):
+        print("XXXXXXXXXXXXXXXXX")
+        url = 'https://roads.googleapis.com/v1/snapToRoads'
+        key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
+        interpolate= True
+        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Location.objects.filter(label=pk))))
+
+
+
+        response = requests.get(url=url,params={"key":key, "interpolate":interpolate,"path":path})
+        #res = map(lambda x:x.location, response.json()['snappedPoints'])
+        res = map(lambda x:x['location'], response.json()['snappedPoints'])
+        #import ipdb;ipdb.set_trace()
+        return Response(res)

@@ -11,7 +11,7 @@ app.service('FeedReader', function($http) {
 
     this.getTracks = function() {
         init()
-        return $http.get(options.url + "/api/tracks", {headers: {}}).then(
+        return $http.get(options.url + "/api/tracks2", {headers: {}}).then(
             function(obj){
                 return obj.data;
             })
@@ -46,7 +46,7 @@ app.service('FeedReader', function($http) {
         //return $http.get(options.url + "/api/tracks/"+val, {headers: {}}).then(
         //return $http.get(options.url + "/api/tracks/"+val+"/intersections", {headers: {}}).then(
         //return $http.get(options.url + "/api/tracks/"+val+"/intersections", {headers: {}}).then(
-        return $http.get(options.url + "/api/tracks/"+val+"", {headers: {}}).then(
+        return $http.get(options.url + "/api/tracks2/"+val+"/snap/", {headers: {}}).then(
             function(obj){
                 return obj.data;
             })

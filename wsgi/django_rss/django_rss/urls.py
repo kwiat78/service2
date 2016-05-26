@@ -4,11 +4,12 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 
 from feeds.views import FeedView, PostView, ReorderView, FeedLink, LinkView, TimeView, DiscoverView, FindView
-from locations.views import LocationView, TrackApiView, SnapApiView, StreetApiView, IntersectionApiView, JoinTrackApiView
+from locations.views import LocationView, TrackApiView, SnapApiView, StreetApiView, IntersectionApiView, JoinTrackApiView, TrackViewSet
 from webclient.views import index
 
 router = DefaultRouter()
 router.register(r"locations", LocationView)
+router.register(r"tracks2", TrackViewSet, base_name="tracks")
 router.register(r"feeds", FeedView)
 router.register(r"posts", PostView)
 router.register(r"time", TimeView, base_name="times")
