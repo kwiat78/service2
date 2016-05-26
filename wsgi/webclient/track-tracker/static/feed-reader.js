@@ -27,7 +27,7 @@ app.service('FeedReader', function($http) {
 
     this.joinTracks = function(label, second_label) {
         init()
-        return $http.post(options.url + "/api/tracks2/"+label+"/join/", {"second_label":second_label}, {headers: {}}).then(
+        return $http.put(options.url + "/api/tracks2/"+label+"/join/", {"second_label":second_label}, {headers: {}}).then(
             function(obj){
                 return obj.data;
             })
