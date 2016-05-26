@@ -3,9 +3,9 @@ from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
 
-from feeds.views import FeedView, PostView, ReorderView, FeedLink, LinkView, TimeView, DiscoverView, FindView
-from locations.views import LocationView, TrackApiView, SnapApiView, StreetApiView, IntersectionApiView, JoinTrackApiView, TrackViewSet
-from webclient.views import index
+from wsgi.feeds.views import FeedView, PostView, ReorderView, LinkView, TimeView, DiscoverView, FindView
+from wsgi.locations.views import LocationView, TrackApiView,  JoinTrackApiView, TrackViewSet
+from wsgi.webclient.views import index
 
 router = DefaultRouter()
 router.register(r"locations", LocationView)
@@ -27,9 +27,9 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api/feeds/(?P<feed>[^/.]+)/', include(posts_router.urls)),
 
-    url(r'^api/tracks/(?P<label>[^/.]+)/intersections', IntersectionApiView.as_view()),
-    url(r'^api/tracks/(?P<label>[^/.]+)/snap_to_road', SnapApiView.as_view()),
-    url(r'^api/tracks/(?P<label>[^/.]+)/streets', StreetApiView.as_view()),
+    # url(r'^api/tracks/(?P<label>[^/.]+)/intersections', IntersectionApiView.as_view()),
+    # url(r'^api/tracks/(?P<label>[^/.]+)/snap_to_road', SnapApiView.as_view()),
+    # url(r'^api/tracks/(?P<label>[^/.]+)/streets', StreetApiView.as_view()),
     url(r'^api/tracks/(?P<label>[^/.]+)/join', JoinTrackApiView.as_view()),
     url(r'^api/tracks/(?P<label>[^/.]+)', TrackApiView.as_view()),
 

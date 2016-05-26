@@ -45,8 +45,8 @@ app.service('FeedReader', function($http) {
         init()
         //return $http.get(options.url + "/api/tracks/"+val, {headers: {}}).then(
         //return $http.get(options.url + "/api/tracks/"+val+"/intersections", {headers: {}}).then(
-        //return $http.get(options.url + "/api/tracks/"+val+"/intersections", {headers: {}}).then(
-        return $http.get(options.url + "/api/tracks2/"+val+"/snap/", {headers: {}}).then(
+        return $http.get(options.url + "/api/tracks2/"+val+"/intersections/", {headers: {}}).then(
+        //return $http.get(options.url + "/api/tracks2/"+val+"/snap/", {headers: {}}).then(
             function(obj){
                 return obj.data;
             })
@@ -55,7 +55,7 @@ app.service('FeedReader', function($http) {
     this.getStreets = function(val) {
         init()
         //return $http.get(options.url + "/api/tracks/"+val, {headers: {}}).then(
-        return $http.get(options.url + "/api/tracks/"+val+"/streets", {headers: {}}).then(
+        return $http.get(options.url + "/api/tracks2/"+val+"/streets/", {headers: {}}).then(
             function(obj){
                 return obj.data;
             })

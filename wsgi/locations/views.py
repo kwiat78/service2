@@ -4,8 +4,8 @@ from rest_framework.decorators import detail_route
 from rest_framework.renderers import JSONRenderer
 import requests
 
-from locations.models import Location
-from locations.serializers import LocationSerializer, LocationSerializer2
+from wsgi.locations.models import Location
+from wsgi.locations.serializers import LocationSerializer, LocationSerializer2
 
 from rest_framework.response import Response
 
@@ -54,47 +54,49 @@ class JoinTrackApiView(APIView):
 
 
 
-class SnapApiView(APIView):
-    def get(self,request,label):
-        print("XXXXXXXXXXXXXXXXX")
+class TrackViewSet(ViewSet):
+
+    def list(self, request):
+        return Response(map(lambda x:x["label"], Location.objects.values("label").distinct()))
+
+    def retrieve(self, request, pk=None):
+        queryset = Location.objects.filter(label=pk)
+
+        serializer = LocationSerializer2(queryset, many=True)
+        return Response(serializer.data)
+
+    @detail_route()
+    def snap(self,request,pk=None):
         url = 'https://roads.googleapis.com/v1/snapToRoads'
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
-        interpolate= True
-        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Location.objects.filter(label=label))))
-        print(label)
-        print(path)
-
+        interpolate = True
+        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Location.objects.filter(label=pk))))
         response = requests.get(url=url,params={"key":key, "interpolate":interpolate,"path":path})
-        #res = map(lambda x:x.location, response.json()['snappedPoints'])
         res = map(lambda x:x['location'], response.json()['snappedPoints'])
-        #import ipdb;ipdb.set_trace()
         return Response(res)
 
-class StreetApiView(APIView):
-    def get(self,request,label):
+    @detail_route()
+    def streets(self,request,pk=None):
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
-        locations = Location.objects.filter(label=label)
+        locations = Location.objects.filter(label=pk)
         streets =[]
         for location in locations:
             latlng = str(location.latitude)+","+str(location.longitude)
             response = requests.get(url=url,params={"key":key, "latlng":latlng, "result_type":"route"})
-            #import ipdb;ipdb.set_trace()
             routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
             streets +=[routes[0]['long_name']]
         return Response(streets)
 
-
-class IntersectionApiView(APIView):
-    def get(self,request,label):
+    @detail_route()
+    def intersections(self,request,pk=None):
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
-        locations = Location.objects.filter(label=label)
+        locations = Location.objects.filter(label=pk)
         streets =[]
         for location in locations:
             latlng = str(location.latitude)+","+str(location.longitude)
             response = requests.get(url=url,params={"key":key, "latlng":latlng, "result_type":"route"})
-            #import ipdb;ipdb.set_trace()
             routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
             streets +=[routes[0]['long_name']]
 
@@ -110,31 +112,3 @@ class IntersectionApiView(APIView):
             points+=[{"latitude":locations[i].latitude, "longitude":locations[i].longitude}]
 
         return Response(points)
-
-
-class TrackViewSet(ViewSet):
-
-    def list(self, request):
-        return Response(map(lambda x:x["label"], Location.objects.values("label").distinct()))
-
-    def retrieve(self, request, pk=None):
-        queryset = Location.objects.filter(label=pk)
-
-        serializer = LocationSerializer2(queryset, many=True)
-        return Response(serializer.data)
-
-    @detail_route()
-    def snap(self,request,pk=None):
-        print("XXXXXXXXXXXXXXXXX")
-        url = 'https://roads.googleapis.com/v1/snapToRoads'
-        key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
-        interpolate= True
-        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Location.objects.filter(label=pk))))
-
-
-
-        response = requests.get(url=url,params={"key":key, "interpolate":interpolate,"path":path})
-        #res = map(lambda x:x.location, response.json()['snappedPoints'])
-        res = map(lambda x:x['location'], response.json()['snappedPoints'])
-        #import ipdb;ipdb.set_trace()
-        return Response(res)
