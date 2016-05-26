@@ -19,7 +19,7 @@ app.service('FeedReader', function($http) {
 
     this.postTracks = function(label, new_label) {
         init()
-        return $http.post(options.url + "/api/tracks/"+label, {"new_label":new_label}, {headers: {}}).then(
+        return $http.post(options.url + "/api/tracks2/"+label+"/", {"new_label":new_label}, {headers: {}}).then(
             function(obj){
                 return obj.data;
             })
@@ -27,7 +27,7 @@ app.service('FeedReader', function($http) {
 
     this.joinTracks = function(label, second_label) {
         init()
-        return $http.post(options.url + "/api/tracks/"+label+"/join", {"second_label":second_label}, {headers: {}}).then(
+        return $http.post(options.url + "/api/tracks2/"+label+"/join/", {"second_label":second_label}, {headers: {}}).then(
             function(obj){
                 return obj.data;
             })
@@ -35,7 +35,7 @@ app.service('FeedReader', function($http) {
 
     this.deleteTrack = function(label) {
         init()
-        return $http.delete(options.url + "/api/tracks/"+label, {}, {headers: {}}).then(
+        return $http.delete(options.url + "/api/tracks2/"+label+"/", {}, {headers: {}}).then(
             function(obj){
                 return obj.data;
             })

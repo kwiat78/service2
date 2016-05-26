@@ -65,6 +65,19 @@ class TrackViewSet(ViewSet):
         serializer = LocationSerializer2(queryset, many=True)
         return Response(serializer.data)
 
+    def update(self, request, label):
+        new_label = request.data.get("new_label", None)
+        if not new_label:
+            return Response("Specify new_label", status=403)
+        Location.objects.filter(label=label).update(label=new_label)
+        return Response(status=200)
+
+    def destroy(self,request,label=None):
+        if label:
+            Location.objects.filter(label=label).delete()
+        return Response(status=204)
+
+
     @detail_route()
     def snap(self,request,pk=None):
         url = 'https://roads.googleapis.com/v1/snapToRoads'
@@ -112,3 +125,13 @@ class TrackViewSet(ViewSet):
             points+=[{"latitude":locations[i].latitude, "longitude":locations[i].longitude}]
 
         return Response(points)
+
+    @detail_route()
+    def join(self, request, pk=None):
+        second_label = request.data.get("second_label", None)
+        if not second_label:
+            return Response("Needed second_label", status=403)
+        if pk == second_label:
+            return Response("Labels should be diferent", status=403)
+        Location.objects.filter(label=second_label).update(label=pk)
+        return Response(status=200)
