@@ -65,16 +65,16 @@ class TrackViewSet(ViewSet):
         serializer = LocationSerializer2(queryset, many=True)
         return Response(serializer.data)
 
-    def update(self, request, label):
+    def update(self, request, pk=None):
         new_label = request.data.get("new_label", None)
         if not new_label:
             return Response("Specify new_label", status=403)
-        Location.objects.filter(label=label).update(label=new_label)
+        Location.objects.filter(label=pk).update(label=new_label)
         return Response(status=200)
 
-    def destroy(self,request,label=None):
-        if label:
-            Location.objects.filter(label=label).delete()
+    def destroy(self,request,pk=None):
+        if pk:
+            Location.objects.filter(label=pk).delete()
         return Response(status=204)
 
 
