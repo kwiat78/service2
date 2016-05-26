@@ -5,7 +5,7 @@ from rest_framework.renderers import JSONRenderer
 import requests
 
 from wsgi.locations.models import Location
-from wsgi.locations.serializers import LocationSerializer, LocationSerializer2
+from wsgi.locations.serializers import LocationSerializer, TrackSerializer
 
 from rest_framework.response import Response
 
@@ -17,43 +17,6 @@ class LocationView(ModelViewSet):
         return super(LocationView, self).create(request, *args, **kwargs)
         # import ipdb;ipdb.set_trace()
 
-
-class TrackApiView(APIView):
-
-    def get(self,request,label=None):
-        if label:
-            return Response(map(lambda x:{'longitude':x.longitude, 'latitude':x.latitude}, Location.objects.filter(label=label).order_by("date")))
-
-
-        return Response(map(lambda x:x["label"], Location.objects.values("label").distinct()))
-
-
-    def post(self, request, label):
-        new_label = request.data.get("new_label", None)
-        if not new_label:
-            return Response("Specify new_label", status=403)
-        Location.objects.filter(label=label).update(label=new_label)
-        return Response(status=200)
-
-    def delete(self,request,label=None):
-        if label:
-            Location.objects.filter(label=label).delete()
-        return Response(status=204)
-
-class JoinTrackApiView(APIView):
-
-    def post(self, request, label):
-        second_label = request.data.get("second_label", None)
-        if not second_label:
-            return Response("Needed second_label", status=403)
-        if label == second_label:
-            return Response("Labels should be diferent", status=403)
-        Location.objects.filter(label=second_label).update(label=label)
-        return Response(status=200)
-
-
-
-
 class TrackViewSet(ViewSet):
 
     def list(self, request):
@@ -62,7 +25,7 @@ class TrackViewSet(ViewSet):
     def retrieve(self, request, pk=None):
         queryset = Location.objects.filter(label=pk)
 
-        serializer = LocationSerializer2(queryset, many=True)
+        serializer = TrackSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def update(self, request, pk=None):

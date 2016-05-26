@@ -12,7 +12,7 @@ class LocationSerializer(ModelSerializer):
         model = Location
 
 
-class LocationSerializer2(ModelSerializer):
+class TrackSerializer(ModelSerializer):
     class Meta:
         model = Location
         fields = ('latitude', 'longitude')
