@@ -126,7 +126,7 @@ class TrackViewSet(ViewSet):
 
         return Response(points)
 
-    @detail_route()
+    @detail_route(methods=["post"])
     def join(self, request, pk=None):
         second_label = request.data.get("second_label", None)
         if not second_label:
