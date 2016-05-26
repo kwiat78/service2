@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from feeds.models import Feed,Link,Post, FeedLink
+from wsgi.feeds.models import Feed,Link,Post, FeedLink
 
 
 class FeedLinkInline(admin.TabularInline):

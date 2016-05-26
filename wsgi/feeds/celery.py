@@ -16,7 +16,7 @@ import iso8601
 import re
 import urllib
 
-from feeds.models import Feed,Link,Post, FeedLink
+from wsgi.feeds.models import Feed,Link,Post, FeedLink
 
 
 class FeedDownloader():

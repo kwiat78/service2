@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer, StringRelatedField, SerializerMethodField
 
-from feeds.models import Feed, Post, Link, FeedLink
+from wsgi.feeds.models import Feed, Post, Link, FeedLink
 
 
 class FeedLinkSerializer(ModelSerializer):
