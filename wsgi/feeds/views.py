@@ -16,9 +16,9 @@ from urllib.parse import unquote
 from urllib.error import URLError
 
 
-from feeds.celery import get_posts
-from feeds.models import Feed, Post, FeedLink, Link
-from feeds.serializers import FeedSerializer, PostSerializer, FeedLinkSerializer
+from wsgi.feeds.celery import get_posts
+from wsgi.feeds.models import Feed, Post, FeedLink, Link
+from wsgi.feeds.serializers import FeedSerializer, PostSerializer, FeedLinkSerializer
 
 
 class FeedView(ModelViewSet):

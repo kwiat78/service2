@@ -1,11 +1,11 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.views import APIView
 from rest_framework.decorators import detail_route
 from rest_framework.renderers import JSONRenderer
 import requests
 
-from locations.models import Location
-from locations.serializers import LocationSerializer
+from wsgi.locations.models import Location
+from wsgi.locations.serializers import LocationSerializer, TrackSerializer
 
 from rest_framework.response import Response
 
@@ -17,84 +17,62 @@ class LocationView(ModelViewSet):
         return super(LocationView, self).create(request, *args, **kwargs)
         # import ipdb;ipdb.set_trace()
 
+class TrackViewSet(ViewSet):
 
-class TrackApiView(APIView):
-
-    def get(self,request,label=None):
-        if label:
-            return Response(map(lambda x:{'longitude':x.longitude, 'latitude':x.latitude}, Location.objects.filter(label=label).order_by("date")))
-
-
+    def list(self, request):
         return Response(map(lambda x:x["label"], Location.objects.values("label").distinct()))
 
+    def retrieve(self, request, pk=None):
+        queryset = Location.objects.filter(label=pk)
 
-    def post(self, request, label):
+        serializer = TrackSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def update(self, request, pk=None):
         new_label = request.data.get("new_label", None)
         if not new_label:
             return Response("Specify new_label", status=403)
-        Location.objects.filter(label=label).update(label=new_label)
+        Location.objects.filter(label=pk).update(label=new_label)
         return Response(status=200)
 
-    def delete(self,request,label=None):
-        if label:
-            Location.objects.filter(label=label).delete()
+    def destroy(self,request,pk=None):
+        if pk:
+            Location.objects.filter(label=pk).delete()
         return Response(status=204)
 
-class JoinTrackApiView(APIView):
 
-    def post(self, request, label):
-        second_label = request.data.get("second_label", None)
-        if not second_label:
-            return Response("Needed second_label", status=403)
-        if label == second_label:
-            return Response("Labels should be diferent", status=403)
-        Location.objects.filter(label=second_label).update(label=label)
-        return Response(status=200)
-
-
-
-
-class SnapApiView(APIView):
-    def get(self,request,label):
-        print("XXXXXXXXXXXXXXXXX")
+    @detail_route()
+    def snap(self,request,pk=None):
         url = 'https://roads.googleapis.com/v1/snapToRoads'
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
-        interpolate= True
-        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Location.objects.filter(label=label))))
-        print(label)
-        print(path)
-
+        interpolate = True
+        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Location.objects.filter(label=pk))))
         response = requests.get(url=url,params={"key":key, "interpolate":interpolate,"path":path})
-        #res = map(lambda x:x.location, response.json()['snappedPoints'])
         res = map(lambda x:x['location'], response.json()['snappedPoints'])
-        #import ipdb;ipdb.set_trace()
         return Response(res)
 
-class StreetApiView(APIView):
-    def get(self,request,label):
+    @detail_route()
+    def streets(self,request,pk=None):
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
-        locations = Location.objects.filter(label=label)
+        locations = Location.objects.filter(label=pk)
         streets =[]
         for location in locations:
             latlng = str(location.latitude)+","+str(location.longitude)
             response = requests.get(url=url,params={"key":key, "latlng":latlng, "result_type":"route"})
-            #import ipdb;ipdb.set_trace()
             routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
             streets +=[routes[0]['long_name']]
         return Response(streets)
 
-
-class IntersectionApiView(APIView):
-    def get(self,request,label):
+    @detail_route()
+    def intersections(self,request,pk=None):
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
-        locations = Location.objects.filter(label=label)
+        locations = Location.objects.filter(label=pk)
         streets =[]
         for location in locations:
             latlng = str(location.latitude)+","+str(location.longitude)
             response = requests.get(url=url,params={"key":key, "latlng":latlng, "result_type":"route"})
-            #import ipdb;ipdb.set_trace()
             routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
             streets +=[routes[0]['long_name']]
 
@@ -111,4 +89,12 @@ class IntersectionApiView(APIView):
 
         return Response(points)
 
-
+    @detail_route(methods=["post"])
+    def join(self, request, pk=None):
+        second_label = request.data.get("second_label", None)
+        if not second_label:
+            return Response("Needed second_label", status=403)
+        if pk == second_label:
+            return Response("Labels should be diferent", status=403)
+        Location.objects.filter(label=second_label).update(label=pk)
+        return Response(status=200)

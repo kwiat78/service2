@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework.serializers import ModelSerializer, SlugRelatedField
 
-from locations.models import Location
+from wsgi.locations.models import Location
 
 
 class LocationSerializer(ModelSerializer):
@@ -10,3 +10,9 @@ class LocationSerializer(ModelSerializer):
 
     class Meta:
         model = Location
+
+
+class TrackSerializer(ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ('latitude', 'longitude')
