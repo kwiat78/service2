@@ -11,16 +11,26 @@
 		<a class="btn btn-danger btn-sm" ng-click="cancelAdd()" ng-if="adding"><i class="fa fa-ban" ></i></a>
 
 		<div class="row">
-			<div class="col-lg-10 col-md-10 col-xs-10 map-div" >
+			<div class="col-lg-10 col-md-10 col-xs-10 " >
 				<div class="map-div">
 					<p id="map"></p>
 				</div>
 			</div>
-			<div class="col-lg-2 col-md-2 col-xs-2" >
-				<p ng-bind="sum" ng-if="sum"></p>
-				<p ng-bind="length" ng-if="length"></p>
-				<p ng-repeat="street in streets track by $index"ng-bind="street" ></p>
-			</div>
+		</div>
+		<div class="row">
+			<uib-tabset active="active">
+				<uib-tab index="0" heading="Parameters">
+					<div class="col-lg-2 col-md-2 col-xs-2" >
+						<p ng-bind="sum" ng-if="sum"></p>
+						<p ng-bind="length" ng-if="length"></p>
+					</div>
+				</uib-tab>
+				<uib-tab index="1" heading="Streets">
+					<div class="col-lg-2 col-md-2 col-xs-2" >
+						<p ng-repeat="street in streets track by $index"ng-bind="street" ></p>
+					</div>
+				</uib-tab>
+			</uib-tabset>
 		</div>
 	</div>
 </div>
