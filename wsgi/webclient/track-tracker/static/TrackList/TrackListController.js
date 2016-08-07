@@ -202,12 +202,18 @@ app.controller('TrackListController', function($scope, $location, FeedReader, Co
             }
 
 	        $scope.countDistance();
+            FeedReader.getTrackParameters($scope.selected).then(function(f){
+                $scope.params = f
+            });
+
 
             FeedReader.getStreets($scope.selected).then(function(f) {
                 $scope.streets = f
             }, function() {
                 $scope.error = true
             })
+
+
         })
     }
 

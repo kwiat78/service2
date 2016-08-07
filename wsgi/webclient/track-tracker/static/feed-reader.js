@@ -5,7 +5,6 @@ app.service('FeedReader', function($http) {
     function init() {
         options = {}
         options.url="http://service2-kwiat78.rhcloud.com"
-        //options.url="http://127.0.0.1:8000"
     }
 
 
@@ -44,6 +43,17 @@ app.service('FeedReader', function($http) {
     this.getTrack = function(val) {
         init()
         return $http.get(options.url + "/api/tracks/"+val+"/", {headers: {}}).then(
+        //return $http.get(options.url + "/api/tracks/"+val+"/intersections", {headers: {}}).then(
+        //return $http.get(options.url + "/api/tracks/"+val+"/intersections/", {headers: {}}).then(
+        //return $http.get(options.url + "/api/tracks2/"+val+"/snap/", {headers: {}}).then(
+            function(obj){
+                return obj.data;
+            })
+    }
+
+    this.getTrackParameters = function(val) {
+        init()
+        return $http.get(options.url + "/api/tracks/"+val+"/params", {headers: {}}).then(
         //return $http.get(options.url + "/api/tracks/"+val+"/intersections", {headers: {}}).then(
         //return $http.get(options.url + "/api/tracks/"+val+"/intersections/", {headers: {}}).then(
         //return $http.get(options.url + "/api/tracks2/"+val+"/snap/", {headers: {}}).then(

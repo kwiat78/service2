@@ -21,8 +21,12 @@
 			<uib-tabset active="active">
 				<uib-tab index="0" heading="Parameters">
 					<div class="col-lg-2 col-md-2 col-xs-2" >
+						points count: <p ng-bind="params.points_number" ng-if="params"></p>
+						start_time: <p ng-bind="params.start_date" ng-if="params"></p>
+						stop_time: <p ng-bind="params.stop_date" ng-if="params"></p>
 						<p ng-bind="sum" ng-if="sum"></p>
 						<p ng-bind="length" ng-if="length"></p>
+
 					</div>
 				</uib-tab>
 				<uib-tab index="1" heading="Streets">

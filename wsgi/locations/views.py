@@ -1,3 +1,4 @@
+from django.db.models import Min, Max
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.views import APIView
 from rest_framework.decorators import detail_route
@@ -40,6 +41,17 @@ class TrackViewSet(ViewSet):
             Location.objects.filter(label=pk).delete()
         return Response(status=204)
 
+    @detail_route()
+    def params(self, request, pk=None):
+        points_number = len(Location.objects.filter(label=pk))
+        start = Location.objects.filter(label=pk).aggregate(Min('date'))["date__min"]
+        stop = Location.objects.filter(label=pk).aggregate(Max('date'))["date__max"]
+        res = {
+            "points_number": points_number,
+            "start_date": start,
+            "stop_date": stop,
+        }
+        return Response(res)
 
     @detail_route()
     def snap(self,request,pk=None):
