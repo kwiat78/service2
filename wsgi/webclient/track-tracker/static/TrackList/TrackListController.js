@@ -17,8 +17,8 @@ app.controller('TrackListController', function($scope, $location, FeedReader, Co
         for(var i=0; i<track.length; i++) {
 	        s+=google.maps.geometry.spherical.computeDistanceBetween (track[i],track[(i+1)%track.length]);
         }
-        $scope.sum = "sum: "+parseFloat(s/1000).toFixed(2);
-        $scope.length = "length: "+parseFloat(l/1000).toFixed(2);
+        $scope.sum = parseFloat(s/1000).toFixed(2);
+        $scope.length = parseFloat(l/1000).toFixed(2);
 
     }
 
