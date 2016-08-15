@@ -120,6 +120,31 @@ class TrackViewSet(ViewSet):
 
         return Response(points)
 
+    @detail_route()
+    def only_intersections(self, request, pk=None):
+        key = "AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
+        url = "https://maps.googleapis.com/maps/api/geocode/json"
+        locations = Location.objects.filter(label=pk)
+        streets = []
+        for location in locations:
+            latlng = str(location.latitude) + "," + str(location.longitude)
+            response = requests.get(url=url, params={"key": key, "latlng": latlng, "result_type": "route"})
+            routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
+            streets += [routes[0]['long_name']]
+
+        points = [{"latitude": locations[0].latitude, "longitude": locations[0].longitude}]
+        url2 = "https://maps.googleapis.com/maps/api/geocode/json?address={} and {}, Toruń &key=AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
+
+        for i in range(1, len(locations)):
+            if (streets[i] != streets[i - 1]):
+                r = requests.get(url2.format(streets[i - 1], streets[i])).json()
+                if r['results'][0]['types'][0] == 'intersection':
+                    intersection = (r['results'][0]['geometry']['location'])
+                    points += [{"latitude": intersection['lat'], "longitude": intersection["lng"]}]
+            # points += [{"latitude": locations[i].latitude, "longitude": locations[i].longitude}]
+
+        return Response(points)
+
     @detail_route(methods=["post"])
     def join(self, request, pk=None):
         second_label = request.data.get("second_label", None)
