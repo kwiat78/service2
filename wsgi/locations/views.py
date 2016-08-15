@@ -77,6 +77,38 @@ class TrackViewSet(ViewSet):
         return Response(streets)
 
     @detail_route()
+    def streetsX(self, request, pk=None):
+        key = "AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
+        url = "https://maps.googleapis.com/maps/api/geocode/json"
+        locations = Location.objects.filter(label=pk)
+        streets = []
+        previous = ""
+        for location in locations:
+            latlng = str(location.latitude) + "," + str(location.longitude)
+            response = requests.get(url=url, params={"key": key, "latlng": latlng, "result_type": "route"})
+            routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
+            street = routes[0]['long_name']
+            if street != previous:
+                streets.append(street)
+                previous = street
+        result = []
+        size = len(streets)
+        idx = 0
+        while idx < size:
+            if idx + 2 < size:
+                if streets[idx] == streets[idx + 2]:
+                    result.append(streets[idx])
+                    idx += 3
+                else:
+                    result.append(streets[idx])
+                    idx += 1
+            else:
+                result.append(streets[idx])
+                idx += 1
+
+        return Response(result)
+
+    @detail_route()
     def intersections(self,request,pk=None):
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
