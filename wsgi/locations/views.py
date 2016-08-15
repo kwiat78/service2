@@ -64,20 +64,7 @@ class TrackViewSet(ViewSet):
         return Response(res)
 
     @detail_route()
-    def streets(self,request,pk=None):
-        key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
-        url = "https://maps.googleapis.com/maps/api/geocode/json"
-        locations = Location.objects.filter(label=pk)
-        streets =[]
-        for location in locations:
-            latlng = str(location.latitude)+","+str(location.longitude)
-            response = requests.get(url=url,params={"key":key, "latlng":latlng, "result_type":"route"})
-            routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
-            streets +=[routes[0]['long_name']]
-        return Response(streets)
-
-    @detail_route()
-    def streetsX(self, request, pk=None):
+    def streets(self, request, pk=None):
         key = "AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
         locations = Location.objects.filter(label=pk)
