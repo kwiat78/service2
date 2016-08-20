@@ -132,7 +132,7 @@ class TrackViewSet(ViewSet):
             routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
             streets += [routes[0]['long_name']]
 
-        points = [{"latitude": locations[0].latitude, "longitude": locations[0].longitude}]
+        # points = [{"latitude": locations[0].latitude, "longitude": locations[0].longitude}]
         url2 = "https://maps.googleapis.com/maps/api/geocode/json?address={} and {}, Toruń &key=AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
 
         for i in range(1, len(locations)):
@@ -140,7 +140,9 @@ class TrackViewSet(ViewSet):
                 r = requests.get(url2.format(streets[i - 1], streets[i])).json()
                 if r['results'][0]['types'][0] == 'intersection':
                     intersection = (r['results'][0]['geometry']['location'])
-                    points += [{"latitude": intersection['lat'], "longitude": intersection["lng"]}]
+                    points += [{"latitude": intersection['lat'], "longitude": intersection["lng"],
+                                "street_a": min(streets[i],streets[i - 1]),
+                                "street_b": max(streets[i], streets[i - 1])}]
             # points += [{"latitude": locations[i].latitude, "longitude": locations[i].longitude}]
 
         return Response(points)
