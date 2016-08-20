@@ -133,6 +133,7 @@ class TrackViewSet(ViewSet):
             streets += [routes[0]['long_name']]
 
         # points = [{"latitude": locations[0].latitude, "longitude": locations[0].longitude}]
+        points = []
         url2 = "https://maps.googleapis.com/maps/api/geocode/json?address={} and {}, Toruń &key=AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
 
         for i in range(1, len(locations)):
