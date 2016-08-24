@@ -128,7 +128,7 @@ class TrackViewSet(ViewSet):
         streets = []
         for location in locations:
             latlng = str(location.latitude) + "," + str(location.longitude)
-            response = requests.get(url=url, params={"key": key, "latlng": latlng, "result_type": "route"})
+            response = requests.get(url=url, params={"key": key, "latlng": latlng})
             routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
             streets += [routes[0]['long_name']]
 
