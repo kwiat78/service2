@@ -4,8 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.decorators import detail_route
 from rest_framework.renderers import JSONRenderer
 import requests
+import json
+from django.conf import settings
 
-from wsgi.locations.models import Location
+from wsgi.locations.models import Location, Track
 from wsgi.locations.serializers import LocationSerializer, TrackSerializer
 
 from rest_framework.response import Response
@@ -18,34 +20,49 @@ class LocationView(ModelViewSet):
         return super(LocationView, self).create(request, *args, **kwargs)
         # import ipdb;ipdb.set_trace()
 
+# class MapViewSet(ViewSet):
+#
+#     def list(self, request):
+#         map = []
+#         with open(settings.MAP, "r") as f:
+#             map = json.loads(f.read())
+#
+#
+#         return Response(map)
+
+
 class TrackViewSet(ViewSet):
 
     def list(self, request):
-        return Response(map(lambda x:x["label"], Location.objects.values("label").distinct()))
+        return Response(Track.objects.values_list("label", flat=True))
 
     def retrieve(self, request, pk=None):
-        queryset = Location.objects.filter(label=pk)
+        queryset = Location.objects.filter(track__label=pk)
 
         serializer = TrackSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def update(self, request, pk=None):
         new_label = request.data.get("new_label", None)
+
         if not new_label:
             return Response("Specify new_label", status=403)
-        Location.objects.filter(label=pk).update(label=new_label)
+        track = Track.objects.get(label=pk)
+        track.label = new_label
+        track.save()
         return Response(status=200)
 
     def destroy(self,request,pk=None):
         if pk:
-            Location.objects.filter(label=pk).delete()
+            Location.objects.filter(track__label=pk).delete()
+            Track.objects.get(label=pk).delete()
         return Response(status=204)
 
     @detail_route()
     def params(self, request, pk=None):
-        points_number = len(Location.objects.filter(label=pk))
-        start = Location.objects.filter(label=pk).aggregate(Min('date'))["date__min"]
-        stop = Location.objects.filter(label=pk).aggregate(Max('date'))["date__max"]
+        points_number = Track.objects.get(label=pk).location_set.count()
+        start = Track.objects.get(label=pk).location_set.aggregate(Min('date'))["date__min"]
+        stop = Track.objects.get(label=pk).location_set.aggregate(Max('date'))["date__max"]
         res = {
             "points_number": points_number,
             "start_date": start,
@@ -58,7 +75,7 @@ class TrackViewSet(ViewSet):
         url = 'https://roads.googleapis.com/v1/snapToRoads'
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         interpolate = True
-        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Location.objects.filter(label=pk))))
+        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Track.objects.get(label=pk).location_set.all())))
         response = requests.get(url=url,params={"key":key, "interpolate":interpolate,"path":path})
         res = map(lambda x:x['location'], response.json()['snappedPoints'])
         return Response(res)
@@ -67,12 +84,12 @@ class TrackViewSet(ViewSet):
     def streets(self, request, pk=None):
         key = "AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
-        locations = Location.objects.filter(label=pk)
+        locations = Track.objects.get(label=pk).location_set.all()
         streets = []
         previous = ""
         for location in locations:
             latlng = str(location.latitude) + "," + str(location.longitude)
-            response = requests.get(url=url, params={"key": key, "latlng": latlng, "result_type": "route"})
+            response = requests.get(url=url, params={"key": key, "latlng": latlng})
             routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
             street = routes[0]['long_name']
             if street != previous:
@@ -99,11 +116,11 @@ class TrackViewSet(ViewSet):
     def intersections(self,request,pk=None):
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
-        locations = Location.objects.filter(label=pk)
+        locations = Track.objects.get(label=pk).location_set.all()
         streets =[]
         for location in locations:
             latlng = str(location.latitude)+","+str(location.longitude)
-            response = requests.get(url=url,params={"key":key, "latlng":latlng, "result_type":"route"})
+            response = requests.get(url=url,params={"key":key, "latlng":latlng})
             routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
             streets +=[routes[0]['long_name']]
 
@@ -124,7 +141,7 @@ class TrackViewSet(ViewSet):
     def only_intersections(self, request, pk=None):
         key = "AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
-        locations = Location.objects.filter(label=pk)
+        locations = Track.objects.get(label=pk).location_set.all()
         streets = []
         for location in locations:
             latlng = str(location.latitude) + "," + str(location.longitude)
@@ -151,9 +168,11 @@ class TrackViewSet(ViewSet):
     @detail_route(methods=["post"])
     def join(self, request, pk=None):
         second_label = request.data.get("second_label", None)
+        track = Track.objects.get(label=pk)
         if not second_label:
             return Response("Needed second_label", status=403)
         if pk == second_label:
             return Response("Labels should be diferent", status=403)
-        Location.objects.filter(label=second_label).update(label=pk)
+        Location.objects.filter(track__label=second_label).update(track=track)
+        Track.objects.get(label=second_label).delete()
         return Response(status=200)

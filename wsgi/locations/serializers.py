@@ -1,12 +1,11 @@
-from django.contrib.auth.models import User
 from rest_framework.serializers import ModelSerializer, SlugRelatedField
 
-from wsgi.locations.models import Location
+from wsgi.locations.models import Location, Track
 
 
 class LocationSerializer(ModelSerializer):
 
-    user = SlugRelatedField(slug_field="username",queryset=User.objects.all())
+    track = SlugRelatedField(slug_field="label", queryset=Track.objects.all())
 
     class Meta:
         model = Location
