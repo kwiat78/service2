@@ -52,7 +52,7 @@ class MapViewSet(ViewSet):
         tracks = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks").json()
 
         track = []
-        limit = 2
+        limit = 5
         current = 0
         for t in tracks:
             params = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks/" + t + "/params")
@@ -192,7 +192,7 @@ class MapViewSet(ViewSet):
         print(streets)
         with open(settings.MAP, "w") as f:
             json.dump(streets, f)
-
+        return Response(status=201)
 
 class TrackViewSet(ViewSet):
 
