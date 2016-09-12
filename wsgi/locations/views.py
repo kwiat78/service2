@@ -63,10 +63,12 @@ class TrackViewSet(ViewSet):
         points_number = Track.objects.get(label=pk).location_set.count()
         start = Track.objects.get(label=pk).location_set.aggregate(Min('date'))["date__min"]
         stop = Track.objects.get(label=pk).location_set.aggregate(Max('date'))["date__max"]
+        processed = Track.objects.get(label=pk).procesed
         res = {
             "points_number": points_number,
             "start_date": start,
             "stop_date": stop,
+            "processed": processed,
         }
         return Response(res)
 
