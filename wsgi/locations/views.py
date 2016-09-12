@@ -32,7 +32,7 @@ class MapViewSet(ViewSet):
         return Response(map)
 
     @list_route()
-    def train(self):
+    def train(self, request):
 
         def haversine(lon1, lat1, lon2, lat2):
             """
