@@ -73,6 +73,13 @@ class TrackViewSet(ViewSet):
         return Response(res)
 
     @detail_route()
+    def process(self, request, pk=None):
+        track = Track.objects.get(label=pk)
+        track.procesed = True
+        track.save()
+        return Response(status=201)
+
+    @detail_route()
     def snap(self,request,pk=None):
         url = 'https://roads.googleapis.com/v1/snapToRoads'
         key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
