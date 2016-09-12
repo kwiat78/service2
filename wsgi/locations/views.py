@@ -1,11 +1,14 @@
 from django.db.models import Min, Max
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.views import APIView
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.renderers import JSONRenderer
-import requests
-import json
+
+
 from django.conf import settings
+import json
+from math import radians, cos, sin, asin, sqrt
+import requests
 
 from wsgi.locations.models import Location, Track
 from wsgi.locations.serializers import LocationSerializer, TrackSerializer
@@ -20,15 +23,175 @@ class LocationView(ModelViewSet):
         return super(LocationView, self).create(request, *args, **kwargs)
         # import ipdb;ipdb.set_trace()
 
-# class MapViewSet(ViewSet):
-#
-#     def list(self, request):
-#         map = []
-#         with open(settings.MAP, "r") as f:
-#             map = json.loads(f.read())
-#
-#
-#         return Response(map)
+class MapViewSet(ViewSet):
+
+    def list(self, request):
+        map = []
+        with open(settings.MAP, "r") as f:
+            map = json.loads(f.read())
+        return Response(map)
+
+    @list_route()
+    def train(self):
+
+        def haversine(lon1, lat1, lon2, lat2):
+            """
+            Calculate the great circle distance between two points
+            on the earth (specified in decimal degrees)
+            """
+            # convert decimal degrees to radians
+            lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+            # haversine formula
+            dlon = lon2 - lon1
+            dlat = lat2 - lat1
+            a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+            c = 2 * asin(sqrt(a))
+            km = 6367 * c
+            return km
+
+        tracks = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks").json()
+
+        track = []
+        limit = 2
+        current = 0
+        for t in tracks:
+            params = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks/" + t + "/params")
+            processed = params.json()["processed"]
+            if not processed:
+                xx = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks/" + t + "/only_intersections")
+                if xx.status_code == 200:
+                    ox = xx.json()
+                    for o in ox:
+                        track.append(o)
+                    print(200)
+                    requests.get("http://service2-kwiat78.rhcloud.com/api/tracks/" + t + "/process")
+                    current += 1
+                    # TODO set_processed
+                else:
+                    print(500)
+            if current == limit:
+                break
+
+        # with open("track_a.json", "r") as f:
+        streets = {}
+        # track = json.loads(f.read().replace("'", "\""))
+
+        try:
+            f = open(settings.MAP, "r")
+            streets = json.load(f)
+        except FileNotFoundError:
+            streets = {}
+        except ValueError:
+            streets = {}
+        print(streets)
+
+        for point in track:
+            street_a = point["street_a"]
+            street_b = point["street_b"]
+            lng = point["longitude"]
+            ltd = point["latitude"]
+            if street_a not in streets:
+                streets[street_a] = []
+            if not streets[street_a]:
+                streets[street_a].append([street_b, lng, ltd])
+            elif len(streets[street_a]) == 1:
+                if streets[street_a][0][1] < lng:
+                    # print(street_a, streets[street_a][0][1] , street_b, lng)
+                    streets[street_a].append([street_b, lng, ltd])
+                elif streets[street_a][0][1] == lng and streets[street_a][0][2] == ltd:
+                    pass
+                else:
+                    streets[street_a].insert(0, [street_b, lng, ltd])
+
+                    # print(street_a, streets[street_a][0][1], street_b, lng)
+            else:
+                if [street_b, lng, ltd] not in streets[street_a]:
+                    streets[street_a].insert(0, [street_b, lng, ltd])
+                    i = 0
+                    placed = False
+                    while i + 2 < len(streets[street_a]) and not placed:
+                        lng1 = streets[street_a][i][1]
+                        ltd1 = streets[street_a][i][2]
+
+                        lng2 = streets[street_a][i + 1][1]
+                        ltd2 = streets[street_a][i + 1][2]
+
+                        # if lng1 == lng2 and ltd1 == ltd2:
+                        #     placed == True
+                        #     del streets[street_a][i]
+                        #     break
+
+                        lng3 = streets[street_a][i + 2][1]
+                        ltd3 = streets[street_a][i + 2][2]
+
+                        a = haversine(lng1, ltd1, lng2, ltd2)
+                        b = haversine(lng2, ltd2, lng3, ltd3)
+                        c = haversine(lng1, ltd1, lng3, ltd3)
+
+                        if a < c and b < c:
+                            placed = True
+                        elif c < b and a < b:
+                            placed = True
+                            streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], \
+                                                                             streets[street_a][i]
+                        else:
+                            streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], \
+                                                                             streets[street_a][i]
+                        i += 1
+                    if not placed:
+                        streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], streets[street_a][i]
+
+            if street_b not in streets:
+                streets[street_b] = []
+            if not streets[street_b]:
+                streets[street_b].append([street_a, lng, ltd])
+            elif len(streets[street_b]) == 1:
+                if streets[street_b][0][1] < lng:
+                    streets[street_b].append([street_a, lng, ltd])
+
+                elif streets[street_b][0][1] == lng and streets[street_b][0][2] == ltd:
+                    pass
+                else:
+                    streets[street_b].insert(0, [street_a, lng, ltd])
+            else:
+
+                if [street_a, lng, ltd] not in streets[street_b]:
+
+                    streets[street_b].insert(0, [street_a, lng, ltd])
+                    i = 0
+                    placed = False
+                    while i + 2 < len(streets[street_b]) and not placed:
+
+                        lng1 = streets[street_b][i][1]
+                        ltd1 = streets[street_b][i][2]
+
+                        lng2 = streets[street_b][i + 1][1]
+                        ltd2 = streets[street_b][i + 1][2]
+
+                        lng3 = streets[street_b][i + 2][1]
+                        ltd3 = streets[street_b][i + 2][2]
+
+                        a = haversine(lng1, ltd1, lng2, ltd2)
+                        b = haversine(lng2, ltd2, lng3, ltd3)
+                        c = haversine(lng1, ltd1, lng3, ltd3)
+
+                        if a < c and b < c:
+                            placed = True
+                        elif c < b and a < b:
+                            placed = True
+                            streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], \
+                                                                             streets[street_b][i]
+                        else:
+                            streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], \
+                                                                             streets[street_b][i]
+                        i += 1
+                    if not placed:
+                        streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], streets[street_b][i]
+        print("\n")
+        print("\n")
+        print(streets)
+        with open(settings.MAP, "w") as f:
+            json.dump(streets, f)
 
 
 class TrackViewSet(ViewSet):

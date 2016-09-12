@@ -4,10 +4,11 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 
 from wsgi.feeds.views import FeedView, PostView, ReorderView, LinkView, TimeView, DiscoverView, FindView
-from wsgi.locations.views import LocationView, TrackViewSet
+from wsgi.locations.views import LocationView, TrackViewSet, MapViewSet
 from wsgi.webclient.views import index
 
 router = DefaultRouter()
+router.register(r"map", MapViewSet, base_name="map")
 router.register(r"locations", LocationView)
 router.register(r"tracks", TrackViewSet, base_name="tracks")
 router.register(r"feeds", FeedView)
