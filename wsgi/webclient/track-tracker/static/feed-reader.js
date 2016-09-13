@@ -16,6 +16,14 @@ app.service('FeedReader', function($http) {
             })
     }
 
+    this.getMap = function() {
+        init()
+        return $http.get("/api/map", {headers: {}}).then(
+            function(obj){
+                return obj.data;
+            })
+    }
+
     this.postTracks = function(label, new_label) {
         init()
         return $http.put(options.url + "/api/tracks/"+label+"/", {"new_label":new_label}, {headers: {}}).then(

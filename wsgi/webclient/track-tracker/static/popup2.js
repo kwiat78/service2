@@ -10,6 +10,10 @@ var app = angular.module('myApp2', ["ngRoute", "ngCookies", "ui.bootstrap.contex
         templateUrl: '../static/TrackViewer/TrackViewerView.html',
         controller: 'TrackViewerController'
       }).
+      when('/c', {
+        templateUrl: '../static/Map/MapView.html',
+        controller: 'MapController'
+      }).
       otherwise({
         redirectTo: '/index.html'
       });
