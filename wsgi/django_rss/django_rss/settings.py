@@ -94,13 +94,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'mydatabase',
-#     }
-# }
-
 STATICFILES_DIRS = [
     os.path.join(WEBCLIENT_DIR, "static")
 ]
@@ -129,6 +122,7 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 CORS_ORIGIN_ALLOW_ALL = True
 
 MAP = os.path.join(STATIC_ROOT, 'm_map.json')
+GOOGLE_API_KEY = "AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
 
 try:
     from .local_settings import *

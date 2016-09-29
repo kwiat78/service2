@@ -1,19 +1,18 @@
-from django.db.models import Min, Max
-from rest_framework.viewsets import ModelViewSet, ViewSet
-from rest_framework.views import APIView
-from rest_framework.decorators import detail_route, list_route
-from rest_framework.renderers import JSONRenderer
+from math import radians, cos, sin, asin, sqrt
 
+import json
+import requests
 
 from django.conf import settings
-import json
-from math import radians, cos, sin, asin, sqrt
-import requests
+from django.db.models import Min, Max
+
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet, ViewSet
 
 from wsgi.locations.models import Location, Track
 from wsgi.locations.serializers import LocationSerializer, TrackSerializer
 
-from rest_framework.response import Response
 
 class LocationView(ModelViewSet):
     queryset = Location.objects.all().order_by("date")
@@ -21,14 +20,19 @@ class LocationView(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         return super(LocationView, self).create(request, *args, **kwargs)
-        # import ipdb;ipdb.set_trace()
+
 
 class MapViewSet(ViewSet):
 
     def list(self, request):
-        map = []
-        with open(settings.MAP, "r") as f:
+        try:
+            f = open(settings.MAP, "r")
             map = json.loads(f.read())
+        except FileNotFoundError:
+            map = []
+        except ValueError:
+            map = []
+
         return Response(map)
 
     @list_route()
@@ -52,7 +56,7 @@ class MapViewSet(ViewSet):
         tracks = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks").json()
 
         track = []
-        limit = 5
+        limit = 20
         current = 0
         for t in tracks:
             params = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks/" + t + "/params")
@@ -63,19 +67,10 @@ class MapViewSet(ViewSet):
                     ox = xx.json()
                     for o in ox:
                         track.append(o)
-                    print(200)
                     requests.get("http://service2-kwiat78.rhcloud.com/api/tracks/" + t + "/process")
                     current += 1
-                    # TODO set_processed
-                else:
-                    print(500)
             if current == limit:
                 break
-
-        # with open("track_a.json", "r") as f:
-        streets = {}
-        # track = json.loads(f.read().replace("'", "\""))
-
         try:
             f = open(settings.MAP, "r")
             streets = json.load(f)
@@ -83,116 +78,147 @@ class MapViewSet(ViewSet):
             streets = {}
         except ValueError:
             streets = {}
-        print(streets)
 
         for point in track:
             street_a = point["street_a"]
             street_b = point["street_b"]
             lng = point["longitude"]
             ltd = point["latitude"]
-            if street_a not in streets:
-                streets[street_a] = []
-            if not streets[street_a]:
-                streets[street_a].append([street_b, lng, ltd])
-            elif len(streets[street_a]) == 1:
-                if streets[street_a][0][1] < lng:
-                    # print(street_a, streets[street_a][0][1] , street_b, lng)
-                    streets[street_a].append([street_b, lng, ltd])
-                elif streets[street_a][0][1] == lng and streets[street_a][0][2] == ltd:
-                    pass
+
+            for x, y in ((street_a, street_b), (street_b, street_a)):
+                if x not in streets:
+                    streets[x] = []
+                if not streets[x]:
+                    streets[x].append([y, lng, ltd])
+                elif len(streets[x]) == 1:
+                    if streets[x][0][1] < lng:
+                        streets[x].append([y, lng, ltd])
+                    elif streets[x][0][1] != lng or streets[x][0][2] != ltd:
+                        streets[x].insert(0, [y, lng, ltd])
                 else:
-                    streets[street_a].insert(0, [street_b, lng, ltd])
+                    if [y, lng, ltd] not in streets[x]:
+                        streets[x].insert(0, [y, lng, ltd])
+                        i = 0
+                        placed = False
+                        while i + 2 < len(streets[x]) and not placed:
+                            lng1 = streets[x][i][1]
+                            ltd1 = streets[x][i][2]
 
-                    # print(street_a, streets[street_a][0][1], street_b, lng)
-            else:
-                if [street_b, lng, ltd] not in streets[street_a]:
-                    streets[street_a].insert(0, [street_b, lng, ltd])
-                    i = 0
-                    placed = False
-                    while i + 2 < len(streets[street_a]) and not placed:
-                        lng1 = streets[street_a][i][1]
-                        ltd1 = streets[street_a][i][2]
+                            lng2 = streets[x][i + 1][1]
+                            ltd2 = streets[x][i + 1][2]
 
-                        lng2 = streets[street_a][i + 1][1]
-                        ltd2 = streets[street_a][i + 1][2]
+                            lng3 = streets[x][i + 2][1]
+                            ltd3 = streets[x][i + 2][2]
 
-                        # if lng1 == lng2 and ltd1 == ltd2:
-                        #     placed == True
-                        #     del streets[street_a][i]
-                        #     break
+                            a = haversine(lng1, ltd1, lng2, ltd2)
+                            b = haversine(lng2, ltd2, lng3, ltd3)
+                            c = haversine(lng1, ltd1, lng3, ltd3)
 
-                        lng3 = streets[street_a][i + 2][1]
-                        ltd3 = streets[street_a][i + 2][2]
+                            if a < c and b < c:
+                                placed = True
+                            elif c < b and a < b:
+                                placed = True
+                                streets[x][i], streets[x][i + 1] = streets[x][i + 1], streets[x][i]
+                            else:
+                                streets[x][i], streets[x][i + 1] = streets[x][i + 1], streets[x][i]
+                            i += 1
+                        if not placed:
+                            streets[x][i], streets[x][i + 1] = streets[x][i + 1], streets[x][i]
 
-                        a = haversine(lng1, ltd1, lng2, ltd2)
-                        b = haversine(lng2, ltd2, lng3, ltd3)
-                        c = haversine(lng1, ltd1, lng3, ltd3)
-
-                        if a < c and b < c:
-                            placed = True
-                        elif c < b and a < b:
-                            placed = True
-                            streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], \
-                                                                             streets[street_a][i]
-                        else:
-                            streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], \
-                                                                             streets[street_a][i]
-                        i += 1
-                    if not placed:
-                        streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], streets[street_a][i]
-
-            if street_b not in streets:
-                streets[street_b] = []
-            if not streets[street_b]:
-                streets[street_b].append([street_a, lng, ltd])
-            elif len(streets[street_b]) == 1:
-                if streets[street_b][0][1] < lng:
-                    streets[street_b].append([street_a, lng, ltd])
-
-                elif streets[street_b][0][1] == lng and streets[street_b][0][2] == ltd:
-                    pass
-                else:
-                    streets[street_b].insert(0, [street_a, lng, ltd])
-            else:
-
-                if [street_a, lng, ltd] not in streets[street_b]:
-
-                    streets[street_b].insert(0, [street_a, lng, ltd])
-                    i = 0
-                    placed = False
-                    while i + 2 < len(streets[street_b]) and not placed:
-
-                        lng1 = streets[street_b][i][1]
-                        ltd1 = streets[street_b][i][2]
-
-                        lng2 = streets[street_b][i + 1][1]
-                        ltd2 = streets[street_b][i + 1][2]
-
-                        lng3 = streets[street_b][i + 2][1]
-                        ltd3 = streets[street_b][i + 2][2]
-
-                        a = haversine(lng1, ltd1, lng2, ltd2)
-                        b = haversine(lng2, ltd2, lng3, ltd3)
-                        c = haversine(lng1, ltd1, lng3, ltd3)
-
-                        if a < c and b < c:
-                            placed = True
-                        elif c < b and a < b:
-                            placed = True
-                            streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], \
-                                                                             streets[street_b][i]
-                        else:
-                            streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], \
-                                                                             streets[street_b][i]
-                        i += 1
-                    if not placed:
-                        streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], streets[street_b][i]
-        print("\n")
-        print("\n")
-        print(streets)
+            # if street_a not in streets:
+            #     streets[street_a] = []
+            # if not streets[street_a]:
+            #     streets[street_a].append([street_b, lng, ltd])
+            # elif len(streets[street_a]) == 1:
+            #     if streets[street_a][0][1] < lng:
+            #         # print(street_a, streets[street_a][0][1] , street_b, lng)
+            #         streets[street_a].append([street_b, lng, ltd])
+            #     elif streets[street_a][0][1] == lng and streets[street_a][0][2] == ltd:
+            #         pass
+            #     else:
+            #         streets[street_a].insert(0, [street_b, lng, ltd])
+            # else:
+            #     if [street_b, lng, ltd] not in streets[street_a]:
+            #         streets[street_a].insert(0, [street_b, lng, ltd])
+            #         i = 0
+            #         placed = False
+            #         while i + 2 < len(streets[street_a]) and not placed:
+            #             lng1 = streets[street_a][i][1]
+            #             ltd1 = streets[street_a][i][2]
+            #
+            #             lng2 = streets[street_a][i + 1][1]
+            #             ltd2 = streets[street_a][i + 1][2]
+            #
+            #             lng3 = streets[street_a][i + 2][1]
+            #             ltd3 = streets[street_a][i + 2][2]
+            #
+            #             a = haversine(lng1, ltd1, lng2, ltd2)
+            #             b = haversine(lng2, ltd2, lng3, ltd3)
+            #             c = haversine(lng1, ltd1, lng3, ltd3)
+            #
+            #             if a < c and b < c:
+            #                 placed = True
+            #             elif c < b and a < b:
+            #                 placed = True
+            #                 streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], \
+            #                                                                  streets[street_a][i]
+            #             else:
+            #                 streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], \
+            #                                                                  streets[street_a][i]
+            #             i += 1
+            #         if not placed:
+            #             streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], streets[street_a][i]
+            #
+            # if street_b not in streets:
+            #     streets[street_b] = []
+            # if not streets[street_b]:
+            #     streets[street_b].append([street_a, lng, ltd])
+            # elif len(streets[street_b]) == 1:
+            #     if streets[street_b][0][1] < lng:
+            #         streets[street_b].append([street_a, lng, ltd])
+            #
+            #     elif streets[street_b][0][1] == lng and streets[street_b][0][2] == ltd:
+            #         pass
+            #     else:
+            #         streets[street_b].insert(0, [street_a, lng, ltd])
+            # else:
+            #
+            #     if [street_a, lng, ltd] not in streets[street_b]:
+            #
+            #         streets[street_b].insert(0, [street_a, lng, ltd])
+            #         i = 0
+            #         placed = False
+            #         while i + 2 < len(streets[street_b]) and not placed:
+            #
+            #             lng1 = streets[street_b][i][1]
+            #             ltd1 = streets[street_b][i][2]
+            #
+            #             lng2 = streets[street_b][i + 1][1]
+            #             ltd2 = streets[street_b][i + 1][2]
+            #
+            #             lng3 = streets[street_b][i + 2][1]
+            #             ltd3 = streets[street_b][i + 2][2]
+            #
+            #             a = haversine(lng1, ltd1, lng2, ltd2)
+            #             b = haversine(lng2, ltd2, lng3, ltd3)
+            #             c = haversine(lng1, ltd1, lng3, ltd3)
+            #
+            #             if a < c and b < c:
+            #                 placed = True
+            #             elif c < b and a < b:
+            #                 placed = True
+            #                 streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], \
+            #                                                                  streets[street_b][i]
+            #             else:
+            #                 streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], \
+            #                                                                  streets[street_b][i]
+            #             i += 1
+            #         if not placed:
+            #             streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], streets[street_b][i]
         with open(settings.MAP, "w") as f:
             json.dump(streets, f)
         return Response(status=201)
+
 
 class TrackViewSet(ViewSet):
 
@@ -245,23 +271,22 @@ class TrackViewSet(ViewSet):
     @detail_route()
     def snap(self,request,pk=None):
         url = 'https://roads.googleapis.com/v1/snapToRoads'
-        key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
+
         interpolate = True
         path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Track.objects.get(label=pk).location_set.all())))
-        response = requests.get(url=url,params={"key":key, "interpolate":interpolate,"path":path})
+        response = requests.get(url=url,params={"key": settings.GOOGLE_API_KEY, "interpolate":interpolate,"path":path})
         res = map(lambda x:x['location'], response.json()['snappedPoints'])
         return Response(res)
 
     @detail_route()
     def streets(self, request, pk=None):
-        key = "AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
         locations = Track.objects.get(label=pk).location_set.all()
         streets = []
         previous = ""
         for location in locations:
             latlng = str(location.latitude) + "," + str(location.longitude)
-            response = requests.get(url=url, params={"key": key, "latlng": latlng})
+            response = requests.get(url=url, params={"key": settings.GOOGLE_API_KEY, "latlng": latlng})
             routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
             street = routes[0]['long_name']
             if street != previous:
@@ -286,13 +311,12 @@ class TrackViewSet(ViewSet):
 
     @detail_route()
     def intersections(self,request,pk=None):
-        key ="AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
         locations = Track.objects.get(label=pk).location_set.all()
         streets =[]
         for location in locations:
             latlng = str(location.latitude)+","+str(location.longitude)
-            response = requests.get(url=url,params={"key":key, "latlng":latlng})
+            response = requests.get(url=url,params={"key": settings.GOOGLE_API_KEY, "latlng":latlng})
             routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
             streets +=[routes[0]['long_name']]
 
@@ -311,13 +335,12 @@ class TrackViewSet(ViewSet):
 
     @detail_route()
     def only_intersections(self, request, pk=None):
-        key = "AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         url = "https://maps.googleapis.com/maps/api/geocode/json"
         locations = Track.objects.get(label=pk).location_set.all()
         streets = []
         for location in locations:
             latlng = str(location.latitude) + "," + str(location.longitude)
-            response = requests.get(url=url, params={"key": key, "latlng": latlng})
+            response = requests.get(url=url, params={"key": settings.GOOGLE_API_KEY, "latlng": latlng})
             routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
             streets += [routes[0]['long_name']]
 
