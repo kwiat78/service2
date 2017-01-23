@@ -22,6 +22,20 @@ class LocationView(ModelViewSet):
         return super(LocationView, self).create(request, *args, **kwargs)
 
 
+# class Map2ViewSet(ViewSet):
+#
+#     def list(self, request):
+#         try:
+#             f = open(settings.MAP2, "r")
+#             map = json.loads(f.read())
+#         except FileNotFoundError:
+#             map = []
+#         except ValueError:
+#             map = []
+#
+#         return Response(map)
+#
+
 class MapViewSet(ViewSet):
 
     def list(self, request):
@@ -125,96 +139,6 @@ class MapViewSet(ViewSet):
                         if not placed:
                             streets[x][i], streets[x][i + 1] = streets[x][i + 1], streets[x][i]
 
-            # if street_a not in streets:
-            #     streets[street_a] = []
-            # if not streets[street_a]:
-            #     streets[street_a].append([street_b, lng, ltd])
-            # elif len(streets[street_a]) == 1:
-            #     if streets[street_a][0][1] < lng:
-            #         # print(street_a, streets[street_a][0][1] , street_b, lng)
-            #         streets[street_a].append([street_b, lng, ltd])
-            #     elif streets[street_a][0][1] == lng and streets[street_a][0][2] == ltd:
-            #         pass
-            #     else:
-            #         streets[street_a].insert(0, [street_b, lng, ltd])
-            # else:
-            #     if [street_b, lng, ltd] not in streets[street_a]:
-            #         streets[street_a].insert(0, [street_b, lng, ltd])
-            #         i = 0
-            #         placed = False
-            #         while i + 2 < len(streets[street_a]) and not placed:
-            #             lng1 = streets[street_a][i][1]
-            #             ltd1 = streets[street_a][i][2]
-            #
-            #             lng2 = streets[street_a][i + 1][1]
-            #             ltd2 = streets[street_a][i + 1][2]
-            #
-            #             lng3 = streets[street_a][i + 2][1]
-            #             ltd3 = streets[street_a][i + 2][2]
-            #
-            #             a = haversine(lng1, ltd1, lng2, ltd2)
-            #             b = haversine(lng2, ltd2, lng3, ltd3)
-            #             c = haversine(lng1, ltd1, lng3, ltd3)
-            #
-            #             if a < c and b < c:
-            #                 placed = True
-            #             elif c < b and a < b:
-            #                 placed = True
-            #                 streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], \
-            #                                                                  streets[street_a][i]
-            #             else:
-            #                 streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], \
-            #                                                                  streets[street_a][i]
-            #             i += 1
-            #         if not placed:
-            #             streets[street_a][i], streets[street_a][i + 1] = streets[street_a][i + 1], streets[street_a][i]
-            #
-            # if street_b not in streets:
-            #     streets[street_b] = []
-            # if not streets[street_b]:
-            #     streets[street_b].append([street_a, lng, ltd])
-            # elif len(streets[street_b]) == 1:
-            #     if streets[street_b][0][1] < lng:
-            #         streets[street_b].append([street_a, lng, ltd])
-            #
-            #     elif streets[street_b][0][1] == lng and streets[street_b][0][2] == ltd:
-            #         pass
-            #     else:
-            #         streets[street_b].insert(0, [street_a, lng, ltd])
-            # else:
-            #
-            #     if [street_a, lng, ltd] not in streets[street_b]:
-            #
-            #         streets[street_b].insert(0, [street_a, lng, ltd])
-            #         i = 0
-            #         placed = False
-            #         while i + 2 < len(streets[street_b]) and not placed:
-            #
-            #             lng1 = streets[street_b][i][1]
-            #             ltd1 = streets[street_b][i][2]
-            #
-            #             lng2 = streets[street_b][i + 1][1]
-            #             ltd2 = streets[street_b][i + 1][2]
-            #
-            #             lng3 = streets[street_b][i + 2][1]
-            #             ltd3 = streets[street_b][i + 2][2]
-            #
-            #             a = haversine(lng1, ltd1, lng2, ltd2)
-            #             b = haversine(lng2, ltd2, lng3, ltd3)
-            #             c = haversine(lng1, ltd1, lng3, ltd3)
-            #
-            #             if a < c and b < c:
-            #                 placed = True
-            #             elif c < b and a < b:
-            #                 placed = True
-            #                 streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], \
-            #                                                                  streets[street_b][i]
-            #             else:
-            #                 streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], \
-            #                                                                  streets[street_b][i]
-            #             i += 1
-            #         if not placed:
-            #             streets[street_b][i], streets[street_b][i + 1] = streets[street_b][i + 1], streets[street_b][i]
         with open(settings.MAP, "w") as f:
             json.dump(streets, f)
         return Response(status=201)
@@ -350,12 +274,17 @@ class TrackViewSet(ViewSet):
 
         for i in range(1, len(locations)):
             if (streets[i] != streets[i - 1]):
-                r = requests.get(url2.format(streets[i - 1], streets[i])).json()
-                if r['results'][0]['types'][0] == 'intersection':
-                    intersection = (r['results'][0]['geometry']['location'])
-                    points += [{"latitude": intersection['lat'], "longitude": intersection["lng"],
-                                "street_a": min(streets[i],streets[i - 1]),
-                                "street_b": max(streets[i], streets[i - 1])}]
+                response = requests.get(url2.format(streets[i - 1], streets[i]))
+                resp = response.json()
+                print(url2.format(streets[i - 1], streets[i]))
+                print(resp)
+                if resp['status']=='OK':
+                    if resp['results'][0]['types'][0] == 'intersection':
+                        # print(response.status_code)
+                        intersection = (resp['results'][0]['geometry']['location'])
+                        points += [{"latitude": intersection['lat'], "longitude": intersection["lng"],
+                                    "street_a": min(streets[i],streets[i - 1]),
+                                    "street_b": max(streets[i], streets[i - 1])}]
             # points += [{"latitude": locations[i].latitude, "longitude": locations[i].longitude}]
 
         return Response(points)
