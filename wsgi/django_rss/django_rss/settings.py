@@ -121,8 +121,8 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-MAP = os.environ.get("OPENSHIFT_DATA_DIR", os.path.join(STATIC_ROOT, 'map2.json'))
-MAP_ = os.environ.get("OPENSHIFT_DATA_DIR", os.path.join(STATIC_ROOT, 'map.json'))
+MAP = os.path.join(os.environ.get("OPENSHIFT_DATA_DIR", STATIC_ROOT), 'map2.json')
+MAP_ = os.path.join(os.environ.get("OPENSHIFT_DATA_DIR", STATIC_ROOT), 'map.json')
 # MAP2 = os.path.join(STATIC_ROOT, 'map2.json')
 GOOGLE_API_KEY = "AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
 
