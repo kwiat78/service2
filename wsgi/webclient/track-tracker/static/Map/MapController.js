@@ -57,7 +57,8 @@ app.controller('MapController', function($scope, $location, FeedReader, Colors, 
                 $scope.track.points = []
 //                dj = $scope.streets[j]
 //                console.log(dj)
-                for(var i=0;i<2;i++) {
+
+                for(var i=0;i<$scope.map_[j].length;i++) {
                     $scope.track.points.push(new google.maps.LatLng($scope.map_[j][i]['latitude'], $scope.map_[j][i]['longitude']));
                 }
 
@@ -92,6 +93,7 @@ app.controller('MapController', function($scope, $location, FeedReader, Colors, 
 //    })
 
     FeedReader.getMap().then(function(f) {
+        console.log($scope.map_)
         $scope.map_ = f
         $scope.streets =[]
         for(var x in  $scope.map_){$scope.streets.push(x)}

@@ -1,3 +1,6 @@
+from map.orient import sort
+
+
 class Point(object):
     def __init__(self, intersection ):
         self.longitude = intersection['longitude']
@@ -75,3 +78,23 @@ class Map(object):
                 neighbour_list[x].add(y)
                 neighbour_list[y].add(x)
         return neighbour_list
+
+    def to_streets(self):
+        streets = {}
+        for idx, point in enumerate(self.points):
+            for s in point.streets:
+                if s in streets:
+                    streets[s].append(idx)
+                else:
+                    streets[s] = [idx]
+        streets = {x: streets[x] for x in streets if len(streets[x]) > 3}
+
+        Y = {}
+        for street in streets:
+            st = streets[street]
+            w = sort(self, st[0], st[1:])
+            # for idx in range(len(w)-1):
+            #     E.add((w[idx][1], w[idx+1][1]))
+            Y[street] = [ww[1] for ww in w]
+
+        return Y

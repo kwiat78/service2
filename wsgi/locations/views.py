@@ -13,8 +13,8 @@ from rest_framework.viewsets import ModelViewSet, ViewSet
 from wsgi.locations.models import Location, Track
 from wsgi.locations.serializers import LocationSerializer, TrackSerializer
 
-from map.orient import sort
-from map.map import Map
+from map.orient import sort, sort_2
+from map.map import Map, Point
 
 def haversine(lon1, lat1, lon2, lat2):
             """
@@ -55,136 +55,10 @@ class MapViewSet(ViewSet):
         except ValueError:
             pass
 
-        streets = {}
-        for idx, point in enumerate(m.points):
-            for s in point.streets:
-                if s in streets:
-                    streets[s].append(idx)
-                else:
-                    streets[s] = [idx]
-        streets = {x: streets[x] for x in streets if len(streets[x]) > 3}
-
-        E = set()
-        for street in streets:
-            st = streets[street]
-            w = sort(m, st[0], st[1:])
-            for idx in range(len(w) - 1):
-                E.add((w[idx][1], w[idx + 1][1]))
-
-        ME = [[
-                  {'latitude': m.get_point(ei[0]).latitude, 'longitude': m.get_point(ei[0]).longitude},
-                  {'latitude': m.get_point(ei[1]).latitude, 'longitude': m.get_point(ei[1]).longitude}
-              ] for ei in E]
-
-        return Response(ME)
-
-
-# class MapViewSet(ViewSet):
-#
-#     def list(self, request):
-#         try:
-#             f = open(settings.MAP, "r")
-#             map = json.loads(f.read())
-#         except FileNotFoundError:
-#             map = []
-#         except ValueError:
-#             map = []
-#
-#         return Response(map)
-#
-#     @list_route()
-#     def train(self, request):
-#
-#         def haversine(lon1, lat1, lon2, lat2):
-#             """
-#             Calculate the great circle distance between two points
-#             on the earth (specified in decimal degrees)
-#             """
-#             # convert decimal degrees to radians
-#             lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
-#             # haversine formula
-#             dlon = lon2 - lon1
-#             dlat = lat2 - lat1
-#             a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
-#             c = 2 * asin(sqrt(a))
-#             km = 6367 * c
-#             return km
-#
-#         tracks = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks").json()
-#
-#         track = []
-#         limit = 20
-#         current = 0
-#         for t in tracks:
-#             params = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks/" + t + "/params")
-#             processed = params.json()["processed"]
-#             if not processed:
-#                 xx = requests.get("http://service2-kwiat78.rhcloud.com/api/tracks/" + t + "/only_intersections")
-#                 if xx.status_code == 200:
-#                     ox = xx.json()
-#                     for o in ox:
-#                         track.append(o)
-#                     requests.get("http://service2-kwiat78.rhcloud.com/api/tracks/" + t + "/process")
-#                     current += 1
-#             if current == limit:
-#                 break
-#         try:
-#             f = open(settings.MAP, "r")
-#             streets = json.load(f)
-#         except FileNotFoundError:
-#             streets = {}
-#         except ValueError:
-#             streets = {}
-#
-#         for point in track:
-#             street_a = point["street_a"]
-#             street_b = point["street_b"]
-#             lng = point["longitude"]
-#             ltd = point["latitude"]
-#
-#             for x, y in ((street_a, street_b), (street_b, street_a)):
-#                 if x not in streets:
-#                     streets[x] = []
-#                 if not streets[x]:
-#                     streets[x].append([y, lng, ltd])
-#                 elif len(streets[x]) == 1:
-#                     if streets[x][0][1] < lng:
-#                         streets[x].append([y, lng, ltd])
-#                     elif streets[x][0][1] != lng or streets[x][0][2] != ltd:
-#                         streets[x].insert(0, [y, lng, ltd])
-#                 else:
-#                     if [y, lng, ltd] not in streets[x]:
-#                         streets[x].insert(0, [y, lng, ltd])
-#                         i = 0
-#                         placed = False
-#                         while i + 2 < len(streets[x]) and not placed:
-#                             lng1 = streets[x][i][1]
-#                             ltd1 = streets[x][i][2]
-#
-#                             lng2 = streets[x][i + 1][1]
-#                             ltd2 = streets[x][i + 1][2]
-#
-#                             lng3 = streets[x][i + 2][1]
-#                             ltd3 = streets[x][i + 2][2]
-#
-#                             a = haversine(lng1, ltd1, lng2, ltd2)
-#                             b = haversine(lng2, ltd2, lng3, ltd3)
-#                             c = haversine(lng1, ltd1, lng3, ltd3)
-#
-#                             if a < c and b < c:
-#                                 placed = True
-#                             elif c < b and a < b:
-#                                 placed = True
-#                                 streets[x][i], streets[x][i + 1] = streets[x][i + 1], streets[x][i]
-#                             else:
-#                                 streets[x][i], streets[x][i + 1] = streets[x][i + 1], streets[x][i]
-#                             i += 1
-#                         if not placed:
-#                             streets[x][i], streets[x][i + 1] = streets[x][i + 1], streets[x][i]
-#
-#         with open(settings.MAP, "w") as f:
-#             json.dump(streets, f)
-#         return Response(status=201)
+        X = m.to_streets()
+        # XE = {street:[{'latitude': m.get_point(point).latitude, 'longitude': m.get_point(point).longitude} for point in X[street]] for street in X}
+        XE = [[{'latitude': m.get_point(point).latitude, 'longitude': m.get_point(point).longitude} for point in X[street]] for street in X]
+        return Response(XE)
 
 
 class TrackViewSet(ViewSet):
@@ -275,6 +149,96 @@ class TrackViewSet(ViewSet):
                 idx += 1
 
         return Response(result)
+
+    @detail_route()
+    def with_streets(self, request, pk=None):
+        url = "https://maps.googleapis.com/maps/api/geocode/json"
+        locations = Track.objects.get(label=pk).location_set.all()
+        points = []
+        groups = []
+        group = []
+        previous = None
+        res = []
+
+        for location in locations:
+            latlng = str(location.latitude) + "," + str(location.longitude)
+            response = requests.get(url=url, params={"key": settings.GOOGLE_API_KEY, "latlng": latlng})
+            routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
+            street = routes[0]['long_name']
+
+            if previous and previous != street:
+                groups.append(group)
+                group = []
+
+            group.append(
+                Point({
+                    'longitude': location.longitude,
+                    'latitude': location.latitude,
+                    'street_a': street,
+                    'street_b': street
+                })
+            )
+
+            previous = street
+        groups.append(group)
+
+        m = Map()
+        try:
+            f = open(settings.MAP_, "r")
+            map_json = json.load(f)
+            m.from_json(map_json)
+        except FileNotFoundError:
+            pass
+        except ValueError:
+            pass
+        s = m.to_streets()
+        for id_g, g in enumerate(groups):
+            st = list(g[0].streets)[0]
+            if st in s:
+                # print(s[st], g)
+                x = sort_2(m, s[st][0], s[st][1:], g)
+
+                x2 = [xx[1] for xx in x]
+                # print(x2)
+                start = x2.index(-1)
+                stop = x2.index(-len(g))
+                q=False
+                if start>stop:
+                    q =True
+                start,stop = min(start, stop), max(start,stop)
+                y = x2[start:stop+1]
+                if q:
+                    y.reverse()
+                print(y)
+                z = []
+                for yy in y:
+                    if yy>=0:
+                        poi = m.get_point(yy)
+
+                    else:
+                        poi = g[-yy-1]
+                    z += [{'latitude': float(poi.latitude), 'longitude': float(poi.longitude)}]
+                print(z)
+
+                # print(start,stop)
+                # print(x2[start:stop])
+                # if id_g+1<len(groups) and stop+1<len(x2) and list(groups[id_g+1][0].streets)[0] in m.get_point(x2[stop+1]).streets:
+                #     groups[id_g+1].append(m.get_point(x2[stop+1]))
+
+
+            else:
+                # print('*')
+                # x = sort(m, s[st][0], s[st][1:])
+
+                z =[{'latitude': gg.latitude, 'longitude':gg.longitude} for gg in g]
+                print(z)
+            print(z)
+            res.extend(z)
+            print(res)
+        X = m.to_streets()
+
+
+        return Response(res)
 
     @detail_route()
     def intersections(self,request,pk=None):
