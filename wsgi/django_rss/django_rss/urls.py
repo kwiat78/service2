@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api/feeds/(?P<feed>[^/.]+)/', include(posts_router.urls)),
     url(r'^webclient/index', index),
+    url(r'^$', index),
 ]

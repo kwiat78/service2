@@ -1,20 +1,20 @@
+import json
 from math import radians, cos, sin, asin, sqrt
 
-import json
 import requests
-
 from django.conf import settings
 from django.db.models import Min, Max
-
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
 from wsgi.locations.models import Location, Track
 from wsgi.locations.serializers import LocationSerializer, TrackSerializer
+from wsgi.locations.utils.googleapi import GoogleAPIClient, GeocodingException
+from wsgi.locations.utils.map import Map
 
-from map.orient import sort, sort_2
-from map.map import Map, Point
+GEOCODING_URL = "https://maps.googleapis.com/maps/api/geocode/json"
+
 
 def haversine(lon1, lat1, lon2, lat2):
             """
@@ -38,27 +38,6 @@ class LocationView(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         return super(LocationView, self).create(request, *args, **kwargs)
-
-
-class MapViewSet(ViewSet):
-    def list(self, request):
-        map_in = settings.MAP_
-        m = Map()
-        # m.from_json(json.load(open(map_in, 'r')))
-
-        try:
-            f = open(map_in, "r")
-            map_json = json.load(f)
-            m.from_json(map_json)
-        except FileNotFoundError:
-            pass
-        except ValueError:
-            pass
-
-        X = m.to_streets()
-        # XE = {street:[{'latitude': m.get_point(point).latitude, 'longitude': m.get_point(point).longitude} for point in X[street]] for street in X}
-        XE = [[{'latitude': m.get_point(point).latitude, 'longitude': m.get_point(point).longitude} for point in X[street]] for street in X]
-        return Response(XE)
 
 
 class TrackViewSet(ViewSet):
@@ -110,29 +89,26 @@ class TrackViewSet(ViewSet):
         return Response(status=201)
 
     @detail_route()
-    def snap(self,request,pk=None):
-        url = 'https://roads.googleapis.com/v1/snapToRoads'
-
-        interpolate = True
-        path = "|".join(list(map(lambda x:str(x.latitude)+","+str(x.longitude), Track.objects.get(label=pk).location_set.all())))
-        response = requests.get(url=url,params={"key": settings.GOOGLE_API_KEY, "interpolate":interpolate,"path":path})
-        res = map(lambda x:x['location'], response.json()['snappedPoints'])
+    def snap(self, request, pk=None):
+        google_api_client = GoogleAPIClient(settings.GOOGLE_API_KEY)
+        res = google_api_client.snap_to_roads(Track.objects.get(label=pk).location_set.all())
         return Response(res)
 
     @detail_route()
     def streets(self, request, pk=None):
-        url = "https://maps.googleapis.com/maps/api/geocode/json"
         locations = Track.objects.get(label=pk).location_set.all()
         streets = []
         previous = ""
+        google_api_client = GoogleAPIClient(settings.GOOGLE_API_KEY)
+
         for location in locations:
-            latlng = str(location.latitude) + "," + str(location.longitude)
-            response = requests.get(url=url, params={"key": settings.GOOGLE_API_KEY, "latlng": latlng})
-            routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
-            street = routes[0]['long_name']
-            if street != previous:
-                streets.append(street)
-                previous = street
+            try:
+                street = google_api_client.geocode(location)
+                if street != previous:
+                    streets.append(street)
+                    previous = street
+            except GeocodingException:
+                pass
         result = []
         size = len(streets)
         idx = 0
@@ -151,140 +127,63 @@ class TrackViewSet(ViewSet):
         return Response(result)
 
     @detail_route()
-    def with_streets(self, request, pk=None):
-        url = "https://maps.googleapis.com/maps/api/geocode/json"
-        locations = Track.objects.get(label=pk).location_set.all()
-        points = []
-        groups = []
-        group = []
-        previous = None
-        res = []
-
-        for location in locations:
-            latlng = str(location.latitude) + "," + str(location.longitude)
-            response = requests.get(url=url, params={"key": settings.GOOGLE_API_KEY, "latlng": latlng})
-            routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
-            street = routes[0]['long_name']
-
-            if previous and previous != street:
-                groups.append(group)
-                group = []
-
-            group.append(
-                Point({
-                    'longitude': location.longitude,
-                    'latitude': location.latitude,
-                    'street_a': street,
-                    'street_b': street
-                })
-            )
-
-            previous = street
-        groups.append(group)
-
-        m = Map()
-        try:
-            f = open(settings.MAP_, "r")
-            map_json = json.load(f)
-            m.from_json(map_json)
-        except FileNotFoundError:
-            pass
-        except ValueError:
-            pass
-        s = m.to_streets()
-        for id_g, g in enumerate(groups):
-            st = list(g[0].streets)[0]
-            if st in s:
-                # print(s[st], g)
-                x = sort_2(m, s[st][0], s[st][1:], g)
-
-                x2 = [xx[1] for xx in x]
-                # print(x2)
-                start = x2.index(-1)
-                stop = x2.index(-len(g))
-                q=False
-                if start>stop:
-                    q =True
-                start,stop = min(start, stop), max(start,stop)
-                y = x2[start:stop+1]
-                if q:
-                    y.reverse()
-                print(y)
-                z = []
-                for yy in y:
-                    if yy>=0:
-                        poi = m.get_point(yy)
-
-                    else:
-                        poi = g[-yy-1]
-                    z += [{'latitude': float(poi.latitude), 'longitude': float(poi.longitude)}]
-                print(z)
-
-                # print(start,stop)
-                # print(x2[start:stop])
-                # if id_g+1<len(groups) and stop+1<len(x2) and list(groups[id_g+1][0].streets)[0] in m.get_point(x2[stop+1]).streets:
-                #     groups[id_g+1].append(m.get_point(x2[stop+1]))
-
-
-            else:
-                # print('*')
-                # x = sort(m, s[st][0], s[st][1:])
-
-                z =[{'latitude': gg.latitude, 'longitude':gg.longitude} for gg in g]
-                print(z)
-            print(z)
-            res.extend(z)
-            print(res)
-        X = m.to_streets()
-
-
-        return Response(res)
-
-    @detail_route()
-    def intersections(self,request,pk=None):
-        url = "https://maps.googleapis.com/maps/api/geocode/json"
+    def intersections(self, request, pk=None):
         locations = Track.objects.get(label=pk).location_set.all()
         streets = []
+        google_api_client = GoogleAPIClient(settings.GOOGLE_API_KEY)
         for location in locations:
-            latlng = str(location.latitude)+","+str(location.longitude)
-            response = requests.get(url=url,params={"key": settings.GOOGLE_API_KEY, "latlng":latlng})
-            routes = list(filter(lambda x: 'route' in x['types'],response.json()['results'][0]['address_components']))
-            streets +=[routes[0]['long_name']]
+            try:
+                street = google_api_client.geocode(location)
+                streets += [street]
+            except GeocodingException:
+                pass
 
-        points = [{"latitude":locations[0].latitude, "longitude":locations[0].longitude}]
-        url2="https://maps.googleapis.com/maps/api/geocode/json?address={} and {}, Toruń &key=AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
+        points = [{"latitude": locations[0].latitude, "longitude": locations[0].longitude}]
 
-        for i in range(1,len(locations)):
-            if(streets[i]!=streets[i-1]):
-                r = requests.get(url2.format(streets[i-1],streets[i])).json()
-                if r['results'][0]['types'][0]=='intersection':
-                    intersection = (r['results'][0]['geometry']['location'])
-                    points+=[{"latitude":intersection['lat'], "longitude":intersection["lng"]}]
-            points+=[{"latitude":locations[i].latitude, "longitude":locations[i].longitude}]
+        for i in range(1, len(locations)):
+            if streets[i] != streets[i-1]:
+                r = requests.get(GEOCODING_URL, params={
+                    'address': "{} and {}, Toruń".format(streets[i-1], streets[i]),
+                    'key': settings.GOOGLE_API_KEY
+                }).json()
+                if r['results']:
+                    if r['results'][0]['types'][0] == 'intersection':
+                        intersection = (r['results'][0]['geometry']['location'])
+                        points += [
+                            {
+                                "latitude": intersection['lat'],
+                                "longitude": intersection["lng"]
+                            }
+                        ]
+            points += [
+                {
+                    "latitude": locations[i].latitude,
+                    "longitude":locations[i].longitude
+                }
+            ]
 
         return Response(points)
 
     @detail_route()
     def only_intersections(self, request, pk=None):
-        url = "https://maps.googleapis.com/maps/api/geocode/json"
         locations = Track.objects.get(label=pk).location_set.all()
         streets = []
+        google_api_client = GoogleAPIClient(settings.GOOGLE_API_KEY)
         for location in locations:
-            latlng = str(location.latitude) + "," + str(location.longitude)
-            response = requests.get(url=url, params={"key": settings.GOOGLE_API_KEY, "latlng": latlng})
-            routes = list(filter(lambda x: 'route' in x['types'], response.json()['results'][0]['address_components']))
-            streets += [routes[0]['long_name']]
+            try:
+                street = google_api_client.geocode(location)
+                streets += [street]
+            except GeocodingException:
+                pass
 
-        # points = [{"latitude": locations[0].latitude, "longitude": locations[0].longitude}]
         points = []
-        url2 = "https://maps.googleapis.com/maps/api/geocode/json?address={} and {}, Toruń &key=AIzaSyBir6gtAnK2Ck9Te9ibcTbnO9SQKdQPBNg"
         last_point = None
         for i in range(1, len(locations)):
             if streets[i] != streets[i - 1]:
-                response = requests.get(url2.format(streets[i - 1], streets[i]))
-                resp = response.json()
-                print(url2.format(streets[i - 1], streets[i]))
-                print(resp)
+                resp = requests.get(GEOCODING_URL, params={
+                    'address': "{} and {}, Toruń".format(streets[i - 1], streets[i]),
+                    'key': settings.GOOGLE_API_KEY
+                }).json()
                 if resp['status'] == 'OK':
                     if resp['results'][0]['types'][0] == 'intersection':
                         intersection = (resp['results'][0]['geometry']['location'])
@@ -293,12 +192,14 @@ class TrackViewSet(ViewSet):
 
                         if haversine(last_point[0], last_point[1], intersection['lng'], intersection["lat"]) < 10:
                             last_point = (intersection['lng'], intersection["lat"])
-                            points += [{"latitude": intersection['lat'], "longitude": intersection["lng"],
-                                        "street_a": min(streets[i], streets[i - 1]),
-                                        "street_b": max(streets[i], streets[i - 1])}]
-
-            # points += [{"latitude": locations[i].latitude, "longitude": locations[i].longitude}]
-
+                            points += [
+                                {
+                                    "latitude": intersection['lat'],
+                                    "longitude": intersection["lng"],
+                                    "street_a": min(streets[i], streets[i - 1]),
+                                    "street_b": max(streets[i], streets[i - 1])
+                                }
+                            ]
         return Response(points)
 
     @detail_route(methods=["post"])
@@ -308,7 +209,31 @@ class TrackViewSet(ViewSet):
         if not second_label:
             return Response("Needed second_label", status=403)
         if pk == second_label:
-            return Response("Labels should be diferent", status=403)
+            return Response("Labels should be different", status=403)
         Location.objects.filter(track__label=second_label).update(track=track)
         Track.objects.get(label=second_label).delete()
         return Response(status=200)
+
+
+class MapViewSet(ViewSet):
+    def list(self, request):
+        my_map = Map()
+
+        try:
+            f = open(settings.MAP_, "r")
+            map_json = json.load(f)
+            my_map.from_json(map_json)
+        except FileNotFoundError:
+            pass
+        except ValueError:
+            pass
+
+        streets = my_map.to_streets()
+        res = [
+            [
+                {
+                   'latitude': my_map.get_point(point).latitude,
+                   'longitude': my_map.get_point(point).longitude
+                } for point in streets[street]
+                ] for street in streets]
+        return Response(res)

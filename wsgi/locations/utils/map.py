@@ -1,8 +1,8 @@
-from map.orient import sort
+from wsgi.locations.utils.vector import dot, vector_length
 
 
 class Point(object):
-    def __init__(self, intersection ):
+    def __init__(self, intersection):
         self.longitude = intersection['longitude']
         self.latitude = intersection['latitude']
         self.streets = set([intersection['street_a'], intersection['street_b']])
@@ -20,8 +20,27 @@ class Map(object):
         self.index = {}
         self.edges = set()
 
+    def _sort(self, idx_point, idx_points):
+        point = self.points[idx_point]
+        points = [self.points[idx] for idx in idx_points]
+
+        group = [(0.0, idx_point)]
+        ry = float(points[0].latitude) - float(point.latitude)
+        rx = float(points[0].longitude) - float(point.longitude)
+
+        for idx, i in zip(idx_points, points):
+            dy = float(i.latitude) - float(point.latitude)
+            dx = float(i.longitude) - float(point.longitude)
+            alpha = 1
+            if dot([rx, ry], [dx, dy]) < 0:
+                alpha = -1
+            re = vector_length([dx, dy]) * alpha
+            group.append((re, idx))
+        group.sort()
+        return group
+
     def add_point(self, intersection):
-        label = str(intersection['latitude']) + "___" + str(intersection['longitude'])
+        label = "{}___{}".format(intersection['latitude'], intersection['longitude'])
         if label in self.index:
             spoint = self.points[self.index[label]]
             spoint.add_street(intersection['street_a'])
@@ -50,22 +69,20 @@ class Map(object):
                 'streets': list(point.streets)
             }
             points.append(item)
-        print(self.index)
-        print("********************************************************************")
-        print(self.edges)
-        print("********************************************************************")
-        print(points)
-
         return {"index": self.index, "edges": list(self.edges), "points": points}
 
     def from_json(self, dict_map):
         self.index = dict_map['index']
-        self.edges = set(map(lambda x :tuple(x),dict_map['edges']))
+        self.edges = set(map(lambda x: tuple(x), dict_map['edges']))
         self.points = []
         for point in dict_map['points']:
             lat, lng = point['label'].split('___')
             streets = list(point['streets'])
-            p = Point({"latitude":lat, "longitude":lng, "street_a":streets[0], "street_b":streets[1]})
+            p = Point({
+                "latitude": lat,
+                "longitude": lng,
+                "street_a": streets[0], "street_b": streets[1]
+            })
             for _ in streets[2:]:
                 p.add_street(streets[0])
                 p.add_street(streets[1])
@@ -73,8 +90,8 @@ class Map(object):
 
     def neighbours(self):
         neighbour_list = [set() for i in range(len(self.points))]
-        for x,y in self.edges:
-            if x!=y:
+        for x, y in self.edges:
+            if x != y:
                 neighbour_list[x].add(y)
                 neighbour_list[y].add(x)
         return neighbour_list
@@ -89,12 +106,9 @@ class Map(object):
                     streets[s] = [idx]
         streets = {x: streets[x] for x in streets if len(streets[x]) > 3}
 
-        Y = {}
+        response = {}
         for street in streets:
             st = streets[street]
-            w = sort(self, st[0], st[1:])
-            # for idx in range(len(w)-1):
-            #     E.add((w[idx][1], w[idx+1][1]))
-            Y[street] = [ww[1] for ww in w]
-
-        return Y
+            w = self._sort(st[0], st[1:])
+            response[street] = [ww[1] for ww in w]
+        return response

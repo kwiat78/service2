@@ -32,19 +32,19 @@
 					<div class="col-lg-2 col-md-2 col-xs-2" >
 						<a href="" class=" app-title">Track-tracker</a>
 						<ul class="list-group">
-							<a href="#a" id="main" title="feeds">
+							<a href="#track_viewer" id="main" title="feeds">
 								<li  class="list-group-item" >
 									<i class="fa fa-file-text"></i>	 Details
 								</li>
 							</a>
 
-							<a href="#b" id="new" title="new">
+							<a href="#track_list" id="new" title="new">
 								<li  class="list-group-item">
 									<i class="fa fa-search"></i> Viewer
 								</li>
 							</a>
 
-							<a href="#c" id="track_map" title="map">
+							<a href="#map" id="track_map" title="map">
 								<li  class="list-group-item">
 									<i class="fa fa-map-o"></i> Map
 								</li>
@@ -59,7 +59,7 @@
 			</div>
 		 </div>
     </body>
-    <script src="{% static "popup2.js" %}"></script>
+    <script src="{% static "router.js" %}"></script>
 	<script src="{% static "TrackList/TrackListController.js" %}"></script>
 	<script src="{% static "TrackList/ChangeLabelController.js" %}"></script>
 	<script src="{% static "TrackViewer/TrackViewerController.js" %}"></script>

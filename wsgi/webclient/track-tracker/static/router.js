@@ -2,15 +2,15 @@ var app = angular.module('myApp2', ["ngRoute", "ngCookies", "ui.bootstrap.contex
 .config(['$routeProvider',"$httpProvider", "$compileProvider",
   function($routeProvider, $httpProvider, $compileProvider) {
     $routeProvider.
-      when('/a', {
+      when('/track_list', {
         templateUrl: '../static/TrackList/TrackListView.html',
         controller: 'TrackListController'
       }).
-      when('/b', {
+      when('/track_viewer', {
         templateUrl: '../static/TrackViewer/TrackViewerView.html',
         controller: 'TrackViewerController'
       }).
-      when('/c', {
+      when('/map', {
         templateUrl: '../static/Map/MapView.html',
         controller: 'MapController'
       }).

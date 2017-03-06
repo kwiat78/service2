@@ -21,7 +21,7 @@ except ValueError:
 
 # DOWNLOAD
 tracks = requests.get(TRACKS_URL).json()
-limit = 1
+limit = 20
 current = 0
 
 for t in tracks:
