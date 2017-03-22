@@ -5,13 +5,20 @@ app.service('FeedReader', function($http) {
     function init() {
         options = {}
         options.url="http://service2-kwiat78.rhcloud.com"
-
     }
 
 
     this.getTracks = function() {
         init()
-        return $http.get(options.url + "/api/tracks", {headers: {}}).then(
+        return $http.get(options.url + "/api/tracks/", {headers: {}}).then(
+            function(obj){
+                return obj.data;
+            })
+    }
+
+    this.login = function(login, pass) {
+        init()
+        return $http.post("/api/auth/login", {'username':login, 'password':pass},{headers: {}}).then(
             function(obj){
                 return obj.data;
             })

@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import datetime, now
 
-from rest_framework.decorators import list_route
+from rest_framework.decorators import list_route, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet, ModelViewSet
@@ -21,6 +22,7 @@ from wsgi.feeds.models import Feed, Post, FeedLink, Link
 from wsgi.feeds.serializers import FeedSerializer, PostSerializer, FeedLinkSerializer
 
 
+@permission_classes((AllowAny,))
 class FeedView(ModelViewSet):
     queryset = Feed.objects.all().order_by("position")
     serializer_class = FeedSerializer
@@ -81,6 +83,7 @@ class FeedView(ModelViewSet):
         return Response(FeedSerializer(feed, many=True).data)
 
 
+@permission_classes((AllowAny,))
 class LinkView(ModelViewSet):
     queryset = FeedLink.objects.all()
     serializer_class = FeedLinkSerializer
@@ -138,6 +141,7 @@ class LinkView(ModelViewSet):
         return Response(status=200)
 
 
+@permission_classes((AllowAny,))
 class PostView(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -183,6 +187,7 @@ class PostView(ModelViewSet):
         return Response(PostSerializer(queryset, many=True).data)
 
 
+@permission_classes((AllowAny,))
 class ReorderView(APIView):
 
     def put(self, request):
@@ -210,11 +215,13 @@ class ReorderView(APIView):
         return Response(status=200)
 
 
+@permission_classes((AllowAny,))
 class TimeView(ViewSet):
     def list(self, request):
         return Response(datetime.now().timestamp(), status=200)
 
 
+@permission_classes((AllowAny,))
 class DiscoverView(ViewSet):
     def list(self, request):
         if "url" in request.GET:
@@ -238,6 +245,7 @@ class DiscoverView(ViewSet):
         return Response([ x.get('href') for x in links],status=200)
 
 
+@permission_classes((AllowAny,))
 class FindView(ViewSet):
 
     def list(self, request):

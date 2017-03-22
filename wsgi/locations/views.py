@@ -5,7 +5,9 @@ import requests
 from django.conf import settings
 from django.db.models import Min, Max
 from rest_framework.decorators import detail_route
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
 from wsgi.locations.models import Location, Track
@@ -33,46 +35,54 @@ def haversine(lon1, lat1, lon2, lat2):
 
 
 class LocationView(ModelViewSet):
-    queryset = Location.objects.all().order_by("date")
+    queryset = Location.objects.none()
     serializer_class = LocationSerializer
+    permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        return Location.objects.filter(track__user=self.request.user).order_by("date")
 
     def create(self, request, *args, **kwargs):
         return super(LocationView, self).create(request, *args, **kwargs)
 
 
-class TrackViewSet(ViewSet):
+class TrackViewSet(ModelViewSet):
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
+    lookup_field = 'label'
+    lookup_url_kwarg = 'label'
+
+    def get_queryset(self):
+        return Track.objects.filter(user=self.request.user)
 
     def list(self, request):
-        return Response(Track.objects.values_list("label", flat=True))
+        return Response(self.get_queryset().values_list("label", flat=True))
 
-    def retrieve(self, request, pk=None):
-        queryset = Location.objects.filter(track__label=pk)
-
+    def retrieve(self, request, label=None):
+        super().retrieve(request, label=label)
+        queryset = Location.objects.filter(track__label=label)
         serializer = TrackSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def update(self, request, pk=None):
+    def update(self, request, label=None):
+        obj = get_object_or_404(self.get_queryset(), label=label)
+        self.check_object_permissions(self.request, obj)
         new_label = request.data.get("new_label", None)
 
         if not new_label:
             return Response("Specify new_label", status=403)
-        track = Track.objects.get(label=pk)
-        track.label = new_label
-        track.save()
+        obj.label = new_label
+        obj.save()
         return Response(status=200)
 
-    def destroy(self,request,pk=None):
-        if pk:
-            Location.objects.filter(track__label=pk).delete()
-            Track.objects.get(label=pk).delete()
-        return Response(status=204)
-
     @detail_route()
-    def params(self, request, pk=None):
-        points_number = Track.objects.get(label=pk).location_set.count()
-        start = Track.objects.get(label=pk).location_set.aggregate(Min('date'))["date__min"]
-        stop = Track.objects.get(label=pk).location_set.aggregate(Max('date'))["date__max"]
-        processed = Track.objects.get(label=pk).procesed
+    def params(self, request, label=None):
+        obj = get_object_or_404(self.get_queryset(), label=label)
+        self.check_object_permissions(self.request, obj)
+        points_number = obj.location_set.count()
+        start = obj.location_set.aggregate(Min('date'))["date__min"]
+        stop = obj.location_set.aggregate(Max('date'))["date__max"]
+        processed = obj.procesed
         res = {
             "points_number": points_number,
             "start_date": start,
@@ -82,21 +92,26 @@ class TrackViewSet(ViewSet):
         return Response(res)
 
     @detail_route()
-    def process(self, request, pk=None):
-        track = Track.objects.get(label=pk)
-        track.procesed = True
-        track.save()
+    def process(self, request, label=None):
+        obj = get_object_or_404(self.get_queryset(), label=label)
+        self.check_object_permissions(self.request, obj)
+        obj.procesed = True
+        obj.save()
         return Response(status=201)
 
     @detail_route()
-    def snap(self, request, pk=None):
+    def snap(self, request, label=None):
+        obj = get_object_or_404(self.get_queryset(), label=label)
+        self.check_object_permissions(self.request, obj)
         google_api_client = GoogleAPIClient(settings.GOOGLE_API_KEY)
-        res = google_api_client.snap_to_roads(Track.objects.get(label=pk).location_set.all())
+        res = google_api_client.snap_to_roads(obj.location_set.all())
         return Response(res)
 
     @detail_route()
-    def streets(self, request, pk=None):
-        locations = Track.objects.get(label=pk).location_set.all()
+    def streets(self, request, label=None):
+        obj = get_object_or_404(self.get_queryset(), label=label)
+        self.check_object_permissions(self.request, obj)
+        locations = obj.location_set.all()
         streets = []
         previous = ""
         google_api_client = GoogleAPIClient(settings.GOOGLE_API_KEY)
@@ -127,8 +142,10 @@ class TrackViewSet(ViewSet):
         return Response(result)
 
     @detail_route()
-    def intersections(self, request, pk=None):
-        locations = Track.objects.get(label=pk).location_set.all()
+    def intersections(self, request, label=None):
+        obj = get_object_or_404(self.get_queryset(), label=label)
+        self.check_object_permissions(self.request, obj)
+        locations = obj.location_set.all()
         streets = []
         google_api_client = GoogleAPIClient(settings.GOOGLE_API_KEY)
         for location in locations:
@@ -165,8 +182,10 @@ class TrackViewSet(ViewSet):
         return Response(points)
 
     @detail_route()
-    def only_intersections(self, request, pk=None):
-        locations = Track.objects.get(label=pk).location_set.all()
+    def only_intersections(self, request, label=None):
+        obj = get_object_or_404(self.get_queryset(), label=label)
+        self.check_object_permissions(self.request, obj)
+        locations = obj.location_set.all()
         streets = []
         google_api_client = GoogleAPIClient(settings.GOOGLE_API_KEY)
         for location in locations:
@@ -203,13 +222,20 @@ class TrackViewSet(ViewSet):
         return Response(points)
 
     @detail_route(methods=["post"])
-    def join(self, request, pk=None):
+    def join(self, request, label=None):
+        track = get_object_or_404(self.get_queryset(), label=label)
+        self.check_object_permissions(self.request, track)
+
         second_label = request.data.get("second_label", None)
-        track = Track.objects.get(label=pk)
+
         if not second_label:
             return Response("Needed second_label", status=403)
-        if pk == second_label:
+        if label == second_label:
             return Response("Labels should be different", status=403)
+
+        second_track = get_object_or_404(self.get_queryset(), label=second_label)
+        self.check_object_permissions(self.request, second_track)
+
         Location.objects.filter(track__label=second_label).update(track=track)
         Track.objects.get(label=second_label).delete()
         return Response(status=200)

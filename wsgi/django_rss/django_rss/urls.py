@@ -3,6 +3,7 @@ from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
 
+from wsgi.authentication.urls import urlpatterns as auth_urls
 from wsgi.feeds.views import FeedView, PostView, ReorderView, LinkView, TimeView, DiscoverView, FindView
 from wsgi.locations.views import LocationView, TrackViewSet, MapViewSet
 from wsgi.webclient.views import index
@@ -23,6 +24,7 @@ posts_router.register(r"links", LinkView)
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/reorder', ReorderView.as_view()),
+    url(r'^api/auth/', include(auth_urls)),
 
 
     url(r'^api/', include(router.urls)),
