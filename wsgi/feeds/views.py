@@ -34,7 +34,7 @@ class FeedView(ModelViewSet):
     def get_queryset(self):
         return Feed.objects.filter(user=self.request.user).order_by("position")
 
-    @list_route()
+    @list_route(permission_classes=(AllowAny,))
     def loop(self, request, **kwargs):
         return Response(get_posts())
 
