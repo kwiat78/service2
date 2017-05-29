@@ -26,6 +26,10 @@ class FeedLink(models.Model):
     reg_exp = models.CharField(max_length=511, blank=True, null=True)
     position = models.IntegerField(default=0)
 
+    class Meta:
+        ordering = ('position',)
+
+
     def __str__(self):
         return "{}'s {}".format(self.feed, self.link.url)
 
