@@ -164,7 +164,6 @@ class PostView(ModelViewSet):
     pagination_class = CountPagination
 
     def update(self, request,pk, *args, **kwargs):
-        import ipdb;ipdb.set_trace()
         user = request.user
         view = request.data.get('view', None)
         mention = request.data.get('mention', None)
