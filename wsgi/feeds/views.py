@@ -159,18 +159,22 @@ class LinkView(ModelViewSet):
 class PostView(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    http_method_names = ("get", "put",)
+    http_method_names = ("get", "put")
     filter_backends = (PostFilterBackend,)
     pagination_class = CountPagination
 
     def update(self, request,pk, *args, **kwargs):
         user = request.user
-        view = request.data
+        view = request.data.get('view', None)
+        mention = request.data.get('mention', None)
         url = unquote(a2b_base64(pk).decode())
 
         x = Post.objects.filter(feed__user=user, url=url)
         for xx in x:
-            xx.view = view
+            if view:
+                xx.view = view
+            if mention:
+                xx.mentioned = mention
             xx.save()
         return Response(status=200)
 
