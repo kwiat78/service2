@@ -164,6 +164,7 @@ class PostView(ModelViewSet):
     pagination_class = CountPagination
 
     def update(self, request,pk, *args, **kwargs):
+        import ipdb;ipdb.set_trace()
         user = request.user
         view = request.data.get('view', None)
         mention = request.data.get('mention', None)
@@ -171,9 +172,9 @@ class PostView(ModelViewSet):
 
         x = Post.objects.filter(feed__user=user, url=url)
         for xx in x:
-            if view:
+            if view is not None:
                 xx.view = view
-            if mention:
+            if mention is not None:
                 xx.mentioned = mention
             xx.save()
         return Response(status=200)
