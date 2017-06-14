@@ -48,9 +48,11 @@ def extract_feeds(url):
         })
 
     site = urllib.request.urlopen(req)
-
+    print(site)
     stream = site.read()
+    print(stream)
     soup = BeautifulSoup(stream, "xml")
+    print(soup)
     channel = soup.find("channel")
     if not channel:
         channel = soup.find("feed")
@@ -59,7 +61,7 @@ def extract_feeds(url):
     title = channel.find("title").text
     if title == "":
         title = url
-
+    print({"name": title, "url": url})
     return {"name": title, "url": url}
 
 
