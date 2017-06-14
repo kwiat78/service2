@@ -242,10 +242,11 @@ class DiscoverView(ViewSet):
             url = request.GET["url"]
             try:
                 x = extract_feeds(url)
+
             except URLError:
                 return Response({"detail": "Wrong URL."}, status=404)
         if x:
-            return x
+            return Response(x, status=200)
         return Response({"detail": "No feeds"}, status=404)
             # url = unquote(a2b_base64(url).decode())
             # req = urllib.request.Request(
