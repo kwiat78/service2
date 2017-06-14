@@ -11,6 +11,7 @@ class FeedLinkInline(admin.TabularInline):
 
 class FeedAdmin(admin.ModelAdmin):
     inlines = (FeedLinkInline,)
+    list_display = ("__str__", 'position',)
 
 
 class PostAdmin(admin.ModelAdmin):

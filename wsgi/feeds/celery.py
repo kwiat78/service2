@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+from binascii import a2b_base64
 try:
     import pymysql
     pymysql.install_as_MySQLdb()
@@ -15,8 +16,51 @@ from django.utils.timezone import datetime, now, make_aware, is_naive
 import iso8601
 import re
 import urllib
+from urllib.parse import unquote
 
 from wsgi.feeds.models import Feed,Link,Post, FeedLink
+
+
+def scan_url(url):
+    url = unquote(a2b_base64(url).decode())
+    req = urllib.request.Request(
+        url,
+        data=None,
+        headers={
+            'User-Agent': 'feed-reader'
+        })
+    site = urllib.request.urlopen(req)
+
+    stream = site.read()
+    soup = BeautifulSoup(stream, "html")
+    links = soup.head.find_all("link", {"type": "application/rss+xml"})
+    print([x.get('href') for x in links])
+    return [x.get('href') for x in links]
+
+
+def extract_feeds(url):
+    url = unquote(a2b_base64(url).decode())
+    req = urllib.request.Request(
+        url,
+        data=None,
+        headers={
+            'User-Agent': 'feed-reader'
+        })
+
+    site = urllib.request.urlopen(req)
+
+    stream = site.read()
+    soup = BeautifulSoup(stream, "xml")
+    channel = soup.find("channel")
+    if not channel:
+        channel = soup.find("feed")
+    if not channel:
+        return None
+    title = channel.find("title").text
+    if title == "":
+        title = url
+
+    return {"name": title, "url": url}
 
 
 class FeedDownloader():

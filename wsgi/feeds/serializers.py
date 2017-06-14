@@ -1,15 +1,37 @@
-from rest_framework.serializers import ModelSerializer, StringRelatedField, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, StringRelatedField, SerializerMethodField, IntegerField, CurrentUserDefault, CharField, HiddenField, SlugRelatedField, PrimaryKeyRelatedField
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.encoding import smart_text
 
 from wsgi.feeds.models import Feed, Post, Link, FeedLink
+
+class CreatableSlugRelatedField(SlugRelatedField):
+
+    def to_internal_value(self, data):
+        try:
+            return self.get_queryset().get_or_create(**{self.slug_field: data})[0]
+        except ObjectDoesNotExist:
+            self.fail('does_not_exist', slug_name=self.slug_field, value=smart_text(data))
+        except (TypeError, ValueError):
+            self.fail('invalid')
 
 
 class FeedLinkSerializer(ModelSerializer):
 
-    link = StringRelatedField()
+    link = CreatableSlugRelatedField(queryset=Link.objects, slug_field="url")
+    feed = PrimaryKeyRelatedField(queryset=Feed.objects)
 
     class Meta:
         model = FeedLink
         exclude = ("id", "feed",)
+
+    # def update(self, instance, validated_data):
+    #     import ipdb;ipdb.set_trace()
+    #     # link = validated_data['link']
+    #     item, _ = Link.objects.get_or_create(**validated_data)
+    #     super().update(instance, validated_data)
+
+
 
 
 class LinkSerializer(ModelSerializer):
@@ -17,20 +39,41 @@ class LinkSerializer(ModelSerializer):
     class Meta:
         model = Link
 
-class FeedSerializer(ModelSerializer):
+    def create(self, validated_data):
+        item, _ = Link.objects.get_or_create(validated_data)
+        return item
 
-    links = FeedLinkSerializer(many=True)
+
+class FeedSerializer(ModelSerializer):
+    links = FeedLinkSerializer(many=True, read_only=True)
     count = SerializerMethodField()
+    position = IntegerField(read_only=True)
+    user = HiddenField(default=CurrentUserDefault())
+    favIcon = CharField(default='undefined', required=False)
 
     class Meta:
         model = Feed
-        exclude = ("id",)
+
+    def create(self, validated_data):
+        position = len(Feed.objects.filter(user=validated_data['user']))
+        validated_data['position'] = position
+        feed = super().create(validated_data)
+        link_serializer = LinkSerializer(data=self.initial_data)
+        link_serializer.is_valid()
+        link = link_serializer.save()
+
+        feedlink_serializer = FeedLinkSerializer(data={'feed': feed.pk,
+                                                       'link': link,
+                                                       'reg_exp': self.initial_data.get('regExp', '')})
+        feedlink_serializer.is_valid()
+        feedlink_serializer.save()
+        return feed
 
     def get_count(self, obj):
         return len(Post.objects.filter(feed=obj, view=False));
+
 
 class PostSerializer(ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ("id",)

@@ -14,7 +14,7 @@ class PostFilterBackend(BaseFilterBackend):
         criteria = {}
 
         if "name" in request.query_params:
-            criteria["feed__name"] = request.query_params.get("name")
+            criteria["feed__id"] = request.query_params.get("name")
 
         if "new" in request.query_params:
             criterion = request.query_params.get("new").capitalize()
