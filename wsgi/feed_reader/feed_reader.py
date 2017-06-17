@@ -1,15 +1,6 @@
 from __future__ import absolute_import
 
 from binascii import a2b_base64
-try:
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
-
-import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_rss.django_rss.settings')
-
 from bs4 import BeautifulSoup
 from copy import deepcopy
 from django.utils.timezone import datetime, now, make_aware, is_naive
@@ -34,7 +25,6 @@ def scan_url(url):
     stream = site.read()
     soup = BeautifulSoup(stream, "html")
     links = soup.head.find_all("link", {"type": "application/rss+xml"})
-    print([x.get('href') for x in links])
     return [x.get('href') for x in links]
 
 
@@ -48,11 +38,8 @@ def extract_feeds(url):
         })
 
     site = urllib.request.urlopen(req)
-    print(site)
     stream = site.read()
-    print(stream)
     soup = BeautifulSoup(stream, "xml")
-    print(soup)
     channel = soup.find("channel")
     if not channel:
         channel = soup.find("feed")
@@ -61,11 +48,10 @@ def extract_feeds(url):
     title = channel.find("title").text
     if title == "":
         title = url
-    print({"name": title, "url": url})
     return {"name": title, "url": url}
 
 
-class FeedDownloader():
+class FeedDownloader:
     def __init__(self, url):
         self.url = url
         self.max_posts = get_gratest_limit(url)
@@ -206,10 +192,10 @@ def get_posts():
 
         posts = Post.objects.filter(feed=feed).order_by("post_date")
         for post in posts:
-            if not post.seen and post.view and count>limit:
-                count-=1
+            if not post.seen and post.view and count > limit:
+                count -= 1
                 post.delete()
-                deleted+=1
+                deleted += 1
 
-    return {"added":added, "updated":updated, "deleted":deleted}
+    return {"added": added, "updated": updated, "deleted": deleted}
 

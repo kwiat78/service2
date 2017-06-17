@@ -29,7 +29,6 @@ class FeedLink(models.Model):
     class Meta:
         ordering = ('position',)
 
-
     def __str__(self):
         return "{}'s {}".format(self.feed, self.link.url)
 

@@ -1,12 +1,12 @@
-from rest_framework.serializers import ModelSerializer, StringRelatedField, SerializerMethodField, IntegerField, CurrentUserDefault, CharField, HiddenField, SlugRelatedField, PrimaryKeyRelatedField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, IntegerField, CurrentUserDefault, CharField, HiddenField, SlugRelatedField, PrimaryKeyRelatedField
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import smart_text
 
 from wsgi.feeds.models import Feed, Post, Link, FeedLink
 
-class CreatableSlugRelatedField(SlugRelatedField):
 
+class CreatableSlugRelatedField(SlugRelatedField):
     def to_internal_value(self, data):
         try:
             return self.get_queryset().get_or_create(**{self.slug_field: data})[0]
@@ -24,14 +24,6 @@ class FeedLinkSerializer(ModelSerializer):
     class Meta:
         model = FeedLink
         exclude = ("id", "feed",)
-
-    # def update(self, instance, validated_data):
-    #     import ipdb;ipdb.set_trace()
-    #     # link = validated_data['link']
-    #     item, _ = Link.objects.get_or_create(**validated_data)
-    #     super().update(instance, validated_data)
-
-
 
 
 class LinkSerializer(ModelSerializer):
@@ -70,7 +62,7 @@ class FeedSerializer(ModelSerializer):
         return feed
 
     def get_count(self, obj):
-        return len(Post.objects.filter(feed=obj, view=False));
+        return len(Post.objects.filter(feed=obj, view=False))
 
 
 class PostSerializer(ModelSerializer):

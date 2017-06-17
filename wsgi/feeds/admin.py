@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-
 from wsgi.feeds.models import Feed,Link,Post, FeedLink
 
 
@@ -21,6 +20,4 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.register(Feed, FeedAdmin)
 admin.site.register(Link)
 admin.site.register(Post, PostAdmin)
-
-
 admin.site.register(FeedLink)
