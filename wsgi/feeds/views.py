@@ -1,13 +1,18 @@
+from datetime import datetime
 from urllib.error import URLError
 
-from django.db.models import F
+import re
+from copy import deepcopy
+
+from django.db.models import F, Q
+from django.utils.timezone import now, make_aware
 from rest_framework.decorators import list_route
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, ModelViewSet
-from wsgi.feed_reader.feed_reader import get_posts, scan_url, extract_feeds
+from wsgi.feed_reader.feed_reader import scan_url, extract_feeds, FeedDownloader
 from wsgi.feeds.filters import PostFilterBackend
-from wsgi.feeds.models import Feed, Post, FeedLink
+from wsgi.feeds.models import Feed, Post, FeedLink, Link
 from wsgi.feeds.pagination import CountPagination
 from wsgi.feeds.serializers import FeedSerializer, PostSerializer, FeedLinkSerializer
 
@@ -106,3 +111,161 @@ class DiscoverView(ViewSet):
         if x:
             return Response(x, status=200)
         return Response({"detail": "No feeds"}, status=404)
+
+
+def get_posts_old():
+    updated = 0
+    deleted = 0
+    added = 0
+
+    seen = []
+    links = Link.objects.all()
+    for link in links:
+        downloader = FeedDownloader(link.url)
+        newest_posts = downloader.get_posts()
+        for id, post in enumerate(newest_posts):
+            seen += [post.url]
+            new_ = True
+            for feedLink in link.feedlink_set.all():
+                # check if post matches regexp and it's id is lower than the post limit
+                if re.match(feedLink.reg_exp, post.title) and id < feedLink.feed.postLimit:
+                    posts = Post.objects.filter(url=post.url, feed=feedLink.feed)
+                    # post is new
+                    if len(posts) == 0 and post.post_date >= get_oldest_post_date(feedLink.feed):
+                        print(post.title, post.url, post.post_date)
+                        new_post = deepcopy(post)
+                        new_post.feed = feedLink.feed
+                        new_post.save()
+                        if new_:
+                            new_ = False
+                            added += 1
+                    else:
+                        if len(posts) == 1:
+                            p = posts[0]
+                            # unwatched old post was updated
+                            if p.add_date < post.post_date and not p.view:
+                                p.post_date = post.post_date
+                                if post.post_dat > now():
+                                    p.add_date = post.post_date
+                                else:
+                                    p.add_date = now()
+                                p.title = post.title
+                                p.url = post.url
+                                p.save()
+                                if new_:
+                                    new_ = False
+                                    updated += 1
+                            # old post updated with a new title
+                            if p.title != post.title and post.post_date > p.add_date:
+                                p.add_date = now()
+                                p.post_date = post.post_date
+                                p.title = post.title
+                                p.save()
+                                if new_:
+                                    new_ = False
+                                    updated += 1
+
+    for feed in Feed.objects.all():
+        limit = feed.postLimit
+
+        posts = Post.objects.filter(feed=feed)
+        for post in posts:
+            if post.url not in seen:
+                post.seen = False
+                post.save()
+        count = len(posts)
+
+        posts = Post.objects.filter(feed=feed).order_by("post_date")
+        for post in posts:
+            if not post.seen and post.view and count > limit:
+                count -= 1
+                post.delete()
+                deleted += 1
+
+    return {"added": added, "updated": updated, "deleted": deleted}
+
+
+def get_posts():
+    updated = 0
+    deleted = 0
+    added = 0
+
+    seen = []
+    links = Link.objects.all()
+    for link in links:
+        downloader = FeedDownloader(link.url)
+        newest_posts = downloader.get_posts()
+        for id, post in enumerate(newest_posts):
+            seen += [post.url]
+            new_ = True
+            for feedLink in link.feedlink_set.all():
+                # check if post matches regexp and it's id is lower than the post limit
+                if re.match(feedLink.reg_exp, post.title) and id < feedLink.feed.postLimit:
+                    posts = Post.objects.filter(Q(title=post.title) | Q(url=post.url), feed=feedLink.feed)
+                    # post is new
+                    if len(posts) == 0 and post.post_date >= get_oldest_post_date(feedLink.feed):
+                        print(post.title, post.url, post.post_date)
+                        new_post = deepcopy(post)
+                        new_post.feed = feedLink.feed
+                        new_post.save()
+                        if new_:
+                            new_ = False
+                            added += 1
+                    else:
+                        if len(posts) == 1:
+                            p = posts[0]
+                            # unwatched old post was updated
+                            if p.add_date < post.post_date and not p.view:
+                                p.post_date = post.post_date
+                                if post.post_dat > now():
+                                    p.add_date = post.post_date
+                                else:
+                                    p.add_date = now()
+                                p.title = post.title
+                                p.url = post.url
+                                p.save()
+                                if new_:
+                                    new_ = False
+                                    updated += 1
+                            # old post updated with a new title
+                            if p.title != post.title and post.post_date > p.add_date:
+                                p.add_date = now()
+                                p.post_date = post.post_date
+                                p.title = post.title
+                                p.save()
+                                if new_:
+                                    new_ = False
+                                    updated += 1
+
+    for feed in Feed.objects.all():
+        limit = feed.postLimit
+
+        posts = Post.objects.filter(feed=feed)
+        for post in posts:
+            if post.url not in seen:
+                post.seen = False
+                post.save()
+        count = len(posts)
+
+        posts = Post.objects.filter(feed=feed).order_by("post_date")
+        for post in posts:
+            if not post.seen and post.view and count > limit:
+                count -= 1
+                post.delete()
+                deleted += 1
+
+    return {"added": added, "updated": updated, "deleted": deleted}
+
+def get_oldest_post_date(feed):
+    pre = Post.objects.filter(feed=feed).order_by("-add_date")[:2*feed.postLimit]
+    post = Post.objects.filter(feed=feed).order_by("-add_date")[2*feed.postLimit:]
+    if len(pre)==0:
+        return make_aware(datetime.fromtimestamp(0))
+    if len(post)==0:
+        return pre.last().add_date
+    else:
+        oldest = pre.last().add_date
+        for p in post:
+            if p.view:
+                oldest = p.add_date
+        return oldest
