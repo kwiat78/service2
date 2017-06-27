@@ -217,7 +217,7 @@ def get_posts():
                             # unwatched old post was updated
                             if p.add_date < post.post_date and not p.view:
                                 p.post_date = post.post_date
-                                if post.post_dat > now():
+                                if post.post_date > now():
                                     p.add_date = post.post_date
                                 else:
                                     p.add_date = now()
