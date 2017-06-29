@@ -2,6 +2,7 @@ import json
 from math import radians, cos, sin, asin, sqrt
 
 import requests
+from django.contrib.auth.models import User
 from django.conf import settings
 from django.db.models import Min, Max
 from rest_framework.decorators import detail_route
@@ -43,6 +44,11 @@ class LocationView(ModelViewSet):
         return Location.objects.filter(track__user=self.request.user).order_by("date")
 
     def create(self, request, *args, **kwargs):
+        username = request.data.get('user')
+        track = request.data.get('track')
+        if username and track:
+            user = User.objects.get(username=username)
+            Track.objects.get_or_create(label=track, user=user)
         return super(LocationView, self).create(request, *args, **kwargs)
 
 
