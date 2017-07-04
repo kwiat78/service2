@@ -66,7 +66,7 @@ class TrackViewSet(ModelViewSet):
 
     def retrieve(self, request, label=None):
         super().retrieve(request, label=label)
-        queryset = Location.objects.filter(track__label=label)
+        queryset = Location.objects.filter(track__label=label).order_by("date")
         serializer = TrackSerializer(queryset, many=True)
         return Response(serializer.data)
 
