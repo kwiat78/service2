@@ -76,7 +76,12 @@ class TrackViewSet(ModelViewSet):
         criteria = {"track__label": label}
         last_date = request.query_params.get('last_date')
         if last_date is not None:
-            criteria['date__gt'] = datetime.datetime.strptime(last_date, '%Y-%m-%dT%H:%M:%S.%fZ')
+            try:
+                date = datetime.datetime.strptime(last_date, '%Y-%m-%dT%H:%M:%S.%fZ')
+            except ValueError:
+                date = datetime.datetime.strptime(last_date, '%Y-%m-%dT%H:%M:%SZ')
+
+            criteria['date__gt'] = date
         queryset = Location.objects.filter(**criteria).order_by("date")
         serializer = TrackSerializer(queryset, many=True)
         return Response(serializer.data)
