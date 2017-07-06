@@ -1,3 +1,4 @@
+import datetime
 import json
 from math import radians, cos, sin, asin, sqrt
 
@@ -12,7 +13,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
 from wsgi.locations.models import Location, Track
-from wsgi.locations.serializers import LocationSerializer, TrackSerializer
+from wsgi.locations.serializers import LocationSerializer, TrackSerializer, SimpleTrackSerializer
 from wsgi.locations.utils.googleapi import GoogleAPIClient, GeocodingException
 from wsgi.locations.utils.map import Map
 
@@ -61,12 +62,22 @@ class TrackViewSet(ModelViewSet):
     def get_queryset(self):
         return Track.objects.filter(user=self.request.user)
 
+    def create(self, request, *args, **kwargs):
+        serializer = SimpleTrackSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+        return Response(serializer.data, status=201)
+
     def list(self, request):
         return Response(self.get_queryset().values_list("label", flat=True))
 
     def retrieve(self, request, label=None):
         super().retrieve(request, label=label)
-        queryset = Location.objects.filter(track__label=label).order_by("date")
+        criteria = {"track__label": label}
+        last_date = request.query_params.get('last_date')
+        if last_date is not None:
+            criteria['date__gt'] = datetime.datetime.strptime(last_date, '%Y-%m-%dT%H:%M:%S.%fZ')
+        queryset = Location.objects.filter(**criteria).order_by("date")
         serializer = TrackSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -81,6 +92,13 @@ class TrackViewSet(ModelViewSet):
         obj.save()
         return Response(status=200)
 
+    def partial_update(self, request, label, *args, **kwargs):
+        instance = self.get_object()
+        serializer = SimpleTrackSerializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data, status=200)
+
     @detail_route()
     def params(self, request, label=None):
         obj = get_object_or_404(self.get_queryset(), label=label)
@@ -88,12 +106,14 @@ class TrackViewSet(ModelViewSet):
         points_number = obj.location_set.count()
         start = obj.location_set.aggregate(Min('date'))["date__min"]
         stop = obj.location_set.aggregate(Max('date'))["date__max"]
-        processed = obj.procesed
+        processed = obj.processed
+        ended = obj.ended
         res = {
             "points_number": points_number,
             "start_date": start,
             "stop_date": stop,
             "processed": processed,
+            "ended": ended
         }
         return Response(res)
 
@@ -101,7 +121,7 @@ class TrackViewSet(ModelViewSet):
     def process(self, request, label=None):
         obj = get_object_or_404(self.get_queryset(), label=label)
         self.check_object_permissions(self.request, obj)
-        obj.procesed = True
+        obj.processed = True
         obj.save()
         return Response(status=201)
 

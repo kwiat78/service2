@@ -5,6 +5,7 @@ app.service('FeedReader', function($http) {
     function init() {
         options = {}
         options.url="http://service2-kwiat78.rhcloud.com"
+        //options.url="http://localhost:8000"
     }
 
 
@@ -56,9 +57,14 @@ app.service('FeedReader', function($http) {
             })
     }
 
-    this.getTrack = function(val) {
+    this.getTrack = function(val, last_date) {
         init()
-        return $http.get(options.url + "/api/tracks/"+val+"/", {headers: {}}).then(
+        query = ''
+        if(last_date!==undefined){
+            query='?last_date='+last_date
+        }
+
+        return $http.get(options.url + "/api/tracks/"+val+query, {headers: {}}).then(
         //return $http.get(options.url + "/api/tracks/"+val+"/with_streets", {headers: {}}).then(
         //return $http.get(options.url + "/api/tracks/"+val+"/intersections", {headers: {}}).then(
         //return $http.get(options.url + "/api/tracks/"+val+"/intersections/", {headers: {}}).then(
