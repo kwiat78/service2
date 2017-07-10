@@ -74,6 +74,15 @@ app.service('FeedReader', function($http) {
             })
     }
 
+    this.getLive = function() {
+        init()
+        return $http.get(options.url + "/api/tracks/live", {headers: {}}).then(
+
+            function(obj){
+                return obj.data;
+            })
+    }
+
     this.getTrackParameters = function(val) {
         init()
         return $http.get(options.url + "/api/tracks/"+val+"/params", {headers: {}}).then(

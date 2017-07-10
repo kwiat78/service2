@@ -6,7 +6,7 @@ import requests
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.db.models import Min, Max
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
@@ -121,6 +121,13 @@ class TrackViewSet(ModelViewSet):
             "ended": ended
         }
         return Response(res)
+
+    @list_route()
+    def live(self, request):
+        point = Location.objects.filter(track__ended=False).order_by('-date')[0]
+        serializer = SimpleTrackSerializer(point.track)
+        return Response(serializer.data, status=200)
+
 
     @detail_route()
     def process(self, request, label=None):

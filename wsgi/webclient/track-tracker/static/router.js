@@ -15,6 +15,10 @@ var app = angular.module('myApp2', ["ngRoute", "ngCookies", "ui.bootstrap.contex
         templateUrl: '../static/Map/MapView.html',
         controller: 'MapController'
       }).
+      when('/live', {
+        templateUrl: '../static/Live/LiveView.html',
+        controller: 'LiveController'
+      }).
       when('/login', {
         templateUrl: '../static/Auth/LoginView.html',
         controller: 'LoginController'
