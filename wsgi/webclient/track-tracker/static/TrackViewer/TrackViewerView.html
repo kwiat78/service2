@@ -1,27 +1,22 @@
-
-
 <div class="well well-sm">
     <div id='content'>
-	<div id="feeds" class="list-group">
-	    <div id='tracks'>
-	    </div>
-		<div id='tracks2' ng-repeat="track in tracks2">
-			<div class='track'>
-				<select class='selectTrack' ng-model="track.selected" ng-options="track2 for track2 in tracksX" ng-change="setMap(track,track2)"></select>
-				<button>del2</button>
+		<div id="feeds" class="list-group">
+			<div id='tracks'></div>
+			<div id='map_tracks' ng-repeat="track in map_tracks" class="row">
+				<div class='track'>
+					<div class="col-md-5">
+						<select class='selectTrack form-control' ng-model="track.selected" ng-options="label for label in tracks" ng-change="setMap(track)"></select>
+					</div>
+					<button ng-show='track.selected' ng-click="show_dots(track)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i></button>
+					<button ng-show='track.selected' ng-click="show_line(track)" class="btn btn-info"><i class="fa fa-chevron-up"></i></button>
+					<button ng-show='track.selected' ng-click="delete_track($event, track)" class="btn btn-danger" style="'z-index':10"><i class="fa fa-times"></i></button>
+				</div>
+			</div>
+			<button id='addTrack' ng-click="addTrack()"> add track to map</button>
+
+			<div class="map-div row">
+				<p id='map'></p>
 			</div>
 		</div>
-	    <button id='addTrack' ng-click="addTrack()"> add track to map</button>
-
-
-	   <!-- <select id='selectTrack'></select>-->
-		<div class="map-div">
-			<p id='map'></p>
-		</div>
-	</div>
-	
-	
-
-
 	</div>
 </div>
