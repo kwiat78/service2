@@ -14,7 +14,7 @@ iso8601==0.1.11
 kombu==3.0.29
 lxml==3.2.5
 path.py==8.1.2
-pexpect==4.0.1
+pexpect
 pickleshare==0.5
 ptyprocess==0.5
 PyMySQL==0.6.7
