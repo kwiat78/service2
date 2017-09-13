@@ -87,10 +87,10 @@ DATABASES = {
     'default': {
 	'ENGINE':   'django.db.backends.mysql',
 	'NAME':     'service2',
-	'USER':     os.environ.get('OPENSHIFT_MYSQL_DB_USERNAME', ""),
-	'PASSWORD': os.environ.get('OPENSHIFT_MYSQL_DB_PASSWORD', ""),
-	'HOST':     os.environ.get('OPENSHIFT_MYSQL_DB_HOST', ""),
-	'PORT':     os.environ.get('OPENSHIFT_MYSQL_DB_PORT', ""),
+	'USER':     os.environ.get('MYSQL_USER', ""),
+	'PASSWORD': os.environ.get('MYSQL_PASSWORD', ""),
+	'HOST':     os.environ.get('MYSQL_SERVICE_HOST', ""),
+	'PORT':     os.environ.get('MYSQL_SERVICE_PORT_MYSQL', ""),
     }
 }
 
