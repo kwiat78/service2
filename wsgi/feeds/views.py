@@ -193,8 +193,11 @@ def get_posts():
     seen = []
     links = Link.objects.all()
     for link in links:
-        downloader = FeedDownloader(link.url)
-        newest_posts = downloader.get_posts()
+        try:
+            downloader = FeedDownloader(link.url)
+            newest_posts = downloader.get_posts()
+        except URLError:
+            newest_posts = []
         for id, post in enumerate(newest_posts):
             seen += [post.url]
             new_ = True
