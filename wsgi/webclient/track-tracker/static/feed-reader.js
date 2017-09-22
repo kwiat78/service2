@@ -4,7 +4,8 @@ app.service('FeedReader', function($http) {
 
     function init() {
         options = {}
-        options.url="http://service2-kwiat78.rhcloud.com"
+        options.url="http://service2-service2.193b.starter-ca-central-1.openshiftapps.com"
+        //options.url="http://service2-kwiat78.rhcloud.com"
         //options.url="http://localhost:8000"
     }
 
