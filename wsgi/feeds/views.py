@@ -191,6 +191,7 @@ def get_posts():
     added = 0
 
     seen = []
+    broken_links = []
     links = Link.objects.all()
     for link in links:
         try:
@@ -198,6 +199,9 @@ def get_posts():
             newest_posts = downloader.get_posts()
         except URLError:
             newest_posts = []
+
+            broken_links += [link.url]
+
         for id, post in enumerate(newest_posts):
             seen += [post.url]
             new_ = True
@@ -241,23 +245,25 @@ def get_posts():
                                     updated += 1
 
     for feed in Feed.objects.all():
-        limit = feed.postLimit
+        if not any([x.link.url in broken_links for x in feed.links.all()]):
+            limit = feed.postLimit
 
-        posts = Post.objects.filter(feed=feed)
-        for post in posts:
-            if post.url not in seen:
-                post.seen = False
-                post.save()
-        count = len(posts)
+            posts = Post.objects.filter(feed=feed)
+            for post in posts:
+                if post.url not in seen:
+                    post.seen = False
+                    post.save()
+            count = len(posts)
 
-        posts = Post.objects.filter(feed=feed).order_by("post_date")
-        for post in posts:
-            if not post.seen and post.view and count > limit:
-                count -= 1
-                post.delete()
-                deleted += 1
+            posts = Post.objects.filter(feed=feed).order_by("post_date")
+            for post in posts:
+                if not post.seen and post.view and count > limit:
+                    count -= 1
+                    post.delete()
+                    deleted += 1
 
     return {"added": added, "updated": updated, "deleted": deleted}
+
 
 def get_oldest_post_date(feed):
     pre = Post.objects.filter(feed=feed).order_by("-add_date")[:2*feed.postLimit]
