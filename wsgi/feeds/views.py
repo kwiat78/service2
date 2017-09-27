@@ -199,7 +199,9 @@ def get_posts():
             newest_posts = downloader.get_posts()
         except URLError:
             newest_posts = []
-
+            broken_links += [link.url]
+        except Exception as e:
+            print(e)
             broken_links += [link.url]
 
         for id, post in enumerate(newest_posts):
